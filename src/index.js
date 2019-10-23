@@ -17,7 +17,7 @@ axios.defaults.baseURL = 'https://showtime-201ca.firebaseio.com/';
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    show: showElementsReducer()
+    show: showElementsReducer
 });
 
 const composeEnhancers = (process.env.NODE_ENV ==='development') ?
