@@ -1,0 +1,11 @@
+.Block {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    background: blue;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 2px #ccc;
+    color: white;
+    padding: 5px;
+    margin: 5px;
+}

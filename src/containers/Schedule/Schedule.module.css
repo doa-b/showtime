@@ -1,0 +1,12 @@
+.Wrapper{
+    display: flex;
+    width: 100%;
+}
+
+.Spacer {
+    margin-left: 50px;
+}
+
+.Inner {
+    width: 100%;
+}

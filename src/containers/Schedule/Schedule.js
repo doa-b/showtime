@@ -3,12 +3,24 @@ import React, {Component} from 'react';
 import classes from './Schedule.module.css'
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
-import Block from "../../components/show/Block/Block";
+import Block from '../../components/show/Block/Block';
+import Part from '../../components/show/Block/Part/Part';
+import Scene from '../../components/show/Block/Part/Scene/Scene'
+import {calculateDuration} from "../../shared/utility";
+import PanToolIcon from '@material-ui/icons/PanTool';
 
 /**
  * Created by Doa on 23-10-2019.
  */
 class Schedule extends Component {
+
+    constructor(props) {
+        super(props)
+    }
+
+    componentDidMount() {
+        this.props.onFetch('-Lrst6TmmyYrkouGmiac')
+    }
 
     saveDummyShowHandler = () => {
         const show = {
@@ -73,16 +85,55 @@ class Schedule extends Component {
 
     };
 
-    render() {
-        let blocksList = null;
-        if (this.props.blocks) {
-            blocksList = this.props.blocks.map((block) => (
+    expandOrCollapseParts = () => {
 
-                <Block key={block.id}
-                       blockData={block}
-                       parts={this.props.parts}/>
-            ))
+    };
+
+// todo Remove duration from block and part and database. It is calculated on the fly
+    render() {
+        let blocksList = <p>Loading...</p>;
+        if (this.props.blocks && this.props.parts && this.props.scenes) {
+            let startTimeCounter = 0;
+            blocksList = this.props.blocks.map((block) => {
+                const parts = this.props.parts.filter(aPart => aPart.BlockId === block.id);
+                return (
+                    <div key={block.id}>
+                        <div className={classes.Block}>
+                            <Block
+                                startTime={startTimeCounter}
+                                duration={calculateDuration(parts)}
+                                blockData={block}/>
+                            {parts.map((part) => {
+                                console.log(part);
+                                return (
+                                    <div className={classes.Wrapper}>
+                                        <span className={classes.Spacer}></span>
+                                        <PanToolIcon/>
+                                        <div className={classes.Inner}>
+                                            <Part key={part.id}
+                                                  startTime={startTimeCounter += part.duration}
+                                                  partData={part}/>
+                                            {this.props.scenes.map((scene) => {
+                                                return (
+                                                    <div className={classes.Wrapper}>
+                                                        <span className={classes.Spacer}></span>
+                                                        <div>
+                                                            <Scene key={scene.id}
+                                                                   startTime={startTimeCounter}
+                                                                   sceneData={scene}/>
+                                                        </div>
+                                                    </div>)
+                                            })}
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                );
+            })
         }
+// todo put part and scene here, not as child of eachother. Else we cannot calculate start times with 3 nested maps
 
         return (
             <>
@@ -113,7 +164,8 @@ const mapStateToProps = (state) => {
     return {
         currentShow: state.show.currentShow,
         blocks: state.show.blocks,
-        parts: state.show.parts
+        parts: state.show.parts,
+        scenes: state.show.scenes
     }
 };
 

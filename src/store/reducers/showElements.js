@@ -9,7 +9,7 @@ const initialState = {
     scenes: [],
     error: null,
     loading: false,
-    currentShow: null
+    currentShow: '-Lrst6TmmyYrkouGmiac'
 };
 
 const savedShowElement = (state, action) => {

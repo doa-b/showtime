@@ -1,4 +1,7 @@
 import React from 'react';
+import StartTime from '../../StartTime/StartTime'
+import Duration from '../../Duration/Duration'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import classes from './Block.module.css'
 
@@ -8,20 +11,14 @@ import Part from '../Block/Part/Part'
  */
 const block = (props) => {
 
-    let parts = null;
-
-    if (props.parts) {
-        parts = props.parts.filter(part => part.BlockId === props.blockData.id).
-            map((part) => (
-                <Part key={part.elementId}
-                title={part.title}/>
-        ))
-    }
     return (
-        <div>
-            blockName: {props.blockData.title}
-            {parts}
+        <div className={classes.Block}>
+            <StartTime startTime={props.startTime}/>
+            <Duration duration={props.duration}/>
+           {props.blockData.title}
+            <ExpandMoreIcon/>
         </div>
+
 
     );
 };

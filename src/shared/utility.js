@@ -30,3 +30,12 @@ export const convertObjectsAndSortByKey = (object, orderKey) => {
     console.log(newArray)
     return newArray;
 };
+
+export const calculateDuration = (parts) => {
+    let duration = 0;
+    parts.map((part)=> {
+      duration += part.duration
+    });
+
+    return duration
+};
