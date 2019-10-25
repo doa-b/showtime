@@ -19,6 +19,16 @@ export const elementSaveSucces = (elementName, data, elementId) => {
     }
 };
 
+// todo See how burgerbuilder does that with change ingredient in reducer!!!
+// todo https://codeburst.io/javascript-array-distinct-5edc93501dc4
+//todo https://stackoverflow.com/questions/50898249/determine-whether-to-push-or-update-object-in-array-based-on-unique-id
+export const updateElement = () => {
+    return {
+        type: actionTypes.SHOW_UPDATE_ELEMENT
+    }
+};
+
+
 export const showFail = (error) => {
     return {
         type: actionTypes.SHOW_FAIL,
@@ -65,23 +75,36 @@ export const fetch = (showId) => {
     return dispatch => {
         dispatch(showStart());
         console.log(showId);
-        axios.all([getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)])
-            .then(axios.spread((blocks, parts, scenes) => {
-                console.log(blocks);
-                console.log(parts);
-                console.log(scenes);
-                dispatch(fetchShowDataSuccess(blocks.data, parts.data, scenes.data));
-            }))
+        axios.all([getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then
+        (axios.spread((blocks, parts, scenes) => {
+            console.log(blocks);
+            console.log(parts);
+            console.log(scenes);
+            dispatch(fetchShowDataSuccess(blocks.data, parts.data, scenes.data));
+        })).catch(error => {
+            dispatch(showFail(error));
+        })
+    };
+};
+
+export const updateOrder = (showId, data, elementName) => {
+    return dispatch => {
+        dispatch(showStart());
+        console.log(showId);
+        axios.all(UpdateOrderFromElements(showId, data, elementName)).then
+        (axios.spread((response) => {
+            console.log(response);
+            dispatch(updateElement);
+            dispatch(fetch(showId))
+        }))
             .catch(error => {
                 dispatch(showFail(error));
             })
     };
 };
-
-// todo make update (element) with axios.put
+// todo make updateOrder (element) with axios.put
 
 // Axios helper functions
-
 const getAllBlocks = (showId) => {
     return axios.get('blocks/.json', {
         params: {
@@ -109,24 +132,20 @@ const getAllScenes = (showId) => {
     });
 };
 
+const UpdateOrderFromElements = (showId, data, elementName) => {
+    const requestsArray = [];
+    let request = null;
+    for (let i = 0; i < data.length; i++) {
+        request = axios.put(`${elementName}/${data[i].id}/order.json`, i);
+        // todo replace scenes with variable url
+        requestsArray.push(request)
+    }
+    console.log(requestsArray);
+    return requestsArray
+};
+
 
 const getAllShows = (showId) => {
     return axios.get('shows/.json')
 };
 
-
-// Zoek later uit
-
-// axios.all([getAllBlocks(showId), getAllShows])
-//     .then(axios.spread((blocks, parts) => {
-//         console.log(blocks);
-//         dispatch(fetchShowDataSuccess(blocks.data));
-//     }))
-//     .catch(error => {
-//         dispatch(showFail(error));
-//     })
-// };
-// };
-//
-// // todo make update (element) with axios.put
-//

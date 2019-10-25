@@ -1,4 +1,5 @@
 export {
     save,
-    fetch
+    fetch,
+    updateOrder
 } from './showElements'

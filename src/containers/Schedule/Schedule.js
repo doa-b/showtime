@@ -5,9 +5,10 @@ import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import Block from '../../components/show/Block/Block';
 import Part from '../../components/show/Block/Part/Part';
-import Scene from '../../components/show/Block/Part/Scene/Scene'
+import Scene from '../../components/show/Block/Part/Scenes/Scene'
 import {calculateDuration} from "../../shared/utility";
 import PanToolIcon from '@material-ui/icons/PanTool';
+import Scenes from '../Scenes/Scenes'
 
 /**
  * Created by Doa on 23-10-2019.
@@ -90,9 +91,11 @@ class Schedule extends Component {
     };
 
 // todo Remove duration from block and part and database. It is calculated on the fly
+    // Todo remove packege react-drag-listview
     render() {
         let blocksList = <p>Loading...</p>;
-        if (this.props.blocks && this.props.parts && this.props.scenes) {
+        let scenes = null;
+        if (this.props.blocks.length>1 && this.props.parts && this.props.scenes) {
             let startTimeCounter = 0;
             blocksList = this.props.blocks.map((block) => {
                 const parts = this.props.parts.filter(aPart => aPart.BlockId === block.id);
@@ -105,6 +108,8 @@ class Schedule extends Component {
                                 blockData={block}/>
                             {parts.map((part) => {
                                 console.log(part);
+                                const scenes=this.props.scenes
+                                    // TODO add .filter(aScene => aScene.PartId === '-LrstBEWgr-XAFQeVpxz');
                                 return (
                                     <div className={classes.Wrapper}>
                                         <span className={classes.Spacer}></span>
@@ -113,17 +118,8 @@ class Schedule extends Component {
                                             <Part key={part.id}
                                                   startTime={startTimeCounter += part.duration}
                                                   partData={part}/>
-                                            {this.props.scenes.map((scene) => {
-                                                return (
-                                                    <div className={classes.Wrapper}>
-                                                        <span className={classes.Spacer}></span>
-                                                        <div>
-                                                            <Scene key={scene.id}
-                                                                   startTime={startTimeCounter}
-                                                                   sceneData={scene}/>
-                                                        </div>
-                                                    </div>)
-                                            })}
+                                            <Scenes scenes={scenes}
+                                                    startTime={startTimeCounter}/>
                                         </div>
                                     </div>
                                 )
@@ -132,6 +128,10 @@ class Schedule extends Component {
                     </div>
                 );
             })
+        }
+
+        if (this.props.scenes.length > 1) {
+
         }
 // todo put part and scene here, not as child of eachother. Else we cannot calculate start times with 3 nested maps
 
@@ -155,6 +155,7 @@ class Schedule extends Component {
                     Fetch all showdata
                 </button>
                 {blocksList}
+                {scenes}
             </>
         )
     }

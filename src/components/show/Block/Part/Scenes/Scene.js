@@ -7,16 +7,16 @@ import Duration from "../../../../Duration/Duration";
 /**
  * Created by Doa on 23-10-2019.
  */
-const part = (props) => {
+const scene = (props) => {
     return (
-        <div className={classes.Scene}>
-            <StartTime startTime={props.startTime - props.sceneData.duration}/>
+        <li className={classes.Scene}>
+            {props.children}
+            <StartTime startTime={props.startTime + props.sceneData.duration}/>
             <Duration duration={props.sceneData.duration}/>
             {props.sceneData.title}
 
-        </div>
-
+        </li>
     )
 };
 
-export default part;
+export default scene;
