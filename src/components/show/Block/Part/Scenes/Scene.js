@@ -9,13 +9,13 @@ import Duration from "../../../../Duration/Duration";
  */
 const scene = (props) => {
     return (
-        <li className={classes.Scene}>
+        <div className={classes.Scene}>
             {props.children}
-            <StartTime startTime={props.startTime + props.sceneData.duration}/>
+            <StartTime startTime={props.startTime + props.sceneData.starttime}/>
             <Duration duration={props.sceneData.duration}/>
             {props.sceneData.title}
 
-        </li>
+        </div>
     )
 };
 

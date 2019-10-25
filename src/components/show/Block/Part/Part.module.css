@@ -1,7 +1,13 @@
+.Wrapper {
+    margin: 5px;
+    width: 100%;
+}
+
 .Part {
     display: flex;
     flex-direction: row;
     justify-content: start;
+    width: 100%;
     background: #eee;
     border: 1px solid #ccc;
     box-shadow: 2px 2px 2px #ccc;
@@ -9,17 +15,23 @@
     margin: 1px 5px 1px 5px;
 }
 
-/*.InnerPart {*/
-/*    display: flex;*/
-/*    flex-direction: row;*/
-/*    justify-content: start;*/
-/*    background: #eee;*/
-/*    border: 1px solid #ccc;*/
-/*    box-shadow: 2px 2px 2px #ccc;*/
-/*    padding: 1px 5px 1px 5px;*/
-/*    margin: 1px 5px 1px 5px;*/
-/*}*/
-
 .Spacer {
-    margin-left: 50px;
+    margin-left: 100px;
+}
+
+.Below {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.Title {
+    width: 100%;
+}
+
+.Arrow {
+    position: absolute;
+    right: 0;
 }

@@ -1,0 +1,8 @@
+BlocksList {
+    display: flex;
+    flex-direction: row;
+}
+
+.Inner {
+    width: 100%;
+}

@@ -27,7 +27,7 @@ const fetchedAllShowData = (state, action) => {
         parts: convertObjectsAndSortByKey(action.parts, 'order'),
         scenes: convertObjectsAndSortByKey(action.scenes, 'order'),
         error: null,
-        loading: null
+        loading: false
     };
 
 

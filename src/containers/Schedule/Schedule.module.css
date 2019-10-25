@@ -1,7 +1,14 @@
-.Wrapper{
+.Schedule {
     display: flex;
+    flex-direction: row;
     width: 100%;
 }
+
+.Wrapper{
+     display: flex;
+    flex-direction: row;
+    width: 100%;
+ }
 
 .Spacer {
     margin-left: 50px;

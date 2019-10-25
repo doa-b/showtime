@@ -5,15 +5,19 @@ import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import Block from '../../components/show/Block/Block';
 import Part from '../../components/show/Block/Part/Part';
-import Scene from '../../components/show/Block/Part/Scenes/Scene'
 import {calculateDuration} from "../../shared/utility";
 import PanToolIcon from '@material-ui/icons/PanTool';
-import Scenes from '../Scenes/Scenes'
+import ScenesList from '../Scenes/ScenesList'
+import PartsList from '../Parts/PartsList';
+import BlocksList from "../Blocks/BlocksList";
 
 /**
  * Created by Doa on 23-10-2019.
  */
 class Schedule extends Component {
+
+    // TODO maybe we need to add an updated flag to show reducer to let schedule auto re-render.
+    //  Or else we use the loading flag
 
     constructor(props) {
         super(props)
@@ -93,8 +97,20 @@ class Schedule extends Component {
 // todo Remove duration from block and part and database. It is calculated on the fly
     // Todo remove packege react-drag-listview
     render() {
+        let total = <p>Loading...</p>;
+
+
         let blocksList = <p>Loading...</p>;
-        let scenes = null;
+
+        if (this.props.blocks.length>1 && this.props.parts && this.props.scenes) {
+            total =
+                <div >
+                    <BlocksList duration={20}
+                    parentId={this.props.currentShow}/>
+                </div>
+
+        }
+
         if (this.props.blocks.length>1 && this.props.parts && this.props.scenes) {
             let startTimeCounter = 0;
             blocksList = this.props.blocks.map((block) => {
@@ -104,12 +120,11 @@ class Schedule extends Component {
                         <div className={classes.Block}>
                             <Block
                                 startTime={startTimeCounter}
-                                duration={calculateDuration(parts)}
+                                // duration={calculateDuration(parts)}
                                 blockData={block}/>
                             {parts.map((part) => {
                                 console.log(part);
-                                const scenes=this.props.scenes
-                                    // TODO add .filter(aScene => aScene.PartId === '-LrstBEWgr-XAFQeVpxz');
+                                const scenes=this.props.scenes;
                                 return (
                                     <div className={classes.Wrapper}>
                                         <span className={classes.Spacer}></span>
@@ -118,8 +133,8 @@ class Schedule extends Component {
                                             <Part key={part.id}
                                                   startTime={startTimeCounter += part.duration}
                                                   partData={part}/>
-                                            <Scenes scenes={scenes}
-                                                    startTime={startTimeCounter}/>
+                                            <ScenesList parentId={part.id}
+                                                        startTime={startTimeCounter}/>
                                         </div>
                                     </div>
                                 )
@@ -154,8 +169,9 @@ class Schedule extends Component {
                 <button onClick={this.loadShowDataHandler}>
                     Fetch all showdata
                 </button>
-                {blocksList}
-                {scenes}
+
+                {/*{blocksList}*/}
+                {total}
             </>
         )
     }
@@ -166,7 +182,8 @@ const mapStateToProps = (state) => {
         currentShow: state.show.currentShow,
         blocks: state.show.blocks,
         parts: state.show.parts,
-        scenes: state.show.scenes
+        scenes: state.show.scenes,
+        loading: state.show.loading
     }
 };
 

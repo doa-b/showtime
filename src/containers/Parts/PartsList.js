@@ -1,54 +1,52 @@
 import React, {Component} from 'react';
 
-import Scene from '../../components/show/Block/Part/Scenes/Scene'
+import Part from '../../components/show/Block/Part/Part'
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 
+import classes from './PartsList.module.css'
+
+
 const DragHandle = sortableHandle(() => <DragIndicatorIcon/>);
 
 const SortableContainer = sortableContainer(({children}) => {
-    return <ul>{children}</ul>;
+    return <div className={classes.Inner}>{children}</div>;
 });
 
-class Scenes extends Component {
+class PartsList extends Component {
     constructor(props) {
         super(props);
-        console.log('the scene props');
+        console.log('the parts props');
         console.log(props);
         this.state =
             {
-                items: this.props.scenes,
-
+                items: this.props.parts.filter(aPart => aPart.BlockId === this.props.parentId),
+                visible: true
             };
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState !== this.state) {
-            console.log('THE ORDER HAS CHANGED')
-            this.props.onUpdate(this.props.showId, this.state.items, 'scenes');
+            console.log('THE ORDER HAS CHANGED');
+            this.props.onUpdate(this.props.showId, this.state.items, 'parts');
         }
     }
 
-    SortableItem = sortableElement(({value}) =>
+    toggleVisibilityHandler = () => {
 
-        <Scene
+    }
+
+    SortableItem = sortableElement(({value, startTime}) =>
+
+        <Part
             children={<DragHandle/>}
-            sceneData={value}
-            startTime={this.props.startTime}
+            partData={value}
+            startTime={startTime}
+            parentId={value.id}
         />);
-
-    SortableList = sortableContainer(({items}) => {
-        return (
-            <ul>
-                {items.map((value, index) =>
-                    <this.SortableItem key={value.id} index={index} value={value}/>
-                )}
-            </ul>
-        );
-    });
 
     onSortEnd = ({oldIndex, newIndex}) => {
         this.setState(({items}) => ({
@@ -57,14 +55,19 @@ class Scenes extends Component {
     };
 
     render() {
+        let startTimeCounter = this.props.startTime;
         return (
-            <ul>
-                <SortableContainer onSortEnd={this.onSortEnd} useDragHandle>
-                    {this.state.items.map((value, index) => (
-                        <this.SortableItem key={value.id} index={index} value={value}/>
-                    ))}
-                </SortableContainer>
-            </ul>
+            <SortableContainer onSortEnd={this.onSortEnd} useDragHandle>
+                {this.state.items.map((value, index) => (
+                    <this.SortableItem
+                        key={value.id}
+                        index={index}
+                        value={value}
+                        startTime={startTimeCounter += value.duration}
+                    clicked={this.toggleVisibilityHandler}/>
+
+                ))}
+            </SortableContainer>
         )
         // return <this.SortableList items={this.state.items} onSortEnd={this.onSortEnd} useDragHandle/>;
     }
@@ -72,7 +75,8 @@ class Scenes extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        showId: state.show.currentShow
+        showId: state.show.currentShow,
+        parts: state.show.parts
     }
 };
 
@@ -85,4 +89,4 @@ const mapDispatchToProps = (dispatch) => {
 // todo alternative render method: https://github.com/clauderic/react-sortable-hoc/blob/master/examples/drag-handle.js
 // todo scroll down https://github.com/clauderic/react-sortable-hoc to see how to pass down props
 
-export default connect(mapStateToProps, mapDispatchToProps)(Scenes);
+export default connect(mapStateToProps, mapDispatchToProps)(PartsList);

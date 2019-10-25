@@ -102,7 +102,6 @@ export const updateOrder = (showId, data, elementName) => {
             })
     };
 };
-// todo make updateOrder (element) with axios.put
 
 // Axios helper functions
 const getAllBlocks = (showId) => {
@@ -137,7 +136,6 @@ const UpdateOrderFromElements = (showId, data, elementName) => {
     let request = null;
     for (let i = 0; i < data.length; i++) {
         request = axios.put(`${elementName}/${data[i].id}/order.json`, i);
-        // todo replace scenes with variable url
         requestsArray.push(request)
     }
     console.log(requestsArray);
