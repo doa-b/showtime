@@ -16,6 +16,14 @@ const SortableContainer = sortableContainer(({children}) => {
     return <div className={classes.Inner}>{children}</div>;
 });
 
+const SortableItem = sortableElement(({value, startTime}) =>
+    <Part
+        children={<DragHandle/>}
+        partData={value}
+        startTime={startTime}
+        parentId={value.id}
+    />);
+
 class PartsList extends Component {
     constructor(props) {
         super(props);
@@ -24,29 +32,22 @@ class PartsList extends Component {
         this.state =
             {
                 items: this.props.parts.filter(aPart => aPart.BlockId === this.props.parentId),
-                visible: true
             };
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState !== this.state) {
+        if (prevState.items !== this.state.items) {
             console.log('THE ORDER HAS CHANGED');
             this.props.onUpdate(this.props.showId, this.state.items, 'parts');
         }
     }
 
     toggleVisibilityHandler = () => {
-
-    }
-
-    SortableItem = sortableElement(({value, startTime}) =>
-
-        <Part
-            children={<DragHandle/>}
-            partData={value}
-            startTime={startTime}
-            parentId={value.id}
-        />);
+        console.log('clicked');
+        this.setState( ( prevState ) => {
+            return {hidden: !prevState.visible};
+        });
+    };
 
     onSortEnd = ({oldIndex, newIndex}) => {
         this.setState(({items}) => ({
@@ -59,17 +60,15 @@ class PartsList extends Component {
         return (
             <SortableContainer onSortEnd={this.onSortEnd} useDragHandle>
                 {this.state.items.map((value, index) => (
-                    <this.SortableItem
+                    <SortableItem
                         key={value.id}
                         index={index}
                         value={value}
-                        startTime={startTimeCounter += value.duration}
-                    clicked={this.toggleVisibilityHandler}/>
+                        startTime={startTimeCounter += value.duration}/>
 
                 ))}
             </SortableContainer>
         )
-        // return <this.SortableList items={this.state.items} onSortEnd={this.onSortEnd} useDragHandle/>;
     }
 }
 

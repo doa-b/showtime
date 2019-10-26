@@ -25,7 +25,7 @@ class ScenesList extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState !== this.state) {
+        if (prevState.items !== this.state.items) {
             console.log('THE ORDER HAS CHANGED');
             this.props.onUpdate(this.props.showId, this.state.items, 'scenes');
         }

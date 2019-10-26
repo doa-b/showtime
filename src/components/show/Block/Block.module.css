@@ -32,3 +32,8 @@
     align-items: flex-start;
     width: 100%;
 }
+
+.Arrow {
+    position: absolute;
+    right: 0;
+}
