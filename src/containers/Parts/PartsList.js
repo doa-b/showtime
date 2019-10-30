@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom'
 
-import Part from '../../components/show/Block/Part/Part'
+import Part from './Part'
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
@@ -8,6 +9,7 @@ import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 
 import classes from './PartsList.module.css'
+import {compose} from "redux";
 
 
 const DragHandle = sortableHandle(() => <DragIndicatorIcon/>);
@@ -16,12 +18,13 @@ const SortableContainer = sortableContainer(({children}) => {
     return <div className={classes.Inner}>{children}</div>;
 });
 
-const SortableItem = sortableElement(({value, startTime}) =>
+const SortableItem = sortableElement(({value, startTime, history}) =>
     <Part
         children={<DragHandle/>}
         partData={value}
         startTime={startTime}
         parentId={value.id}
+        history={history}
     />);
 
 class PartsList extends Component {
@@ -44,7 +47,7 @@ class PartsList extends Component {
 
     toggleVisibilityHandler = () => {
         console.log('clicked');
-        this.setState( ( prevState ) => {
+        this.setState((prevState) => {
             return {hidden: !prevState.visible};
         });
     };
@@ -64,7 +67,8 @@ class PartsList extends Component {
                         key={value.id}
                         index={index}
                         value={value}
-                        startTime={startTimeCounter += value.duration}/>
+                        startTime={startTimeCounter += value.duration}
+                        history={this.props.history}/>
 
                 ))}
             </SortableContainer>
@@ -88,4 +92,6 @@ const mapDispatchToProps = (dispatch) => {
 // todo alternative render method: https://github.com/clauderic/react-sortable-hoc/blob/master/examples/drag-handle.js
 // todo scroll down https://github.com/clauderic/react-sortable-hoc to see how to pass down props
 
-export default connect(mapStateToProps, mapDispatchToProps)(PartsList);
+export default compose(
+    withRouter,
+    connect(mapStateToProps, mapDispatchToProps))(PartsList);

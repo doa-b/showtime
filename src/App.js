@@ -3,6 +3,7 @@ import {Route, Switch, withRouter, Redirect} from 'react-router-dom'
 
 import './App.css';
 import Schedule from './containers/Schedule/Schedule';
+import BlockDetails from './containers/Blocks/BlockDetails/BlockDetails'
 import Layout from './hoc/Layout/Layout';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
     let routes = (
         <Switch>
             <Route path="/" exact component={Schedule}/>
+            <Route path="/block/details" exact component={BlockDetails}/>
             <Redirect to="/"/>
         </Switch>
     );

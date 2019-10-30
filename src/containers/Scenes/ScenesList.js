@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
+import { withRouter } from 'react-router-dom'
 
-import Scene from '../../components/show/Block/Part/Scenes/Scene'
+import Scene from '../../components/Scenes/Scene'
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
+import {compose} from "redux";
 
 const DragHandle = sortableHandle(() => <DragIndicatorIcon/>);
 
@@ -24,6 +26,15 @@ class ScenesList extends Component {
             };
     }
 
+    showDetailsHandler = (sceneId) => {
+        this.props.history.push({
+            pathname: 'block/details',
+            state: {
+                parentId: sceneId
+            }
+        })
+    };
+
     componentDidUpdate(prevProps, prevState) {
         if (prevState.items !== this.state.items) {
             console.log('THE ORDER HAS CHANGED');
@@ -37,6 +48,7 @@ class ScenesList extends Component {
             children={<DragHandle/>}
             sceneData={value}
             startTime={this.props.startTime}
+            detailClicked={this.showDetailsHandler}
         />);
 
     onSortEnd = ({oldIndex, newIndex}) => {
@@ -74,4 +86,7 @@ const mapDispatchToProps = (dispatch) => {
 // todo alternative render method: https://github.com/clauderic/react-sortable-hoc/blob/master/examples/drag-handle.js
 // todo scroll down https://github.com/clauderic/react-sortable-hoc to see how to pass down props
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScenesList);
+export default compose(
+    withRouter,
+    connect(mapStateToProps, mapDispatchToProps))
+(ScenesList);

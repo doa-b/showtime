@@ -33,9 +33,9 @@ export const convertObjectsAndSortByKey = (object, orderKey) => {
 
 export const calculateDuration = (parts) => {
     let duration = 0;
-    parts.map((part)=> {
-      duration += part.duration;
-    });
+    parts.map((part) => (
+        duration += part.duration
+    ));
     console.log(duration);
 
     return duration

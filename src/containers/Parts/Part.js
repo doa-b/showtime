@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 
 import classes from './Part.module.css'
-import StartTime from "../../../StartTime/StartTime";
-import Duration from "../../../Duration/Duration";
-import ScenesList from "../../../../containers/Scenes/ScenesList";
+import StartTime from "../../components/StartTime/StartTime";
+import Duration from "../../components/Duration/Duration";
+import ScenesList from "../Scenes/ScenesList";
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 
 /**
  * Created by Doa on 23-10-2019.
@@ -26,6 +28,15 @@ class Part extends Component {
         });
     };
 
+    showDetailsHandler = () => {
+        this.props.history.push({
+            pathname: 'block/details',
+            state: {
+                id: this.props.partData.id
+            }
+        })
+    };
+
     render() {
         let startTime = this.props.startTime - this.props.partData.duration;
         let scenes = null;
@@ -35,6 +46,9 @@ class Part extends Component {
         if (this.state.showChildren) {
             scenes = <div className={classes.Below}>
                 <span className={classes.Spacer}></span>
+                <IconButton size="small" color="primary" className={classes.button} aria-label="add">
+                    <AddIcon/>
+                </IconButton>
                 <ScenesList
                     parentId={this.props.partData.id}
                     startTime={startTime}/>
@@ -49,7 +63,7 @@ class Part extends Component {
                     {this.props.children}
                     <StartTime startTime={startTime}/>
                     <Duration duration={this.props.partData.duration}/>
-                    <div>{this.props.partData.title}</div>
+                    <div onClick={this.showDetailsHandler}>{this.props.partData.title}</div>
                     {arrow}
                 </div>
                 {scenes}

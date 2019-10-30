@@ -1,7 +1,7 @@
 .Scene {
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: flex-start;
     border: 1px solid #ccc;
     box-shadow: 2px 2px 2px #ccc;
     padding: 1px 5px 1px 5px;

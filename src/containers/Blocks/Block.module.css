@@ -6,7 +6,7 @@
 .Block {
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: flex-start;
     flex-wrap: wrap;
     width: 100%;
     background: blue;
@@ -22,13 +22,13 @@
 }
 
 .Spacer {
-    margin-left: 50px;
+    margin-left: 30px;
 }
 
 .Below {
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
 }
@@ -36,4 +36,14 @@
 .Arrow {
     position: absolute;
     right: 0;
+}
+
+.Controls {
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+}
+
+.Title {
+    cursor: pointer;
 }

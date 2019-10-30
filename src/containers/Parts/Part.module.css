@@ -6,7 +6,7 @@
 .Part {
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: flex-start;
     width: 100%;
     background: #eee;
     border: 1px solid #ccc;
@@ -16,13 +16,13 @@
 }
 
 .Spacer {
-    margin-left: 100px;
+    margin-left: 70px;
 }
 
 .Below {
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
 }

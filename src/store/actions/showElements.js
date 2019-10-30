@@ -1,5 +1,4 @@
 import axios from 'axios'
-import * as keys from '../../kluisje'
 
 import * as actionTypes from './actionTypes';
 
@@ -63,6 +62,8 @@ export const save = (elementName, data) => {
                 dispatch(elementSaveSucces(elementName, data, response.data.name));
                 if (elementName === 'shows') {
                     dispatch(setCurrentShow(response.data.name))
+                } else {
+                    dispatch(fetch())
                 }
             }))
             .catch(error => {
@@ -71,9 +72,23 @@ export const save = (elementName, data) => {
     }
 };
 
-export const fetch = (showId) => {
+export const update = (id, data, elementName) => {
     return dispatch => {
+        axios.put(`${elementName}/${id}.json`, data)
+            .then((response => {
+                console.log(response);
+                dispatch(fetch())
+            }))
+            .catch(error => {
+                dispatch(showFail(error));
+            });
+    }
+};
+
+export const fetch = () => {
+    return (dispatch, getState) => {
         dispatch(showStart());
+        const showId=getState().show.currentShow;
         console.log(showId);
         axios.all([getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then
         (axios.spread((blocks, parts, scenes) => {
@@ -143,7 +158,7 @@ const UpdateOrderFromElements = (showId, data, elementName) => {
 };
 
 
-const getAllShows = (showId) => {
+const getAllShows = () => {
     return axios.get('shows/.json')
 };
 

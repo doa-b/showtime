@@ -1,14 +1,10 @@
 import React, {Component} from 'react';
+import {compose} from "redux";
+import {withRouter} from 'react-router-dom'
 
 import classes from './Schedule.module.css'
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
-import Block from '../../components/show/Block/Block';
-import Part from '../../components/show/Block/Part/Part';
-import {calculateDuration} from "../../shared/utility";
-import PanToolIcon from '@material-ui/icons/PanTool';
-import ScenesList from '../Scenes/ScenesList'
-import PartsList from '../Parts/PartsList';
 import BlocksList from "../Blocks/BlocksList";
 
 /**
@@ -18,10 +14,6 @@ class Schedule extends Component {
 
     // TODO maybe we need to add an updated flag to show reducer to let schedule auto re-render.
     //  Or else we use the loading flag
-
-    constructor(props) {
-        super(props)
-    }
 
     componentDidMount() {
         this.props.onFetch('-Lrst6TmmyYrkouGmiac')
@@ -90,65 +82,23 @@ class Schedule extends Component {
 
     };
 
-    expandOrCollapseParts = () => {
-
-    };
-
 // todo Remove duration from block and part and database. It is calculated on the fly
-    // Todo remove packege react-drag-listview
+
     render() {
         let total = <p>Loading...</p>;
 
 
         let blocksList = <p>Loading...</p>;
 
-        if (this.props.blocks.length>1 && this.props.parts && this.props.scenes) {
+        if (this.props.blocks.length>0 && this.props.parts && this.props.scenes) {
             total =
                 <div >
                     <BlocksList duration={20}
                     parentId={this.props.currentShow}/>
                 </div>
-
         }
 
-        if (this.props.blocks.length>1 && this.props.parts && this.props.scenes) {
-            let startTimeCounter = 0;
-            blocksList = this.props.blocks.map((block) => {
-                const parts = this.props.parts.filter(aPart => aPart.BlockId === block.id);
-                return (
-                    <div key={block.id}>
-                        <div className={classes.Block}>
-                            <Block
-                                startTime={startTimeCounter}
-                                // duration={calculateDuration(parts)}
-                                blockData={block}/>
-                            {parts.map((part) => {
-                                console.log(part);
-                                const scenes=this.props.scenes;
-                                return (
-                                    <div className={classes.Wrapper}>
-                                        <span className={classes.Spacer}></span>
-                                        <PanToolIcon/>
-                                        <div className={classes.Inner}>
-                                            <Part key={part.id}
-                                                  startTime={startTimeCounter += part.duration}
-                                                  partData={part}/>
-                                            <ScenesList parentId={part.id}
-                                                        startTime={startTimeCounter}/>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </div>
-                );
-            })
-        }
 
-        if (this.props.scenes.length > 1) {
-
-        }
-// todo put part and scene here, not as child of eachother. Else we cannot calculate start times with 3 nested maps
 
         return (
             <>
@@ -169,8 +119,6 @@ class Schedule extends Component {
                 <button onClick={this.loadShowDataHandler}>
                     Fetch all showdata
                 </button>
-
-                {/*{blocksList}*/}
                 {total}
             </>
         )
@@ -194,4 +142,7 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Schedule)
+export default compose(
+    withRouter,
+    connect(mapStateToProps, mapDispatchToProps))
+    (Schedule)

@@ -7,15 +7,17 @@
     "@material-ui/icons": "^4.5.1",
     "array-move": "^2.2.0",
     "axios": "^0.19.0",
+    "formik": "^2.0.3",
     "react": "^16.10.2",
+    "react-color": "^2.17.3",
     "react-dom": "^16.10.2",
-    "react-drag-listview": "^0.1.6",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "react-sortable-hoc": "^1.10.1",
     "redux": "^4.0.4",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "yup": "^0.27.0"
   },
   "scripts": {
     "start": "react-scripts start",
