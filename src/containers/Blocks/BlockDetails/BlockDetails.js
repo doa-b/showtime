@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 import {TextField, Button} from "@material-ui/core";
 import {connect} from 'react-redux'
-import {updateObject} from '../../../shared/utility'
+import {updateObject, top100Films} from '../../../shared/utility'
 import {HuePicker} from 'react-color'
 import Switch from "@material-ui/core/Switch";
+import Chip from '@material-ui/core/Chip'
 import * as actions from "../../../store/actions";
 import {update} from "../../../store/actions";
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import Avatar from "@material-ui/core/Avatar";
 
 /**
  * Created by Doa on 30-10-2019.
@@ -18,7 +22,8 @@ class BlockDetails extends Component {
         order: this.props.blocks.length,
         description: '',
         color: '#0017ff',
-        textColorBlack: false
+        textColorBlack: false,
+        team: [this.props.users[0]]
     };
 
     componentDidMount() {
@@ -41,8 +46,14 @@ class BlockDetails extends Component {
         }
     }
 
-    inputChangedHandler = (event) => {
+    inputChangedHandler = (event, value) => {
+        console.log(value)
         console.log(this.state);
+        console.log(event);
+        console.log(event.target)
+        if (value) {
+            this.setState({team: value})
+        }
         this.setState({[event.target.id]: event.target.value})
 
     };
@@ -65,10 +76,14 @@ class BlockDetails extends Component {
             return {textColorBlack: !prevState.textColorBlack};
         });
     };
-
+// TODO introduce full name, this makes searching more easy. Replace type with Role
 
     render() {
         const textColor = (this.state.textColorBlack) ? '#000' : '#fff';
+        const filterOptions = createFilterOptions({
+            ignoreCase: 'true',
+            stringify: option => option.firstName,
+        });
 
         return (
             <div>
@@ -103,6 +118,44 @@ class BlockDetails extends Component {
                         rows={3}
                         margin='normal'
                         variant='outlined'/>
+                    <Autocomplete
+                        value={this.state.team}
+                        id='team'
+                        multiple
+                        onChange={this.inputChangedHandler}
+                        groupBy={option => option.groups}
+                        getOptionLabel={option => option.firstName}
+                        options={this.props.users.map(option => option)}
+                        defaultValue={[this.props.users[1]]}
+                        filterOptions={filterOptions}
+                        filterSelectedOptions
+                        renderTags={(value, {className, onDelete}) =>
+                            value.map((option, index) => (
+                                <Chip
+                                    key={index}
+                                    variant="outlined"
+                                    data-tag-index={index}
+                                    tabIndex={-1}
+                                    label={option.firstName}
+                                    avatar={<Avatar alt={option.firstName} src={option.imageUrl}/>}
+                                    className={className}
+                                    onDelete={onDelete}
+                                />
+                            ))
+                        }
+                        renderInput={params => (
+                            <TextField
+                                {...params}
+                                variant="filled"
+                                label="Team members"
+                                placeholder="name"
+                                margin="normal"
+                                fullWidth
+                            />
+                        )}
+                    />
+
+
                     <Button
                         type='submit'
                     >
@@ -118,6 +171,7 @@ const mapStateToProps = (state) => {
     return {
         showId: state.show.currentShow,
         blocks: state.show.blocks,
+        users: state.show.users,
     }
 };
 

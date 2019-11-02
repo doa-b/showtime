@@ -9,7 +9,6 @@ import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 
 import classes from './PartsList.module.css'
-import {compose} from "redux";
 
 
 const DragHandle = sortableHandle(() => <DragIndicatorIcon/>);
@@ -18,13 +17,13 @@ const SortableContainer = sortableContainer(({children}) => {
     return <div className={classes.Inner}>{children}</div>;
 });
 
-const SortableItem = sortableElement(({value, startTime, history}) =>
+const SortableItem = sortableElement(({value, startTime, clicked}) =>
     <Part
         children={<DragHandle/>}
         partData={value}
         startTime={startTime}
         parentId={value.id}
-        history={history}
+        clicked={clicked}
     />);
 
 class PartsList extends Component {
@@ -68,7 +67,7 @@ class PartsList extends Component {
                         index={index}
                         value={value}
                         startTime={startTimeCounter += value.duration}
-                        history={this.props.history}/>
+                       clicked={this.props.clicked}/>
 
                 ))}
             </SortableContainer>
@@ -92,6 +91,4 @@ const mapDispatchToProps = (dispatch) => {
 // todo alternative render method: https://github.com/clauderic/react-sortable-hoc/blob/master/examples/drag-handle.js
 // todo scroll down https://github.com/clauderic/react-sortable-hoc to see how to pass down props
 
-export default compose(
-    withRouter,
-    connect(mapStateToProps, mapDispatchToProps))(PartsList);
+export default connect(mapStateToProps, mapDispatchToProps)(PartsList);

@@ -40,14 +40,14 @@ class BlocksList extends Component {
         }
     }
 
-    SortableItem = sortableElement(({value, startTime, duration,}) =>
+    SortableItem = sortableElement(({value, startTime, duration}) =>
         <Block
             children={<DragHandle/>}
             blockData={value}
             startTime={startTime}
             duration={duration}
             parentId={value.id}
-            history={this.props.history}
+            clicked={this.props.clicked}
         />);
 
     onSortEnd = ({oldIndex, newIndex}) => {
@@ -78,7 +78,7 @@ class BlocksList extends Component {
                     })}
                 </SortableContainer>
                 <Button
-                    component={Link} to={"/block/details"}
+                    onClick={() => this.props.clicked(null, 'block/details', this.props.showId)}
                     variant="contained"
                     color="primary"
                     startIcon={<AddIcon/>}
@@ -110,6 +110,4 @@ const mapDispatchToProps = (dispatch) => {
 // todo alternative render method: https://github.com/clauderic/react-sortable-hoc/blob/master/examples/drag-handle.js
 // todo scroll down https://github.com/clauderic/react-sortable-hoc to see how to pass down props
 
-export default compose(
-    withRouter,
-    connect(mapStateToProps, mapDispatchToProps))(BlocksList);
+export default connect(mapStateToProps, mapDispatchToProps)(BlocksList);

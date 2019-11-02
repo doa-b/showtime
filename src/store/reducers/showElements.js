@@ -7,6 +7,151 @@ const initialState = {
     blocks: [],
     parts: [],
     scenes: [],
+    users: [
+        {
+        firstName: 'Robin',
+        LastName: 'Schenke',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: 'executive',
+        groups: 'Presentor',
+        imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+    },
+        {
+            firstName: 'Jeroen',
+            LastName: 'Schenke',
+            Phone: '0612345678',
+            country: 'Netherlands',
+            type: 'executive',
+            groups: 'Presentor',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
+        {
+            firstName: 'Eve',
+            LastName: '',
+            Phone: '0612345678',
+            country: 'Switserland',
+            type: 'executive',
+            groups: 'Presentor',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
+        {
+            firstName: 'Bernd',
+            LastName: '',
+            Phone: '0612345678',
+            country: 'Germany',
+            type: 'executive',
+            groups: 'Presentor',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
+        {
+            firstName: 'Bianca',
+            LastName: '',
+            Phone: '0612345678',
+            country: 'Germany',
+            type: 'executive',
+            groups: 'Hairdresser',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
+        {
+            firstName: 'Antonio',
+            LastName: '',
+            Phone: '0612345678',
+            country: 'Germany',
+            type: 'executive',
+            groups: 'Hairdresser',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
+        {
+            firstName: 'Carmen',
+            LastName: '',
+            Phone: '0612345678',
+            country: 'Germany',
+            type: 'executive',
+            groups: 'Hairdresser',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
+        {
+            firstName: 'Saskia',
+            LastName: 'Bolk',
+            Phone: '0612345678',
+            country: 'Netherlands',
+            type: 'executive',
+            groups: 'Hairdresser',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
+        {
+            firstName: 'Arno',
+            LastName: 'Doppen',
+            Phone: '0612345678',
+            country: 'Netherlands',
+            type: 'executive',
+            groups: 'Hairdresser',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
+        {
+            firstName: 'Eline',
+            LastName: 'de Hond',
+            Phone: '0612345678',
+            country: 'Netherlands',
+            type: 'executive',
+            groups: 'Hairdresser',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
+        {
+            firstName: 'Tessa',
+            LastName: '',
+            Phone: '0612345678',
+            country: 'Netherlands',
+            type: 'executive',
+            groups: 'Model',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
+        {
+            firstName: 'Jil',
+            LastName: '',
+            Phone: '0612345678',
+            country: 'Netherlands',
+            type: 'executive',
+            groups: 'Model',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
+        {
+            firstName: 'Doa',
+            LastName: 'Bonifacio',
+            Phone: '0612345678',
+            country: 'Netherlands',
+            type: 'administrator',
+            groups: 'dj',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
+        {
+            firstName: 'Bob',
+            LastName: '',
+            Phone: '0612345678',
+            country: 'Netherlands',
+            type: 'executive',
+            groups: 'Technical Lead',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
+        {
+            firstName: 'Mac',
+            LastName: 'Guyver',
+            Phone: '0612345678',
+            country: 'Netherlands',
+            type: 'executive',
+            groups: 'Engineer',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
+        {
+            firstName: 'John',
+            LastName: 'Doa',
+            Phone: '0612345678',
+            country: 'Netherlands',
+            type: 'executive',
+            groups: 'Engineer',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },],
     error: null,
     loading: false,
     currentShow: '-Lrst6TmmyYrkouGmiac'

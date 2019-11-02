@@ -82,6 +82,25 @@ class Schedule extends Component {
 
     };
 
+    showDetailsHandler = (elementId, pathName, orderNumber, parentId) => {
+        if (elementId) {
+            this.props.history.push({
+                pathname: pathName,
+                state: {
+                    id: elementId
+                }
+            })
+        } else {
+            this.props.history.push({
+                pathname: pathName,
+                state: {
+                    parentId: parentId
+                }
+            })
+        }
+    };
+
+
 // todo Remove duration from block and part and database. It is calculated on the fly
 
     render() {
@@ -93,8 +112,10 @@ class Schedule extends Component {
         if (this.props.blocks.length>0 && this.props.parts && this.props.scenes) {
             total =
                 <div >
-                    <BlocksList duration={20}
-                    parentId={this.props.currentShow}/>
+                    <BlocksList
+                    parentId={this.props.currentShow}
+                    clicked={this.showDetailsHandler}
+                    />
                 </div>
         }
 

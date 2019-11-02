@@ -51,7 +51,8 @@ class Part extends Component {
                 </IconButton>
                 <ScenesList
                     parentId={this.props.partData.id}
-                    startTime={startTime}/>
+                    startTime={startTime}
+                    clicked={this.props.clicked}/>
             </div>
             arrow = <KeyboardArrowDownIcon className={classes.Arrow}
                                            onClick={this.toggleVisibilityHandler}/>
@@ -63,7 +64,7 @@ class Part extends Component {
                     {this.props.children}
                     <StartTime startTime={startTime}/>
                     <Duration duration={this.props.partData.duration}/>
-                    <div onClick={this.showDetailsHandler}>{this.props.partData.title}</div>
+                    <div onClick={() => this.props.clicked(this.props.partData.id, 'part/details')}>{this.props.partData.title}</div>
                     {arrow}
                 </div>
                 {scenes}
