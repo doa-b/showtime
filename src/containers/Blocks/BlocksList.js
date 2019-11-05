@@ -57,7 +57,12 @@ class BlocksList extends Component {
     };
 
     render() {
+
         let startTimeCounter = 0;
+        if (this.props.showRealTime) {
+            startTimeCounter = (this.props.showStartDateTime < this.props.currentTime)
+                ? this.props.currentTime : this.props.showStartDateTime;
+        }
         let duration = 0;
         return (
             <div className={classes.BlocksList}>
@@ -73,7 +78,6 @@ class BlocksList extends Component {
                                 duration={duration}
                                 startTime={startTimeCounter += duration}
                             />
-
                         )
                     })}
                 </SortableContainer>
@@ -85,8 +89,6 @@ class BlocksList extends Component {
                 >
                     Add Block
                 </Button>
-
-
             </div>
         )
         // return <this.SortableList items={this.state.items} onSortEnd={this.onSortEnd} useDragHandle/>;
@@ -97,7 +99,11 @@ const mapStateToProps = (state) => {
     return {
         showId: state.show.currentShow,
         blocks: state.show.blocks,
-        parts: state.show.parts
+        parts: state.show.parts,
+        showRealTime: state.show.showRealTime,
+        currentTime: state.show.currentTime,
+        showStartDateTime: state.show.showStartDateTime
+
     }
 };
 

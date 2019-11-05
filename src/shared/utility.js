@@ -41,6 +41,34 @@ export const calculateDuration = (parts) => {
     return duration
 };
 
+export const msToDate = (miliseconds) => {
+    const date = new Date(miliseconds);
+    return date.toDateString();
+};
+
+export const msToTime = (miliseconds, withSeconds = true) => {
+    var milliseconds = parseInt((miliseconds % 1000) / 100),
+        seconds = Math.floor((miliseconds / 1000) % 60),
+        minutes = Math.floor((miliseconds / (1000 * 60)) % 60),
+        hours = Math.floor((miliseconds / (1000 * 60 * 60)) % 24);
+
+    hours = (hours < 10) ? "0" + hours : hours;
+    minutes = (minutes < 10) ? "0" + minutes : minutes;
+    seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+    if (withSeconds) {
+        return hours + ":" + minutes + ":" + seconds
+    }
+    return hours + ":" + minutes;
+};
+
+export const getCurrentUTCinMs  = () => {
+        var currentDate = new Date();
+        return currentDate.getTime() - currentDate.getTimezoneOffset() * 60000;
+};
+
+
+
 export const top100Films = [
     { id: 'ewrqwersdfewrq', avatar: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg', title: 'The Shawshank Redemption', year: 1994 },
     { id: 'ewrqwersdfewrq', avatar: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg',title: 'The Godfather', year: 1972 },

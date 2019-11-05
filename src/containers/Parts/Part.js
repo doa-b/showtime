@@ -8,6 +8,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
+import Time from "../../components/Time/Time";
 
 /**
  * Created by Doa on 23-10-2019.
@@ -62,8 +63,8 @@ class Part extends Component {
             <div className={classes.Wrapper}>
                 <div className={classes.Part}>
                     {this.props.children}
-                    <StartTime startTime={startTime}/>
-                    <Duration duration={this.props.partData.duration}/>
+                    <Time startTime={startTime}
+                          duration={this.props.partData.duration}/>
                     <div onClick={() => this.props.clicked(this.props.partData.id, 'part/details')}>{this.props.partData.title}</div>
                     {arrow}
                 </div>

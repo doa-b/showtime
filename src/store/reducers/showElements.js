@@ -1,5 +1,6 @@
 import * as actionTypes from '../actions/actionTypes'
-import { updateObject, convertObjectsAndSortByKey } from '../../shared/utility';
+import {updateObject, convertObjectsAndSortByKey, getCurrentUTCinMs} from '../../shared/utility';
+import {update} from "../actions";
 
 
 const initialState = {
@@ -9,14 +10,14 @@ const initialState = {
     scenes: [],
     users: [
         {
-        firstName: 'Robin',
-        LastName: 'Schenke',
-        Phone: '0612345678',
-        country: 'Netherlands',
-        type: 'executive',
-        groups: 'Presentor',
-        imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
-    },
+            firstName: 'Robin',
+            LastName: 'Schenke',
+            Phone: '0612345678',
+            country: 'Netherlands',
+            type: 'executive',
+            groups: 'Presentor',
+            imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        },
         {
             firstName: 'Jeroen',
             LastName: 'Schenke',
@@ -154,7 +155,13 @@ const initialState = {
         },],
     error: null,
     loading: false,
-    currentShow: '-Lrst6TmmyYrkouGmiac'
+    currentShow: '-Lrst6TmmyYrkouGmiac',
+    showName: 'Fall Trend Show',
+    showStartDateTime: getCurrentUTCinMs() + 30000,
+    runningPartDuration: 0,
+    currentTime: 0,
+    showSeconds: false,
+    showRealTime: true
 };
 
 const savedShowElement = (state, action) => {
@@ -174,10 +181,14 @@ const fetchedAllShowData = (state, action) => {
         error: null,
         loading: false
     };
+    return updateObject(state, newState );
+};
 
-
-
-   return updateObject(state, newState );
+const updateClocks = (state) => {
+    return updateObject(state, {
+        currentTime: state.currentTime + 1000,
+        runningPartDuration: state.runningPartDuration + 1000
+    });
 };
 
 const reducer = (state = initialState, action) => {
@@ -196,6 +207,15 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.SHOW_FETCH_ALL_DATA_SUCCESS:
             return fetchedAllShowData(state, action);
+
+        case actionTypes.SHOW_INCREMENT_CLOCK:
+            return updateClocks(state, action);
+
+        case actionTypes.SHOW_INITIATE_CLOCK:
+            return updateObject(state, {currentTime: getCurrentUTCinMs()});
+
+        case actionTypes.SHOW_TOGGLE_SHOW_SECONDS:
+            return updateObject(state, {showSeconds: !state.showSeconds});
 
         default:
             return state

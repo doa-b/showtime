@@ -6,6 +6,7 @@ import classes from './Schedule.module.css'
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import BlocksList from "../Blocks/BlocksList";
+import {msToDate, msToTime} from "../../shared/utility";
 
 /**
  * Created by Doa on 23-10-2019.
@@ -16,7 +17,8 @@ class Schedule extends Component {
     //  Or else we use the loading flag
 
     componentDidMount() {
-        this.props.onFetch('-Lrst6TmmyYrkouGmiac')
+        this.props.onFetch('-Lrst6TmmyYrkouGmiac');
+        this.props.onStartClock();
     }
 
     saveDummyShowHandler = () => {
@@ -119,11 +121,12 @@ class Schedule extends Component {
                 </div>
         }
 
-
-
         return (
             <>
-                <h1>Schedule</h1>
+                <h1>{this.props.showName}</h1>
+                <h3>{msToDate(this.props.showStartDateTime)}</h3>
+                <p>Scheduled Show Start Time {msToTime(this.props.showStartDateTime)}</p>
+                <p>Current Time {msToTime(this.props.currentTime)}</p>
                 <button onClick={this.saveDummyShowHandler}>
                     Save a Dummy Show to Firebase
                 </button>
@@ -141,7 +144,9 @@ class Schedule extends Component {
                     Fetch all showdata
                 </button>
                 {total}
+                <div></div>
             </>
+
         )
     }
 }
@@ -149,6 +154,10 @@ class Schedule extends Component {
 const mapStateToProps = (state) => {
     return {
         currentShow: state.show.currentShow,
+        showName: state.show.showName,
+        showStartDateTime: state.show.showStartDateTime,
+        runningPartDuration: state.show.runningPartDuration,
+        currentTime: state.show.currentTime,
         blocks: state.show.blocks,
         parts: state.show.parts,
         scenes: state.show.scenes,
@@ -159,7 +168,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onSave: (element, data) => dispatch(actions.save(element, data)),
-        onFetch: (showId) => dispatch(actions.fetch(showId))
+        onFetch: (showId) => dispatch(actions.fetch(showId)),
+        onStartClock: () => dispatch(actions.startClock())
     }
 };
 

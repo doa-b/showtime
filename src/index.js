@@ -12,12 +12,14 @@ import './index.css';
 import App from './App';
 import authReducer from './store/reducers/auth'
 import showElementsReducer from './store/reducers/showElements'
+import liveReducer from './store/reducers/live'
 
 axios.defaults.baseURL = 'https://showtime-201ca.firebaseio.com/';
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    show: showElementsReducer
+    show: showElementsReducer,
+    live: liveReducer
 });
 
 const composeEnhancers = (process.env.NODE_ENV ==='development') ?

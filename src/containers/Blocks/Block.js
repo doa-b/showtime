@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import StartTime from '../../components/StartTime/StartTime'
 import Duration from '../../components/Duration/Duration'
+import Time from '../../components/Time/Time'
 import PartsList from "../Parts/PartsList";
 
 import classes from './Block.module.css'
@@ -50,7 +51,7 @@ class Block extends Component {
                 <span className={classes.Spacer}></span>
                 <IconButton size="small" color="primary"
                             className={classes.button}
-                            onClick={()=> this.props.clicked(null, 'block/details', null, this.props.blockData.id)}
+                            onClick={() => this.props.clicked(null, 'block/details', null, this.props.blockData.id)}
                             aria-label="add">
                     <AddIcon/>
                 </IconButton>
@@ -71,8 +72,8 @@ class Block extends Component {
                          color: textColor
                      }}>
                     {this.props.children}
-                    <StartTime startTime={startTime}/>
-                    <Duration duration={this.props.duration}/>
+                    <Time startTime={startTime}
+                          duration={this.props.duration}/>
                     <div className={classes.Title}
                          onClick={() => this.props.clicked(this.props.blockData.id, 'block/details')}>
                         {this.props.blockData.title}</div>

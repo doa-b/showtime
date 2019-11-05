@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 
-import classes from './StartTime.module.css'
+import classes from './Time.module.css'
 import * as actions from "../../store/actions";
 import {msToTime} from "../../shared/utility";
 
@@ -9,18 +9,23 @@ import {msToTime} from "../../shared/utility";
  * Created by Doa on 24-10-2019.
  */
 const startTime = (props) => {
-    let time = msToTime(props.startTime, props.showSeconds);
+    let startTime = msToTime(props.startTime, props.showSeconds);
+    let duration = msToTime(props.duration, props.showSeconds)
     return (
+        <div className={classes.Time}>
         <div className={classes.StartTime} onClick={props.onClick}>
-            {time}
+            {startTime}
+        </div>
+            <div className={classes.Duration}>
+                {duration}
+            </div>
         </div>
     );
 };
 
 const mapStateToProps = (state) => {
     return {
-        showSeconds: state.show.showSeconds,
-        showRealTime: state.show.showRealTime
+        showSeconds: state.show.showSeconds
     }
 };
 

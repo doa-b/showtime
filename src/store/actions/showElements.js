@@ -51,6 +51,25 @@ export const fetchShowDataSuccess = (blocks, parts, scenes) => {
     }
 };
 
+export const initiateClock = () => {
+    return {
+        type: actionTypes.SHOW_INITIATE_CLOCK
+    };
+
+};
+
+export const addSecondToClock = () => {
+    return {
+        type: actionTypes.SHOW_INCREMENT_CLOCK,
+    }
+};
+
+export const toggleShowSeconds = () => {
+    return {
+        type: actionTypes.SHOW_TOGGLE_SHOW_SECONDS,
+    }
+};
+
 // Asynchronous actionCreators
 
 export const save = (elementName, data) => {
@@ -88,7 +107,7 @@ export const update = (id, data, elementName) => {
 export const fetch = () => {
     return (dispatch, getState) => {
         dispatch(showStart());
-        const showId=getState().show.currentShow;
+        const showId = getState().show.currentShow;
         console.log(showId);
         axios.all([getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then
         (axios.spread((blocks, parts, scenes) => {
@@ -116,6 +135,15 @@ export const updateOrder = (showId, data, elementName) => {
                 dispatch(showFail(error));
             })
     };
+};
+
+export const startClock = () => {
+    return dispatch => {
+        dispatch(initiateClock());
+        setInterval(() => {
+            dispatch(addSecondToClock());
+        }, 1000)
+    }
 };
 
 // Axios helper functions
@@ -156,7 +184,6 @@ const UpdateOrderFromElements = (showId, data, elementName) => {
     console.log(requestsArray);
     return requestsArray
 };
-
 
 const getAllShows = () => {
     return axios.get('shows/.json')

@@ -2,5 +2,7 @@ export {
     save,
     fetch,
     update,
-    updateOrder
+    updateOrder,
+    startClock,
+    toggleShowSeconds
 } from './showElements'
