@@ -18,8 +18,6 @@ const SortableContainer = sortableContainer(({children}) => {
 class ScenesList extends Component {
     constructor(props) {
         super(props);
-        console.log('the scene props');
-        console.log(props);
         this.state =
             {
                 items: this.props.scenes.filter(aScene => aScene.partId === this.props.parentId),
@@ -37,7 +35,6 @@ class ScenesList extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.items !== this.state.items) {
-            console.log('THE ORDER HAS CHANGED');
             this.props.onUpdate(this.props.showId, this.state.items, 'scenes');
         }
     }

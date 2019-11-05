@@ -7,9 +7,8 @@ import arrayMove from 'array-move';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
-
 import classes from './BlocksList.module.css';
-import {calculateDuration} from "../../shared/utility";
+
 
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
@@ -25,8 +24,6 @@ const SortableContainer = sortableContainer(({children}) => {
 class BlocksList extends Component {
     constructor(props) {
         super(props);
-        console.log('the block props');
-        console.log(props);
         this.state =
             {
                 items: this.props.blocks.filter(aBlock => aBlock.showId === this.props.parentId)
@@ -35,12 +32,11 @@ class BlocksList extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState !== this.state) {
-            console.log('THE ORDER HAS CHANGED');
             this.props.onUpdate(this.props.showId, this.state.items, 'blocks');
         }
     }
 
-    SortableItem = sortableElement(({value, startTime, duration}) =>
+    SortableItem = sortableElement(({value, startTime, duration, running}) =>
         <Block
             children={<DragHandle/>}
             blockData={value}
@@ -48,6 +44,7 @@ class BlocksList extends Component {
             duration={duration}
             parentId={value.id}
             clicked={this.props.clicked}
+            running={running}
         />);
 
     onSortEnd = ({oldIndex, newIndex}) => {
@@ -56,26 +53,41 @@ class BlocksList extends Component {
         }));
     };
 
+    calculateDuration = (parts, parentIndex) => {
+        let duration = 0;
+        parts.map((part, index) => {
+           if (parentIndex === this.props.currentBlockNumber) {
+               if (index > this.props.currentPartNumber) duration += part.duration;
+               if (index === this.props.currentPartNumber) duration += (part.duration - this.props.runningPartDuration);
+           } else
+               duration += part.duration
+        });
+        return duration;
+    };
+
     render() {
 
         let startTimeCounter = 0;
         if (this.props.showRealTime) {
-            startTimeCounter = (this.props.showStartDateTime < this.props.currentTime)
-                ? this.props.currentTime : this.props.showStartDateTime;
+            if (this.props.isLive) {
+                startTimeCounter = this.props.currentTime
+            } else if (this.props.showStartDateTime < this.props.currentTime)
+                startTimeCounter = this.props.showStartDateTime;
         }
         let duration = 0;
         return (
             <div className={classes.BlocksList}>
                 <SortableContainer onSortEnd={this.onSortEnd} useDragHandle>
                     {this.state.items.map((value, index) => {
-                        duration = calculateDuration(this.props.parts.filter(
-                            (part) => part.BlockId === value.id));
+                        duration = this.calculateDuration(this.props.parts.filter(
+                            (part) => part.BlockId === value.id), index);
                         return (
                             <this.SortableItem
                                 key={value.id}
                                 index={index}
                                 value={value}
                                 duration={duration}
+                                running={(index === this.props.currentBlockNumber)}
                                 startTime={startTimeCounter += duration}
                             />
                         )
@@ -85,8 +97,7 @@ class BlocksList extends Component {
                     onClick={() => this.props.clicked(null, 'block/details', this.props.showId)}
                     variant="contained"
                     color="primary"
-                    startIcon={<AddIcon/>}
-                >
+                    startIcon={<AddIcon/>}>
                     Add Block
                 </Button>
             </div>
@@ -102,7 +113,11 @@ const mapStateToProps = (state) => {
         parts: state.show.parts,
         showRealTime: state.show.showRealTime,
         currentTime: state.show.currentTime,
-        showStartDateTime: state.show.showStartDateTime
+        showStartDateTime: state.show.showStartDateTime,
+        runningPartDuration: state.show.runningPartDuration,
+        currentPartNumber: state.live.currentPartNumber,
+        currentBlockNumber: state.live.currentPartNumber,
+        isLive: state.live.isLive
 
     }
 };

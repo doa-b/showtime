@@ -40,6 +40,10 @@ class Part extends Component {
 
     render() {
         let startTime = this.props.startTime - this.props.partData.duration;
+        let duration=this.props.partData.duration;
+        if (this.props.runningTime) {
+            duration -= this.props.runningTime
+        }
         let scenes = null;
         let arrow = <KeyboardArrowLeftIcon className={classes.Arrow}
                                            onClick={this.toggleVisibilityHandler}/>;
@@ -64,7 +68,7 @@ class Part extends Component {
                 <div className={classes.Part}>
                     {this.props.children}
                     <Time startTime={startTime}
-                          duration={this.props.partData.duration}/>
+                          duration={duration}/>
                     <div onClick={() => this.props.clicked(this.props.partData.id, 'part/details')}>{this.props.partData.title}</div>
                     {arrow}
                 </div>

@@ -3,6 +3,7 @@ import {updateObject, convertObjectsAndSortByKey, getCurrentUTCinMs} from '../..
 import {update} from "../actions";
 
 
+
 const initialState = {
     shows: [],
     blocks: [],
@@ -184,11 +185,14 @@ const fetchedAllShowData = (state, action) => {
     return updateObject(state, newState );
 };
 
-const updateClocks = (state) => {
-    return updateObject(state, {
-        currentTime: state.currentTime + 1000,
-        runningPartDuration: state.runningPartDuration + 1000
-    });
+const decrementPartDuration = (state, action) => {
+    // let partsArray = state.parts;
+    // let updatedPart = updateObject(state.parts[0], {duration: state.parts[0].duration - 1000});
+    // partsArray[0] = updatedPart;
+    // console.log(updatedPart);
+    // return updateObject(state,{part: partsArray});
+    return state;
+
 };
 
 const reducer = (state = initialState, action) => {
@@ -209,13 +213,19 @@ const reducer = (state = initialState, action) => {
             return fetchedAllShowData(state, action);
 
         case actionTypes.SHOW_INCREMENT_CLOCK:
-            return updateClocks(state, action);
+            return updateObject(state, {currentTime: state.currentTime + 1000});
+
+        case actionTypes.SHOW_INCREMENT_RUNNING_PART_DURATION:
+            return updateObject(state, {runningPartDuration: state.runningPartDuration + 1000});
 
         case actionTypes.SHOW_INITIATE_CLOCK:
             return updateObject(state, {currentTime: getCurrentUTCinMs()});
 
         case actionTypes.SHOW_TOGGLE_SHOW_SECONDS:
             return updateObject(state, {showSeconds: !state.showSeconds});
+
+        case actionTypes.SHOW_DECREMENT_PART_DURATION:
+            return decrementPartDuration(state, action);
 
         default:
             return state

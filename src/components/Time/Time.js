@@ -10,12 +10,17 @@ import {msToTime} from "../../shared/utility";
  */
 const startTime = (props) => {
     let startTime = msToTime(props.startTime, props.showSeconds);
-    let duration = msToTime(props.duration, props.showSeconds)
+    let duration = msToTime(props.duration, props.showSeconds);
+    if (props.duration < 0) {
+        startTime = <span style={{color: "red"}}>Time is up!</span>;
+        duration = null;
+       props.pause()
+    }
     return (
         <div className={classes.Time}>
-        <div className={classes.StartTime} onClick={props.onClick}>
-            {startTime}
-        </div>
+            <div className={classes.StartTime} onClick={props.onClick}>
+                {startTime}
+            </div>
             <div className={classes.Duration}>
                 {duration}
             </div>
@@ -31,7 +36,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onClick: () => dispatch(actions.toggleShowSeconds())
+        onClick: () => dispatch(actions.toggleShowSeconds()),
+        pause: () => dispatch(actions.toggleIsPaused())
     }
 };
 

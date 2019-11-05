@@ -33,9 +33,8 @@ export const convertObjectsAndSortByKey = (object, orderKey) => {
 
 export const calculateDuration = (parts) => {
     let duration = 0;
-    parts.map((part) => (
-        duration += part.duration
-    ));
+    parts.map((part) => {
+        duration += part.duration});
     console.log(duration);
 
     return duration
@@ -171,3 +170,4 @@ export const top100Films = [
     { title: '3 Idiots', year: 2009 },
     { title: 'Monty Python and the Holy Grail', year: 1975 },
 ];
+

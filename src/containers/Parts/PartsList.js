@@ -10,27 +10,30 @@ import {connect} from "react-redux";
 
 import classes from './PartsList.module.css'
 
-
 const DragHandle = sortableHandle(() => <DragIndicatorIcon/>);
 
 const SortableContainer = sortableContainer(({children}) => {
     return <div className={classes.Inner}>{children}</div>;
 });
 
-const SortableItem = sortableElement(({value, startTime, clicked}) =>
+const SortableItem = sortableElement(({value, startTime, clicked, runningTime}) => {
+    let duration = value.duration;
+    if (value.status === 'running') {
+      //  TODO hier kun je nu dingen doen
+    }
+    return (
     <Part
         children={<DragHandle/>}
         partData={value}
         startTime={startTime}
         parentId={value.id}
+        runningTime={runningTime}
         clicked={clicked}
-    />);
+    />)})
 
 class PartsList extends Component {
     constructor(props) {
         super(props);
-        console.log('the parts props');
-        console.log(props);
         this.state =
             {
                 items: this.props.parts.filter(aPart => aPart.BlockId === this.props.parentId),
@@ -61,15 +64,36 @@ class PartsList extends Component {
         let startTimeCounter = this.props.startTime;
         return (
             <SortableContainer onSortEnd={this.onSortEnd} useDragHandle>
-                {this.state.items.map((value, index) => (
-                    <SortableItem
-                        key={value.id}
-                        index={index}
-                        value={value}
-                        startTime={startTimeCounter += value.duration}
-                       clicked={this.props.clicked}/>
-
-                ))}
+                {this.state.items.map((value, index) => {
+                    let item = (<SortableItem
+                            key={value.id}
+                            index={index}
+                            value={value}
+                            startTime={startTimeCounter += value.duration}
+                            clicked={this.props.clicked}/>
+                    );
+                    if (this.props.running) {
+                        if (index > this.props.currentPartNumber) {
+                            item = (<SortableItem
+                                    key={value.id}
+                                    index={index}
+                                    value={value}
+                                    startTime={startTimeCounter += value.duration}
+                                    clicked={this.props.clicked}/>
+                            )
+                        }
+                        if (index === this.props.currentPartNumber) {
+                            item = (<SortableItem
+                                    key={value.id}
+                                    index={index}
+                                    value={value}
+                                    startTime={startTimeCounter += value.duration}
+                                    runningTime={this.props.runningTime}
+                                    clicked={this.props.clicked}/>
+                            )
+                        }}
+                        return item
+                   })}
             </SortableContainer>
         )
     }
@@ -78,7 +102,9 @@ class PartsList extends Component {
 const mapStateToProps = (state) => {
     return {
         showId: state.show.currentShow,
-        parts: state.show.parts
+        parts: state.show.parts,
+        currentPartNumber: state.live.currentPartNumber,
+        runningTime: state.show.runningPartDuration
     }
 };
 

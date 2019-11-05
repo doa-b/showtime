@@ -8,6 +8,11 @@ import {connect} from "react-redux";
 import BlocksList from "../Blocks/BlocksList";
 import {msToDate, msToTime} from "../../shared/utility";
 
+import Fab from '@material-ui/core/Fab';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import SkipNextIcon from '@material-ui/icons/SkipNext';
+import PauseIcon from '@material-ui/icons/Pause';
+
 /**
  * Created by Doa on 23-10-2019.
  */
@@ -20,69 +25,6 @@ class Schedule extends Component {
         this.props.onFetch('-Lrst6TmmyYrkouGmiac');
         this.props.onStartClock();
     }
-
-    saveDummyShowHandler = () => {
-        const show = {
-            name: 'Trinity International Trend Day',
-            location: 'Beursgebouw Zwitserland',
-            date: '12-1-2019'
-        };
-        this.props.onSave('shows', show);
-    };
-
-    saveDummyBlocksHandler = () => {
-        for (let i = 1; i < 4; i++) {
-            let block = {
-                showId: this.props.currentShow,
-                order: i,
-                title: `this is Trinity block ${i}`,
-                starttime: 0,
-                duration: i * 10
-            };
-            this.props.onSave('blocks', block);
-        }
-        let block = {
-            showId: this.props.currentShow,
-            order: 0,
-            title: `this is Trinity block ${0}`,
-            starttime: 0,
-            duration: 5
-        };
-        this.props.onSave('blocks', block);
-
-    };
-    saveDummyScenesHandler = () => {
-        for (let i = 1; i < 4; i++) {
-            let scene = {
-                showId: this.props.currentShow,
-                partId: 1,
-                order: i,
-                title: `this is Scene ${i}`,
-                starttime: 0,
-                duration: 1
-            };
-            this.props.onSave('scenes', scene);
-        }
-    };
-
-    saveDummyPartsHandler = () => {
-        for (let i = 1; i < 4; i++) {
-            let part = {
-                showId: this.props.currentShow,
-                BlockId: 1,
-                order: i,
-                title: `this is part ${i}`,
-                starttime: 0,
-                duration: 1
-            };
-            this.props.onSave('parts', part);
-        }
-    };
-
-    loadShowDataHandler = (showId) => {
-        this.props.onFetch('-Lrst6TmmyYrkouGmiac')
-
-    };
 
     showDetailsHandler = (elementId, pathName, orderNumber, parentId) => {
         if (elementId) {
@@ -102,21 +44,56 @@ class Schedule extends Component {
         }
     };
 
+    saveDummyPartsHandler = () => {
+        for (let i = 1; i < 4; i++) {
+            let part = {
+                showId: this.props.currentShow,
+                BlockId: '-Lrst8nwNMu-7ZRjiDVp',
+                order: i,
+                title: `Block 3: this is part ${i}`,
+                starttime: 0,
+                duration: 60000
+            };
+            this.props.onSave('parts', part);
+        }
+    };
 
-// todo Remove duration from block and part and database. It is calculated on the fly
+
+// todo Remove duration from block in database. It is calculated on the fly
 
     render() {
         let total = <p>Loading...</p>;
 
+        let liveControls = (
+                <Fab variant="extended" aria-label="start"
+                     onClick={this.props.onStartTheShow}className={classes.fab}>
+                    Start The Show!
+                </Fab>
+           );
+        if (this.props.isLive) {
+            let playPause =  (this.props.isPaused)?
+                <PlayArrowIcon fontSize='large'/> : <PauseIcon fontSize='large'/>
 
-        let blocksList = <p>Loading...</p>;
+            liveControls = (
+                <>
+                    <Fab color='primary' aria-label='play'
+                    onClick={this.props.onTogglePause}>
+                        {playPause}
+                    </Fab>
+                    <Fab color='primary' aria-label='play'
+                    onClick={this.props.onSetNextPart}>
+                        <SkipNextIcon fontSize='large'/>
+                    </Fab>
+                </>
+            )
+        }
 
-        if (this.props.blocks.length>0 && this.props.parts && this.props.scenes) {
+        if (this.props.blocks.length > 0 && this.props.parts && this.props.scenes) {
             total =
-                <div >
+                <div>
                     <BlocksList
-                    parentId={this.props.currentShow}
-                    clicked={this.showDetailsHandler}
+                        parentId={this.props.currentShow}
+                        clicked={this.showDetailsHandler}
                     />
                 </div>
         }
@@ -124,29 +101,16 @@ class Schedule extends Component {
         return (
             <>
                 <h1>{this.props.showName}</h1>
+                <button onClick={this.saveDummyPartsHandler}>
+                    Add Some Parts
+                </button>
                 <h3>{msToDate(this.props.showStartDateTime)}</h3>
                 <p>Scheduled Show Start Time {msToTime(this.props.showStartDateTime)}</p>
                 <p>Current Time {msToTime(this.props.currentTime)}</p>
-                <button onClick={this.saveDummyShowHandler}>
-                    Save a Dummy Show to Firebase
-                </button>
-                <button onClick={this.saveDummyBlocksHandler}>
-                    Save Dummy Blocks to Firebase
-                </button>
-                <button onClick={this.saveDummyPartsHandler}>
-                    Save Dummy Parts to Firebase
-                </button>
-                <button onClick={this.saveDummyScenesHandler}>
-                    Save Dummy Scenes to Firebase
-                </button>
-
-                <button onClick={this.loadShowDataHandler}>
-                    Fetch all showdata
-                </button>
+                {liveControls}
                 {total}
                 <div></div>
             </>
-
         )
     }
 }
@@ -161,7 +125,9 @@ const mapStateToProps = (state) => {
         blocks: state.show.blocks,
         parts: state.show.parts,
         scenes: state.show.scenes,
-        loading: state.show.loading
+        loading: state.show.loading,
+        isLive: state.live.isLive,
+        isPaused: state.live.isPaused
     }
 };
 
@@ -169,11 +135,14 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onSave: (element, data) => dispatch(actions.save(element, data)),
         onFetch: (showId) => dispatch(actions.fetch(showId)),
-        onStartClock: () => dispatch(actions.startClock())
+        onStartClock: () => dispatch(actions.startClock()),
+        onStartTheShow: () => dispatch(actions.startTheShow()),
+        onTogglePause: () => dispatch(actions.toggleIsPaused()),
+        onSetNextPart: () => dispatch(actions.setNextPart())
     }
 };
 
 export default compose(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps))
-    (Schedule)
+(Schedule)

@@ -21,7 +21,6 @@ class Block extends Component {
     };
 
     toggleVisibilityHandler = () => {
-        console.log('çlicked');
         this.setState((prevState) => {
             return {showChildren: !prevState.showChildren};
         });
@@ -39,8 +38,6 @@ class Block extends Component {
     };
 
     render() {
-        console.log('block ' + this.props.blockData.id);
-        console.log(this.props)
         let startTime = this.props.startTime - this.props.duration;
         let textColor = (this.props.blockData.textColorBlack) ? '#000' : '#fff';
         let parts = null;
@@ -57,7 +54,8 @@ class Block extends Component {
                 </IconButton>
                 <PartsList startTime={startTime}
                            parentId={this.props.blockData.id}
-                           clicked={this.props.clicked}/>
+                           clicked={this.props.clicked}
+                            running={this.props.running}/>
             </div>
             arrow = <KeyboardArrowDownIcon onClick={this.toggleVisibilityHandler}/>
         }
@@ -65,7 +63,6 @@ class Block extends Component {
 
         return (
             <div className={classes.Wrapper}>
-
                 <div className={classes.Block}
                      style={{
                          background: this.props.blockData.color,
@@ -76,7 +73,8 @@ class Block extends Component {
                           duration={this.props.duration}/>
                     <div className={classes.Title}
                          onClick={() => this.props.clicked(this.props.blockData.id, 'block/details')}>
-                        {this.props.blockData.title}</div>
+                        {this.props.blockData.title}
+                        {(this.props.running)? '  running' : null}</div>
                     <div className={classes.Controls}>
                         {arrow}
                     </div>

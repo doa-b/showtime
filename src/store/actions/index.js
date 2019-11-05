@@ -6,3 +6,9 @@ export {
     startClock,
     toggleShowSeconds
 } from './showElements'
+
+export {
+    startTheShow,
+    setNextPart,
+    toggleIsPaused
+} from './live'

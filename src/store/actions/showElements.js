@@ -60,13 +60,27 @@ export const initiateClock = () => {
 
 export const addSecondToClock = () => {
     return {
-        type: actionTypes.SHOW_INCREMENT_CLOCK,
+        type: actionTypes.SHOW_INCREMENT_CLOCK
     }
 };
 
+export const addSecondToRunningPartDuration = () => {
+        return {
+            type: actionTypes.SHOW_INCREMENT_RUNNING_PART_DURATION
+        }
+    }
+;
+
 export const toggleShowSeconds = () => {
     return {
-        type: actionTypes.SHOW_TOGGLE_SHOW_SECONDS,
+        type: actionTypes.SHOW_TOGGLE_SHOW_SECONDS
+    }
+};
+
+export const decrementPartDuration = (partNumber) => {
+    return {
+        type: actionTypes.SHOW_DECREMENT_PART_DURATION,
+        partNumber: partNumber
     }
 };
 
@@ -138,10 +152,16 @@ export const updateOrder = (showId, data, elementName) => {
 };
 
 export const startClock = () => {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch(initiateClock());
         setInterval(() => {
+            const isPlaying = !getState().live.isPaused;
+            const partNumber = getState().live.currentPartNumber;
             dispatch(addSecondToClock());
+            if (isPlaying) {
+                dispatch(addSecondToRunningPartDuration());
+                dispatch(decrementPartDuration(partNumber));
+            }
         }, 1000)
     }
 };
