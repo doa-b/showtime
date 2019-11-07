@@ -54,14 +54,9 @@ class BlocksList extends Component {
     };
 
     calculateDuration = (parts, parentIndex) => {
-        let duration = 0;
-        parts.map((part, index) => {
-           if (parentIndex === this.props.currentBlockNumber) {
-               if (index > this.props.currentPartNumber) duration += part.duration;
-               if (index === this.props.currentPartNumber) duration += (part.duration - this.props.runningPartDuration);
-           } else
-               duration += part.duration
-        });
+        let duration = (parentIndex === this.props.runningBlockNumber) ? -this.props.runningPartDuration : 0;
+        for (let i = this.props.runningPartNumber; i < parts.length; i++)
+            duration += parts[i].duration;
         return duration;
     };
 
@@ -71,26 +66,29 @@ class BlocksList extends Component {
         if (this.props.showRealTime) {
             if (this.props.isLive) {
                 startTimeCounter = this.props.currentTime
-            } else if (this.props.showStartDateTime < this.props.currentTime)
-                startTimeCounter = this.props.showStartDateTime;
+            } else startTimeCounter = (this.props.showStartDateTime > this.props.currentTime) ? this.props.showStartDateTime : this.props.currentTime;
+
         }
         let duration = 0;
         return (
             <div className={classes.BlocksList}>
                 <SortableContainer onSortEnd={this.onSortEnd} useDragHandle>
                     {this.state.items.map((value, index) => {
-                        duration = this.calculateDuration(this.props.parts.filter(
-                            (part) => part.BlockId === value.id), index);
-                        return (
-                            <this.SortableItem
-                                key={value.id}
-                                index={index}
-                                value={value}
-                                duration={duration}
-                                running={(index === this.props.currentBlockNumber)}
-                                startTime={startTimeCounter += duration}
-                            />
-                        )
+                        if (index >= this.props.runningBlockNumber) {
+                            duration = this.calculateDuration(this.props.parts.filter(
+                                (part) => part.BlockId === value.id), index);
+                            return (
+                                <this.SortableItem
+                                    key={value.id}
+                                    index={index}
+                                    value={value}
+                                    duration={duration}
+                                    running={(index === this.props.runningBlockNumber)}
+                                    startTime={startTimeCounter += duration}
+                                />
+                            )
+                        }
+                        return null;
                     })}
                 </SortableContainer>
                 <Button
@@ -102,7 +100,6 @@ class BlocksList extends Component {
                 </Button>
             </div>
         )
-        // return <this.SortableList items={this.state.items} onSortEnd={this.onSortEnd} useDragHandle/>;
     }
 }
 
@@ -114,9 +111,9 @@ const mapStateToProps = (state) => {
         showRealTime: state.show.showRealTime,
         currentTime: state.show.currentTime,
         showStartDateTime: state.show.showStartDateTime,
-        runningPartDuration: state.show.runningPartDuration,
-        currentPartNumber: state.live.currentPartNumber,
-        currentBlockNumber: state.live.currentPartNumber,
+        runningPartDuration: state.live.runningPartDuration,
+        runningPartNumber: state.live.runningPartNumber,
+        runningBlockNumber: state.live.runningBlockNumber,
         isLive: state.live.isLive
 
     }
@@ -132,3 +129,4 @@ const mapDispatchToProps = (dispatch) => {
 // todo scroll down https://github.com/clauderic/react-sortable-hoc to see how to pass down props
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlocksList);
+

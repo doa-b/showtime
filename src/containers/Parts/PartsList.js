@@ -65,15 +65,16 @@ class PartsList extends Component {
         return (
             <SortableContainer onSortEnd={this.onSortEnd} useDragHandle>
                 {this.state.items.map((value, index) => {
-                    let item = (<SortableItem
+                    let item = null;
+                    if (!this.props.running) {
+                    item = (<SortableItem
                             key={value.id}
                             index={index}
                             value={value}
                             startTime={startTimeCounter += value.duration}
                             clicked={this.props.clicked}/>
-                    );
-                    if (this.props.running) {
-                        if (index > this.props.currentPartNumber) {
+                    )} else {
+                        if (index > this.props.runningPartNumber) {
                             item = (<SortableItem
                                     key={value.id}
                                     index={index}
@@ -82,7 +83,7 @@ class PartsList extends Component {
                                     clicked={this.props.clicked}/>
                             )
                         }
-                        if (index === this.props.currentPartNumber) {
+                        if (index === this.props.runningPartNumber) {
                             item = (<SortableItem
                                     key={value.id}
                                     index={index}
@@ -103,8 +104,8 @@ const mapStateToProps = (state) => {
     return {
         showId: state.show.currentShow,
         parts: state.show.parts,
-        currentPartNumber: state.live.currentPartNumber,
-        runningTime: state.show.runningPartDuration
+        runningPartNumber: state.live.runningPartNumber,
+        runningTime: state.live.runningPartDuration
     }
 };
 
@@ -118,3 +119,4 @@ const mapDispatchToProps = (dispatch) => {
 // todo scroll down https://github.com/clauderic/react-sortable-hoc to see how to pass down props
 
 export default connect(mapStateToProps, mapDispatchToProps)(PartsList);
+

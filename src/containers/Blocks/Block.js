@@ -27,8 +27,6 @@ class Block extends Component {
     };
 
     showDetailsHandler = () => {
-
-        // TODO Check with BrowserRouter for this
         this.props.history.push({
             pathname: 'block/details',
             state: {

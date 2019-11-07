@@ -1,6 +1,7 @@
 import axios from 'axios'
 import * as actionTypes from './actionTypes';
 import {addSecondToClock, initiateClock} from "./showElements";
+import {LIVE_INCREMENT_RUNNING_PART_DURATION} from "./actionTypes";
 
 export const setIsLiveAndPlay = () => {
     return {
@@ -14,39 +15,58 @@ export const togglePaused = () => {
     }
 };
 
-export const setCurrentPartNumber = () => {
+export const changeCurrentPartNumber = (nextPart, nextBlock) => {
     return {
-        type: actionTypes.LIVE_CHANGE_CURRENT_PART_NUMBER
+        type: actionTypes.LIVE_CHANGE_CURRENT_PART_NUMBER,
+        nextPart: nextPart,
+        nextBlock: nextBlock
+    }
+};
+
+export const resetRunningPartDuration = () => {
+    return {
+        type: actionTypes.LIVE_RESET_RUNNING_PART_DURATION
+    }
+};
+
+export const incrementRunningPartDuration = () => {
+    console.log('INCREMENTING LIVE_INCREMENT_RUNNING_PART_DURATION');
+    return {
+        type: actionTypes.LIVE_INCREMENT_RUNNING_PART_DURATION
+    }
+};
+
+export const partEnd = () => {
+    return {
+        type: actionTypes.LIVE_END_PART
     }
 };
 
 // Asynchronous ActionCreators
 
 export const startTheShow = () => {
+    console.log('starting The show');
     return dispatch => {
         dispatch (setIsLiveAndPlay());
-    }
+    };
 };
 
-export const setNextPart = () => {
+export const setNextPart = (nextPart, nextBlock) => {
     return dispatch => {
-        dispatch (setCurrentPartNumber());
+        dispatch(changeCurrentPartNumber(nextPart, nextBlock));
     }
 };
 
 export const toggleIsPaused = () => {
+    console.log('toggling pause');
     return dispatch => {
         dispatch (togglePaused());
     }
 };
 
-export const startClock = () => {
-    return (dispatch, getState) => {
-        dispatch(initiateClock());
-        setInterval(() => {
-            const isPaused = getState().live.isPaused;
-
-            dispatch(addSecondToClock());
-        }, 1000)
+export const partHasEnded = () => {
+    console.log('Part has ended');
+    return dispatch => {
+        dispatch (partEnd());
     }
 };

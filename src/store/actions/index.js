@@ -10,5 +10,7 @@ export {
 export {
     startTheShow,
     setNextPart,
-    toggleIsPaused
+    toggleIsPaused,
+    incrementRunningPartDuration,
+    partHasEnded
 } from './live'

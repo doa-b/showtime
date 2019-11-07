@@ -9,6 +9,8 @@ import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import Time from "../../components/Time/Time";
+import * as actions from "../../store/actions";
+import {connect} from "react-redux";
 
 /**
  * Created by Doa on 23-10-2019.
@@ -43,6 +45,7 @@ class Part extends Component {
         let duration=this.props.partData.duration;
         if (this.props.runningTime) {
             duration -= this.props.runningTime
+            if (duration === 0 && !this.props.isPaused) {this.props.onPartEnd()}
         }
         let scenes = null;
         let arrow = <KeyboardArrowLeftIcon className={classes.Arrow}
@@ -78,4 +81,16 @@ class Part extends Component {
     }
 }
 
-export default Part;
+const mapStateToProps = (state) => {
+    return {
+        isPaused: state.live.isPaused
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onPartEnd: () => dispatch(actions.partHasEnded())
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Part);

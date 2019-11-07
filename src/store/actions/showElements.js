@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 import * as actionTypes from './actionTypes';
+import {incrementRunningPartDuration} from "./live";
 
 export const showStart = () => {
     return {
@@ -55,7 +56,6 @@ export const initiateClock = () => {
     return {
         type: actionTypes.SHOW_INITIATE_CLOCK
     };
-
 };
 
 export const addSecondToClock = () => {
@@ -156,11 +156,10 @@ export const startClock = () => {
         dispatch(initiateClock());
         setInterval(() => {
             const isPlaying = !getState().live.isPaused;
-            const partNumber = getState().live.currentPartNumber;
+            const partNumber = getState().live.runningPartNumber;
             dispatch(addSecondToClock());
             if (isPlaying) {
-                dispatch(addSecondToRunningPartDuration());
-                dispatch(decrementPartDuration(partNumber));
+                dispatch(incrementRunningPartDuration());
             }
         }, 1000)
     }

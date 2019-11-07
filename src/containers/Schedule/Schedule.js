@@ -45,17 +45,40 @@ class Schedule extends Component {
     };
 
     saveDummyPartsHandler = () => {
-        for (let i = 1; i < 4; i++) {
+        for (let i = 1; i < 2; i++) {
             let part = {
                 showId: this.props.currentShow,
-                BlockId: '-Lrst8nwNMu-7ZRjiDVp',
+                BlockId: '-Lrst8o1hZiIjJSePXFu',
                 order: i,
-                title: `Block 3: this is part ${i}`,
+                title: `Block 0: this is part ${i}`,
                 starttime: 0,
                 duration: 60000
             };
             this.props.onSave('parts', part);
         }
+    };
+
+    skipToNextPartHandler = () => {
+        console.log(this.props)
+        let nextPart = this.props.runningPart;
+        let nextBlock = this.props.runningBlock;
+        const runningBlockId = this.props.blocks[this.props.runningBlock].id;
+        const runningBlockPartsAmount =
+            this.props.parts.filter(aPart => aPart.BlockId === runningBlockId).length;
+        console.log(runningBlockPartsAmount);
+        console.log('running Part ' + this.props.runningPart);
+
+        if (this.props.runningPart + 1 < runningBlockPartsAmount) {
+            nextPart += 1
+        } else {
+            nextBlock += 1;
+            nextPart = 0;
+            console.log('NextPart: ' + nextPart);
+            console.log('NextBlock: ' + nextBlock);
+        }
+        if (nextBlock < this.props.blocks.length) {
+            this.props.onSetNextPart(nextPart, nextBlock)
+        } else this.props.onEndofShow();
     };
 
 
@@ -71,7 +94,9 @@ class Schedule extends Component {
                 </Fab>
            );
         if (this.props.isLive) {
-            let playPause =  (this.props.isPaused)?
+
+            //set play/pause icon to play or pause
+            let playPause = (this.props.isPaused)?
                 <PlayArrowIcon fontSize='large'/> : <PauseIcon fontSize='large'/>
 
             liveControls = (
@@ -81,7 +106,7 @@ class Schedule extends Component {
                         {playPause}
                     </Fab>
                     <Fab color='primary' aria-label='play'
-                    onClick={this.props.onSetNextPart}>
+                    onClick={this.skipToNextPartHandler}>
                         <SkipNextIcon fontSize='large'/>
                     </Fab>
                 </>
@@ -109,7 +134,6 @@ class Schedule extends Component {
                 <p>Current Time {msToTime(this.props.currentTime)}</p>
                 {liveControls}
                 {total}
-                <div></div>
             </>
         )
     }
@@ -127,7 +151,9 @@ const mapStateToProps = (state) => {
         scenes: state.show.scenes,
         loading: state.show.loading,
         isLive: state.live.isLive,
-        isPaused: state.live.isPaused
+        isPaused: state.live.isPaused,
+        runningPart: state.live.runningPartNumber,
+        runningBlock: state.live.runningBlockNumber
     }
 };
 
@@ -138,11 +164,10 @@ const mapDispatchToProps = (dispatch) => {
         onStartClock: () => dispatch(actions.startClock()),
         onStartTheShow: () => dispatch(actions.startTheShow()),
         onTogglePause: () => dispatch(actions.toggleIsPaused()),
-        onSetNextPart: () => dispatch(actions.setNextPart())
+        onSetNextPart: (nextPart, nextBlock) => dispatch(actions.setNextPart(nextPart, nextBlock))
     }
 };
 
 export default compose(
     withRouter,
-    connect(mapStateToProps, mapDispatchToProps))
-(Schedule)
+    connect(mapStateToProps, mapDispatchToProps))(Schedule)

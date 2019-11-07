@@ -161,7 +161,7 @@ const initialState = {
     showStartDateTime: getCurrentUTCinMs() + 30000,
     runningPartDuration: 0,
     currentTime: 0,
-    showSeconds: false,
+    showSeconds: true,
     showRealTime: true
 };
 
