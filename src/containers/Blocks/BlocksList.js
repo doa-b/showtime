@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link, withRouter} from 'react-router-dom'
 
 import Block from './Block'
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
@@ -12,8 +11,6 @@ import classes from './BlocksList.module.css';
 
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
-import {compose} from "redux";
-
 
 const DragHandle = sortableHandle(() => <DragIndicatorIcon/>);
 
@@ -54,8 +51,14 @@ class BlocksList extends Component {
     };
 
     calculateDuration = (parts, parentIndex) => {
-        let duration = (parentIndex === this.props.runningBlockNumber) ? -this.props.runningPartDuration : 0;
-        for (let i = this.props.runningPartNumber; i < parts.length; i++)
+        let duration = 0;
+        let i = 0;
+        if (parentIndex === this.props.runningBlockNumber) {
+            duration = -this.props.runningPartDuration;
+            i = this.props.runningPartNumber;
+        }
+
+        for (i; i < parts.length; i++)
             duration += parts[i].duration;
         return duration;
     };
@@ -83,7 +86,7 @@ class BlocksList extends Component {
                                     index={index}
                                     value={value}
                                     duration={duration}
-                                    running={(index === this.props.runningBlockNumber)}
+                                    running={(this.props.isLive && index === this.props.runningBlockNumber)}
                                     startTime={startTimeCounter += duration}
                                 />
                             )

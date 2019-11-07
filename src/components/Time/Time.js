@@ -8,8 +8,10 @@ import {msToTime} from "../../shared/utility";
 /**
  * Created by Doa on 24-10-2019.
  */
+// TODO replace startTime Display with Play Icon when this item is playing
 const startTime = (props) => {
     let startTime = msToTime(props.startTime, props.showSeconds);
+    if (props.live) startTime = 'LIVE';
     let duration = msToTime(props.duration, props.showSeconds);
     if (props.duration <= 0) {
         startTime = <span style={{color: "red"}}>Time is up!</span>;

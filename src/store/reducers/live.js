@@ -5,9 +5,10 @@ import {updateObject} from "../../shared/utility";
 const initialState = {
     isLive: false,
     isPaused: true,
-    runningPartNumber: 1,
+    runningPartNumber: 0,
     runningBlockNumber: 0,
-    runningPartDuration: 0
+    runningPartDuration: 0,
+    showHasFinished: false
 };
 
 const skipToNextPart = (state, action) => {
@@ -18,6 +19,18 @@ const skipToNextPart = (state, action) => {
             isPaused: false,
             runningPartDuration: 0
         });
+};
+
+const endOfShow = (state) => {
+    return updateObject(state, {
+            isLive: false,
+            isPaused: true,
+            runningPartNumber: 0,
+            runningBlockNumber: 0,
+            runningPartDuration: 0,
+            showHasFinished: true
+        }
+        )
 };
 
 const reducer = (state = initialState, action) => {
@@ -35,6 +48,8 @@ const reducer = (state = initialState, action) => {
             return updateObject(state, {runningPartDuration: state.runningPartDuration + 1000});
         case actionTypes.LIVE_END_PART:
             return updateObject(state, {isPaused: true});
+        case actionTypes.LIVE_END_OF_SHOW:
+            return endOfShow(state);
         default:
             return state
     }

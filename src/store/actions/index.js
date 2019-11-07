@@ -12,5 +12,6 @@ export {
     setNextPart,
     toggleIsPaused,
     incrementRunningPartDuration,
-    partHasEnded
+    partHasEnded,
+    showHasEnded
 } from './live'

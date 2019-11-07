@@ -79,7 +79,7 @@ class PartsList extends Component {
                                     key={value.id}
                                     index={index}
                                     value={value}
-                                    startTime={startTimeCounter += value.duration}
+                                    startTime={-this.props.runningTime + (startTimeCounter += value.duration)}
                                     clicked={this.props.clicked}/>
                             )
                         }
@@ -88,7 +88,7 @@ class PartsList extends Component {
                                     key={value.id}
                                     index={index}
                                     value={value}
-                                    startTime={startTimeCounter += value.duration}
+                                    startTime={-this.props.runningTime + (startTimeCounter += value.duration)}
                                     runningTime={this.props.runningTime}
                                     clicked={this.props.clicked}/>
                             )

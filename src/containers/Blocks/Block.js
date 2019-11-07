@@ -53,7 +53,7 @@ class Block extends Component {
                 <PartsList startTime={startTime}
                            parentId={this.props.blockData.id}
                            clicked={this.props.clicked}
-                            running={this.props.running}/>
+                           running={this.props.running}/>
             </div>
             arrow = <KeyboardArrowDownIcon onClick={this.toggleVisibilityHandler}/>
         }
@@ -68,11 +68,12 @@ class Block extends Component {
                      }}>
                     {this.props.children}
                     <Time startTime={startTime}
-                          duration={this.props.duration}/>
+                          duration={this.props.duration}
+                          live={this.props.running}/>
                     <div className={classes.Title}
                          onClick={() => this.props.clicked(this.props.blockData.id, 'block/details')}>
                         {this.props.blockData.title}
-                        {(this.props.running)? '  running' : null}</div>
+                        {(this.props.running) ? '  running' : null}</div>
                     <div className={classes.Controls}>
                         {arrow}
                     </div>

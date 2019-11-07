@@ -78,7 +78,7 @@ class Schedule extends Component {
         }
         if (nextBlock < this.props.blocks.length) {
             this.props.onSetNextPart(nextPart, nextBlock)
-        } else this.props.onEndofShow();
+        } else this.props.onEndOfShow();
     };
 
 
@@ -86,27 +86,28 @@ class Schedule extends Component {
 
     render() {
         let total = <p>Loading...</p>;
+        let body = <h2>Show has ended</h2>
 
         let liveControls = (
-                <Fab variant="extended" aria-label="start"
-                     onClick={this.props.onStartTheShow}className={classes.fab}>
-                    Start The Show!
-                </Fab>
-           );
+            <Fab variant="extended" aria-label="start"
+                 onClick={this.props.onStartTheShow} className={classes.fab}>
+                Start The Show!
+            </Fab>
+        );
         if (this.props.isLive) {
 
             //set play/pause icon to play or pause
-            let playPause = (this.props.isPaused)?
+            let playPause = (this.props.isPaused) ?
                 <PlayArrowIcon fontSize='large'/> : <PauseIcon fontSize='large'/>
 
             liveControls = (
                 <>
                     <Fab color='primary' aria-label='play'
-                    onClick={this.props.onTogglePause}>
+                         onClick={this.props.onTogglePause}>
                         {playPause}
                     </Fab>
                     <Fab color='primary' aria-label='play'
-                    onClick={this.skipToNextPartHandler}>
+                         onClick={this.skipToNextPartHandler}>
                         <SkipNextIcon fontSize='large'/>
                     </Fab>
                 </>
@@ -123,17 +124,25 @@ class Schedule extends Component {
                 </div>
         }
 
+        if (!this.props.showHasFinished) {
+            body = (
+                <>
+                    <h3>{msToDate(this.props.showStartDateTime)}</h3>
+                    <p>Scheduled Show Start Time {msToTime(this.props.showStartDateTime)}</p>
+                    <p>Current Time {msToTime(this.props.currentTime)}</p>
+                    {liveControls}
+                    {total}
+                </>
+            )
+        }
+
         return (
             <>
                 <h1>{this.props.showName}</h1>
                 <button onClick={this.saveDummyPartsHandler}>
                     Add Some Parts
                 </button>
-                <h3>{msToDate(this.props.showStartDateTime)}</h3>
-                <p>Scheduled Show Start Time {msToTime(this.props.showStartDateTime)}</p>
-                <p>Current Time {msToTime(this.props.currentTime)}</p>
-                {liveControls}
-                {total}
+                {body}
             </>
         )
     }
@@ -153,7 +162,8 @@ const mapStateToProps = (state) => {
         isLive: state.live.isLive,
         isPaused: state.live.isPaused,
         runningPart: state.live.runningPartNumber,
-        runningBlock: state.live.runningBlockNumber
+        runningBlock: state.live.runningBlockNumber,
+        showHasFinished: state.live.showHasFinished
     }
 };
 
@@ -164,7 +174,8 @@ const mapDispatchToProps = (dispatch) => {
         onStartClock: () => dispatch(actions.startClock()),
         onStartTheShow: () => dispatch(actions.startTheShow()),
         onTogglePause: () => dispatch(actions.toggleIsPaused()),
-        onSetNextPart: (nextPart, nextBlock) => dispatch(actions.setNextPart(nextPart, nextBlock))
+        onSetNextPart: (nextPart, nextBlock) => dispatch(actions.setNextPart(nextPart, nextBlock)),
+        onEndOfShow: () => dispatch(actions.showHasEnded())
     }
 };
 

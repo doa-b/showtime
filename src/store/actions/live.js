@@ -42,6 +42,12 @@ export const partEnd = () => {
     }
 };
 
+export const showEnd = () => {
+    return {
+        type: actionTypes.LIVE_END_OF_SHOW
+    }
+};
+
 // Asynchronous ActionCreators
 
 export const startTheShow = () => {
@@ -68,5 +74,11 @@ export const partHasEnded = () => {
     console.log('Part has ended');
     return dispatch => {
         dispatch (partEnd());
+    }
+};
+
+export const showHasEnded = () => {
+    return dispatch => {
+        dispatch (showEnd());
     }
 };
