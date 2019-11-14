@@ -73,7 +73,7 @@ const styles = theme => ({
 // );
 
 // const MyDrawer = withStyles(styles)(
-//     ({classes, variant, open, onClose, onItemClick, showSeconds, toggleShowSeconds}) => (
+//     ({classes, variant, open, onClose, onItemClick, displaySeconds, toggleShowSeconds}) => (
 //         <Drawer variant={variant} open={open} onClose={onClose}>
 //             {/*div to offset the drawer with the heighth of the Toolbar, when the variant is persistent*/}
 //             <div
@@ -90,9 +90,9 @@ const styles = theme => ({
 //                 <FormControlLabel
 //                     className={classes.checkBox}
 //                     control={<Checkbox
-//                         value={showSeconds}
+//                         value={displaySeconds}
 //                         onChange={toggleShowSeconds}
-//                         checked={showSeconds}/>}
+//                         checked={displaySeconds}/>}
 //                     label='Display Seconds'/>
 //                 <ListSubheader>
 //                    Navigation

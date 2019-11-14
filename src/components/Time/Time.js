@@ -10,9 +10,9 @@ import {msToTime} from "../../shared/utility";
  */
 // TODO replace startTime Display with Play Icon when this item is playing
 const startTime = (props) => {
-    let startTime = msToTime(props.startTime, props.showSeconds);
+    let startTime = msToTime(props.startTime, props.displaySeconds);
     if (props.live) startTime = 'LIVE';
-    let duration = msToTime(props.duration, props.showSeconds);
+    let duration = msToTime(props.duration, props.displaySeconds);
     if (props.duration <= 0) {
         startTime = <span style={{color: "red"}}>Time is up!</span>;
         duration = null;
@@ -31,7 +31,7 @@ const startTime = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        showSeconds: state.show.showSeconds
+        displaySeconds: state.show.displaySeconds
     }
 };
 

@@ -157,7 +157,7 @@ const initialState = {
     showName: 'Fall Trend Show',
     showStartDateTime: getCurrentUTCinMs() + 30000,
     currentTime: 0,
-    showSeconds: true,
+    displaySeconds: true,
     showRealTime: true,
     pageTitle: 'Schedule'
 };
@@ -206,7 +206,7 @@ const reducer = (state = initialState, action) => {
             return updateObject(state, {currentTime: getCurrentUTCinMs()});
 
         case actionTypes.SHOW_TOGGLE_SHOW_SECONDS:
-            return updateObject(state, {showSeconds: !state.showSeconds});
+            return updateObject(state, {displaySeconds: !state.displaySeconds});
 
         case actionTypes.SHOW_SET_PAGE_TITLE:
             return updateObject(state, {pageTitle: action.pageTitle});

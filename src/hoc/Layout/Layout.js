@@ -41,7 +41,7 @@ class Layout extends Component {
                     open={this.state.drawer}
                     onClose={this.toggleDrawer}
                     onItemClick={this.onItemClick}
-                    showSeconds={this.props.showSeconds}
+                    showSeconds={this.props.displaySeconds}
                     toggleShowSeconds={this.props.onToggle}
                 />
                 {this.props.children}
@@ -52,7 +52,7 @@ class Layout extends Component {
 const mapStateToProps = (state) => {
     return {
         showName: state.show.showName,
-        showSeconds: state.show.showSeconds,
+        displaySeconds: state.show.displaySeconds,
         pageTitle: state.show.pageTitle,
         isLive: state.live.isLive,
 

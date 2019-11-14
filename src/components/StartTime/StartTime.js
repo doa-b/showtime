@@ -9,7 +9,7 @@ import {msToTime} from "../../shared/utility";
  * Created by Doa on 24-10-2019.
  */
 const startTime = (props) => {
-    let time = msToTime(props.startTime, props.showSeconds);
+    let time = msToTime(props.startTime, props.displaySeconds);
     return (
         <div className={classes.StartTime} onClick={props.onClick}>
             {time}
@@ -19,7 +19,7 @@ const startTime = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        showSeconds: state.show.showSeconds,
+        displaySeconds: state.show.displaySeconds,
         showRealTime: state.show.showRealTime
     }
 };
