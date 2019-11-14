@@ -1,8 +1,5 @@
 import * as actionTypes from '../actions/actionTypes'
 import {updateObject, convertObjectsAndSortByKey, getCurrentUTCinMs} from '../../shared/utility';
-import {update} from "../actions";
-
-
 
 const initialState = {
     shows: [],
@@ -159,10 +156,10 @@ const initialState = {
     currentShow: '-Lrst6TmmyYrkouGmiac',
     showName: 'Fall Trend Show',
     showStartDateTime: getCurrentUTCinMs() + 30000,
-    runningPartDuration: 0,
     currentTime: 0,
     showSeconds: true,
-    showRealTime: true
+    showRealTime: true,
+    pageTitle: 'Schedule'
 };
 
 const savedShowElement = (state, action) => {
@@ -185,16 +182,6 @@ const fetchedAllShowData = (state, action) => {
     return updateObject(state, newState );
 };
 
-const decrementPartDuration = (state, action) => {
-    // let partsArray = state.parts;
-    // let updatedPart = updateObject(state.parts[0], {duration: state.parts[0].duration - 1000});
-    // partsArray[0] = updatedPart;
-    // console.log(updatedPart);
-    // return updateObject(state,{part: partsArray});
-    return state;
-
-};
-
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.SHOW_START:
@@ -215,17 +202,14 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SHOW_INCREMENT_CLOCK:
             return updateObject(state, {currentTime: state.currentTime + 1000});
 
-        case actionTypes.SHOW_INCREMENT_RUNNING_PART_DURATION:
-            return updateObject(state, {runningPartDuration: state.runningPartDuration + 1000});
-
         case actionTypes.SHOW_INITIATE_CLOCK:
             return updateObject(state, {currentTime: getCurrentUTCinMs()});
 
         case actionTypes.SHOW_TOGGLE_SHOW_SECONDS:
             return updateObject(state, {showSeconds: !state.showSeconds});
 
-        case actionTypes.SHOW_DECREMENT_PART_DURATION:
-            return decrementPartDuration(state, action);
+        case actionTypes.SHOW_SET_PAGE_TITLE:
+            return updateObject(state, {pageTitle: action.pageTitle});
 
         default:
             return state

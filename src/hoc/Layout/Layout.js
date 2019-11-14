@@ -1,17 +1,69 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
+import * as actions from "../../store/actions";
+import {connect} from "react-redux";
 
-import classes from './Layout.module.css'
-
+import MyToolbar from "../../components/ui/MyToolbar/MyToolbar";
+import MySideDrawer from "../../components/ui/MySideDrawer/MySideDrawer";
 
 /**
  * Created by Doa on 23-10-2019.
  */
 class Layout extends Component {
 
-    render()
-    {
-        return (this.props.children);
+    state = {
+        drawer: false,
+        title: 'Schedule'
+    };
+
+    toggleDrawer = () => {
+        this.setState(prevState => ({
+            drawer: !prevState.drawer
+        }));
+    };
+
+    onItemClick = (title) => () => {
+        this.props.onSetPageTitle(title);
+        this.setState(prevState => ({
+            drawer: (this.props.variant === 'temporary') ? false : prevState.drawer
+        }));
+    };
+
+    render() {
+        return (
+            <>
+                <MyToolbar
+                    title={this.props.pageTitle}
+                    onMenuClick={this.toggleDrawer}
+                    isLive={this.props.isLive}
+                    showName={this.props.showName}/>
+                <MySideDrawer
+                    variant={this.props.variant}
+                    open={this.state.drawer}
+                    onClose={this.toggleDrawer}
+                    onItemClick={this.onItemClick}
+                    showSeconds={this.props.showSeconds}
+                    toggleShowSeconds={this.props.onToggle}
+                />
+                {this.props.children}
+            </>);
     }
 }
 
-export default Layout;
+const mapStateToProps = (state) => {
+    return {
+        showName: state.show.showName,
+        showSeconds: state.show.showSeconds,
+        pageTitle: state.show.pageTitle,
+        isLive: state.live.isLive,
+
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onToggle: () => dispatch(actions.toggleShowSeconds()),
+        onSetPageTitle: (title) => dispatch (actions.setPageTitle(title))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

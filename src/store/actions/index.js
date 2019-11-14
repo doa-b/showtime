@@ -4,7 +4,8 @@ export {
     update,
     updateOrder,
     startClock,
-    toggleShowSeconds
+    toggleShowSeconds,
+    setPageTitle
 } from './showElements'
 
 export {

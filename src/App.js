@@ -18,7 +18,7 @@ function App() {
         </Switch>
     );
     return (
-            <Layout>
+            <Layout variant='temporary'>
                 {routes}
             </Layout>
     );

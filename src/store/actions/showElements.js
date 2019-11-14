@@ -64,23 +64,16 @@ export const addSecondToClock = () => {
     }
 };
 
-export const addSecondToRunningPartDuration = () => {
-        return {
-            type: actionTypes.SHOW_INCREMENT_RUNNING_PART_DURATION
-        }
-    }
-;
-
 export const toggleShowSeconds = () => {
     return {
         type: actionTypes.SHOW_TOGGLE_SHOW_SECONDS
     }
 };
 
-export const decrementPartDuration = (partNumber) => {
+export const setPageTitle = (title) => {
     return {
-        type: actionTypes.SHOW_DECREMENT_PART_DURATION,
-        partNumber: partNumber
+        type: actionTypes.SHOW_SET_PAGE_TITLE,
+        pageTitle: title
     }
 };
 
@@ -123,8 +116,8 @@ export const fetch = () => {
         dispatch(showStart());
         const showId = getState().show.currentShow;
         console.log(showId);
-        axios.all([getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then
-        (axios.spread((blocks, parts, scenes) => {
+        axios.all([getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then(
+        axios.spread((blocks, parts, scenes) => {
             console.log(blocks);
             console.log(parts);
             console.log(scenes);
@@ -138,9 +131,8 @@ export const fetch = () => {
 export const updateOrder = (showId, data, elementName) => {
     return dispatch => {
         dispatch(showStart());
-        console.log(showId);
-        axios.all(UpdateOrderFromElements(showId, data, elementName)).then
-        (axios.spread((response) => {
+        axios.all(UpdateOrderFromElements(showId, data, elementName)).then(
+        axios.spread((response) => {
             console.log(response);
             dispatch(updateElement);
             dispatch(fetch(showId))
@@ -156,7 +148,6 @@ export const startClock = () => {
         dispatch(initiateClock());
         setInterval(() => {
             const isPlaying = !getState().live.isPaused;
-            const partNumber = getState().live.runningPartNumber;
             dispatch(addSecondToClock());
             if (isPlaying) {
                 dispatch(incrementRunningPartDuration());
@@ -203,8 +194,3 @@ const UpdateOrderFromElements = (showId, data, elementName) => {
     console.log(requestsArray);
     return requestsArray
 };
-
-const getAllShows = () => {
-    return axios.get('shows/.json')
-};
-

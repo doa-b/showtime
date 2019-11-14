@@ -23,7 +23,9 @@ class Schedule extends Component {
 
     componentDidMount() {
         this.props.onFetch('-Lrst6TmmyYrkouGmiac');
-        this.props.onStartClock();
+        if (this.props.currentTime === 0) {
+            this.props.onStartClock();
+        }
     }
 
     showDetailsHandler = (elementId, pathName, orderNumber, parentId) => {
