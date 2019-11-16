@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {compose} from "redux";
+import {withStyles} from '@material-ui/core/styles';
 import {TextField, Button} from "@material-ui/core";
 import {connect} from 'react-redux'
 import {updateObject, top100Films} from '../../../shared/utility'
@@ -8,18 +10,54 @@ import Chip from '@material-ui/core/Chip'
 import * as actions from "../../../store/actions";
 import {update} from "../../../store/actions";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import {createFilterOptions} from '@material-ui/lab/Autocomplete';
 import Avatar from "@material-ui/core/Avatar";
+import Paper from "@material-ui/core/Paper";
 
 /**
  * Created by Doa on 30-10-2019.
  */
+
+const styles = theme => ({
+    paper: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '90%',
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary
+    },
+    title: {
+      marginBottom: 5,
+    },
+    colorPicker: {
+        display: 'flex',
+        alignContent: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        flexGrow: 1,
+    },
+    form: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '90%',
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary
+    },
+    team: {
+        border: 5
+    }
+});
+
 class BlockDetails extends Component {
 
     state = {
-        title: 'your block title here',
+        parent: '',
         showId: this.props.showId,
         order: this.props.blocks.length,
+        title: 'your block title',
+        cue: '',
         description: '',
         color: '#0017ff',
         textColorBlack: false,
@@ -76,9 +114,12 @@ class BlockDetails extends Component {
             return {textColorBlack: !prevState.textColorBlack};
         });
     };
+
 // TODO introduce full name, this makes searching more easy. Replace type with Role
 
     render() {
+        const {classes} = this.props;
+
         const textColor = (this.state.textColorBlack) ? '#000' : '#fff';
         const filterOptions = createFilterOptions({
             ignoreCase: 'true',
@@ -86,27 +127,39 @@ class BlockDetails extends Component {
         });
 
         return (
-            <div>
+            <Paper className={classes.paper}>
                 {this.state.order}
-                <HuePicker
-                    color={this.state.color}
-                    onChangeComplete={this.colorChangedHandler}/>
-                <span style={{
+                <span className={classes.title}style={{
                     background: this.state.color,
                     color: textColor
                 }}>{this.state.title}</span>
-
-                <form onSubmit={this.onSubmitHandler}>
-                    white<Switch
+                <div className={classes.colorPicker}>
+                    <HuePicker
+                        color={this.state.color}
+                        onChangeComplete={this.colorChangedHandler}/>
+                    <div>
+                        Text colour white<Switch
                     color='primary'
                     checked={this.state.textColor}
                     onChange={this.textColorChangedHandler}/>black
+                    </div>
+                </div>
+
+                <form className={classes.form}
+                      onSubmit={this.onSubmitHandler}>
                     <TextField
                         onChange={this.inputChangedHandler}
                         value={this.state.title}
                         required
                         id='title'
                         label='title'
+                        margin='normal'
+                        variant='outlined'/>
+                    <TextField
+                        onChange={this.inputChangedHandler}
+                        value={this.state.cue}
+                        id='cue'
+                        label='cue'
                         margin='normal'
                         variant='outlined'/>
                     <TextField
@@ -118,7 +171,7 @@ class BlockDetails extends Component {
                         rows={3}
                         margin='normal'
                         variant='outlined'/>
-                    <Autocomplete
+                    <Autocomplete className={classes.team}
                         value={this.state.team}
                         id='team'
                         multiple
@@ -162,7 +215,7 @@ class BlockDetails extends Component {
                         Submit
                     </Button>
                 </form>
-            </div>
+            </Paper>
         )
     }
 }
@@ -182,4 +235,6 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BlockDetails);
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, mapDispatchToProps))(BlockDetails)

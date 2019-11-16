@@ -2,24 +2,48 @@ import React, {Component} from 'react';
 import {compose} from "redux";
 import {withRouter} from 'react-router-dom'
 
-import classes from './Schedule.module.css'
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import BlocksList from "../Blocks/BlocksList";
 import {msToDate, msToTime} from "../../shared/utility";
+import {withStyles} from '@material-ui/core/styles';
+import {Typography} from "@material-ui/core";
 
 import Fab from '@material-ui/core/Fab';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import PauseIcon from '@material-ui/icons/Pause';
 
+
+
+
 /**
  * Created by Doa on 23-10-2019.
+
  */
+const styles = theme => ({
+    root: {
+        display: 'flex',
+    },
+    dateTime: {
+        width: '100%',
+    },
+    paper: {
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary
+    },
+    liveView: {
+        display: 'flex',
+        justifyContent: 'center',
+        width: '100%',
+    },
+    actionButton: {
+        marginLeft: 10
+    }
+});
+
 class Schedule extends Component {
-    state = {
-        finishTime: 0
-    };
 
     // TODO maybe we need to add an updated flag to show reducer to let schedule auto re-render.
     //  Or else we use the loading flag
@@ -64,7 +88,7 @@ class Schedule extends Component {
     };
 
     skipToNextPartHandler = () => {
-        console.log(this.props)
+        console.log(this.props);
         let nextPart = this.props.runningPart;
         let nextBlock = this.props.runningBlock;
         const runningBlockId = this.props.blocks[this.props.runningBlock].id;
@@ -86,15 +110,12 @@ class Schedule extends Component {
         } else this.props.onEndOfShow();
     };
 
-    setFinishTimeHandler = (finishTime) => {
-        this.setState({finishTime: finishTime})
-    };
-
 // todo Remove duration from block in database. It is calculated on the fly
 
     render() {
-        let total = <p>Loading...</p>;
+        const {classes} = this.props;
         let body = <h2>Show has ended</h2>
+        let total = <p>Loading...</p>;
 
         let liveControls = (
             <Fab variant="extended" aria-label="start"
@@ -102,23 +123,48 @@ class Schedule extends Component {
                 Start The Show!
             </Fab>
         );
-        if (this.props.isLive) {
 
-            //set play/pause icon to play or pause
+        let head = (
+            <>
+                <Typography variant='h2' component='h1'>
+                    Trinity Fall Trend Show Switserland
+                </Typography>
+                <div className={classes.dateTime}>
+                    <Typography variant='h6'>
+                        {msToDate(this.props.showStartDateTime)}
+                    </Typography>
+                    <Typography variant='h6'>
+                        {msToTime(this.props.showStartDateTime)}
+                    </Typography>
+                    <Fab variant="extended" aria-label="start"
+                         onClick={this.props.onStartTheShow} className={classes.fab}>
+                        Start The Show!
+                    </Fab>
+
+                </div>
+            </>
+        );
+
+        if (this.props.isLive) {
             let playPause = (this.props.isPaused) ?
                 <PlayArrowIcon fontSize='large'/> : <PauseIcon fontSize='large'/>
 
-            liveControls = (
-                <>
-                    <Fab color='primary' aria-label='play'
+            head = (
+                <div className={classes.liveView}>
+                    <Typography variant='h2'>
+                        {msToTime(this.props.currentTime)}
+                    </Typography>
+                    <Fab className={classes.actionButton}
+                         color='primary' aria-label='play'
                          onClick={this.props.onTogglePause}>
                         {playPause}
                     </Fab>
-                    <Fab color='primary' aria-label='play'
+                    <Fab className={classes.actionButton}
+                         color='primary' aria-label='play'
                          onClick={this.skipToNextPartHandler}>
                         <SkipNextIcon fontSize='large'/>
                     </Fab>
-                </>
+                </div>
             )
         }
 
@@ -128,7 +174,6 @@ class Schedule extends Component {
                     <BlocksList
                         parentId={this.props.currentShow}
                         clicked={this.showDetailsHandler}
-                        finished={this.setFinishTimeHandler}
                     />
                 </div>
         }
@@ -136,25 +181,12 @@ class Schedule extends Component {
         if (!this.props.showHasFinished) {
             body = (
                 <>
-                    <h3>{msToDate(this.props.showStartDateTime)}</h3>
-                    <p>Scheduled Show Start Time {msToTime(this.props.showStartDateTime)}</p>
-                    <p>FinishTime {msToTime(this.state.finishTime)}</p>
-                    <p>Current Time {msToTime(this.props.currentTime)}</p>
-                    {liveControls}
+                    <div className={classes.paper}>{head}</div>
                     {total}
                 </>
             )
         }
-
-        return (
-            <>
-                <h1>{this.props.showName}</h1>
-                <button onClick={this.saveDummyPartsHandler}>
-                    Add Some Parts
-                </button>
-                {body}
-            </>
-        )
+        return body
     }
 }
 
@@ -191,4 +223,5 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
     withRouter,
+    withStyles(styles),
     connect(mapStateToProps, mapDispatchToProps))(Schedule)

@@ -4,11 +4,11 @@
     width: 100%;
 }
 
-.Wrapper{
-     display: flex;
+.Wrapper {
+    display: flex;
     flex-direction: row;
     width: 100%;
- }
+}
 
 .Spacer {
     margin-left: 50px;

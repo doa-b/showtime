@@ -100,8 +100,6 @@ class BlocksList extends Component {
                     isLive={this.props.isLive}
                     scheduledEndTime={this.props.scheduledEndTime}
                     updatescheduledEndTime={this.props.onUpdateScheduledEndTime}/>
-
-                {this.props.finished(startTimeCounter)}
                 <Button
                     onClick={() => this.props.clicked(null, 'block/details', this.props.showId)}
                     variant="contained"
