@@ -43,6 +43,8 @@ class Layout extends Component {
                     onItemClick={this.onItemClick}
                     showSeconds={this.props.displaySeconds}
                     toggleShowSeconds={this.props.onToggle}
+                    displayRealTime={this.props.displayRealTime}
+                    toggleDisplayRealTime={this.props.onToggleRealTime}
                 />
                 {this.props.children}
             </>);
@@ -52,6 +54,7 @@ class Layout extends Component {
 const mapStateToProps = (state) => {
     return {
         showName: state.show.showName,
+        displayRealTime: state.show.displayRealTime,
         displaySeconds: state.show.displaySeconds,
         pageTitle: state.show.pageTitle,
         isLive: state.live.isLive,
@@ -62,6 +65,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onToggle: () => dispatch(actions.toggleShowSeconds()),
+        onToggleRealTime: () => dispatch(actions.toggleDisplayRealTime()),
         onSetPageTitle: (title) => dispatch (actions.setPageTitle(title))
     }
 };

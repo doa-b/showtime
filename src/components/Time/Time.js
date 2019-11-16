@@ -37,7 +37,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onClick: () => dispatch(actions.toggleShowSeconds()),
+        onClick: () => dispatch(actions.toggleDisplayRealTime()),
     }
 };
 

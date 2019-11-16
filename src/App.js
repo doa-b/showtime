@@ -6,6 +6,7 @@ import Schedule from './containers/Schedule/Schedule';
 import BlockDetails from './containers/Blocks/BlockDetails/BlockDetails'
 import PartDetails from './containers/Parts/PartDetails/PartDetails'
 import Layout from './hoc/Layout/Layout';
+import Monitor from "./containers/Monitor/Monitor";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
             <Route path="/" exact component={Schedule}/>
             <Route path="/block/details" exact component={BlockDetails}/>
             <Route path="/part/details" exact component={PartDetails}/>
+            <Route path="/monitor" exact component={Monitor}/>
             <Redirect to="/"/>
         </Switch>
     );

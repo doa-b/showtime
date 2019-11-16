@@ -158,7 +158,7 @@ const initialState = {
     showStartDateTime: getCurrentUTCinMs() + 30000,
     currentTime: 0,
     displaySeconds: true,
-    showRealTime: true,
+    displayRealTime: true,
     pageTitle: 'Schedule'
 };
 
@@ -210,6 +210,9 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.SHOW_SET_PAGE_TITLE:
             return updateObject(state, {pageTitle: action.pageTitle});
+
+            case actionTypes.SHOW_TOGGLE_DISPLAY_REALTIME:
+            return updateObject(state, {displayRealTime: !state.displayRealTime});
 
         default:
             return state

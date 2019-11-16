@@ -48,6 +48,13 @@ export const showEnd = () => {
     }
 };
 
+export const updateScheduledEndTime = (time) => {
+    return {
+        type: actionTypes.LIVE_UPDATE_SCHEDULED_END_TIME,
+        time: time
+    }
+};
+
 // Asynchronous ActionCreators
 
 export const startTheShow = () => {

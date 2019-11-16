@@ -9,9 +9,14 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import HomeIcon from '@material-ui/icons/Home';
 import WebIcon from '@material-ui/icons/Web';
+import TuneIcon from '@material-ui/icons/Tune';
+import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import Avatar from "@material-ui/core/Avatar";
+import Toolbar from "@material-ui/core/Toolbar";
 
 
 const styles = theme => ({
@@ -33,12 +38,17 @@ const styles = theme => ({
         color: theme.palette.primary.main
     },
     checkBox: {
-        marginLeft: 5
-    }
+        marginLeft: 0
+    },
+    avatar: {
+        margin: 10,
+        width: 150,
+    },
 });
 
 const MySideDrawer = withStyles(styles)(
-    ({classes, variant, open, onClose, onItemClick, showSeconds, toggleShowSeconds}) => (
+    ({classes, variant, open, onClose, onItemClick,
+         showSeconds, toggleShowSeconds, displayRealTime, toggleDisplayRealTime}) => (
         <Drawer variant={variant} open={open} onClose={onClose}>
             {/*div to offset the drawer with the heighth of the Toolbar, when the variant is persistent*/}
             <div
@@ -46,19 +56,56 @@ const MySideDrawer = withStyles(styles)(
                     [classes.toolbarMargin]: variant === 'persistent'
                 })}
             />
-
-
             <List>
+                <ListItem alignItems='center'>
+                    <img
+                        className={classes.avatar}
+                        alt='logged in user'
+                        src='https://image.tmdb.org/t/p/original/i5kxTQ9GSGKY6CaI8F3cdwoF3KD.jpg'/>
+                </ListItem>
+                <ListSubheader>
+                    Doa Bonifacio
+                </ListSubheader>
+                <NavItem
+                    to='/account'
+                    text='Account'
+                    Icon={TuneIcon}
+                    onClick={onItemClick('Account')}
+                />
+                <NavItem
+                    to='/logout'
+                    text='Logout'
+                    Icon={ExitToAppIcon}
+                    onClick={onItemClick('Logout')}
+                />
                 <ListSubheader>
                     Controls
                 </ListSubheader>
-                <FormControlLabel
-                    className={classes.checkBox}
-                    control={<Checkbox
+                <ListItem>
+                    <Checkbox
                         value={showSeconds}
                         onChange={toggleShowSeconds}
-                        checked={showSeconds}/>}
-                    label='Display Seconds'/>
+                        checked={showSeconds}/>
+                    <ListItemText>
+                        Display Seconds
+                    </ListItemText>
+                </ListItem>
+                <ListItem>
+                    <Checkbox
+                        value={displayRealTime}
+                        onChange={toggleDisplayRealTime}
+                        checked={displayRealTime}/>
+                    <ListItemText>
+                        Display Realtime
+                    </ListItemText>
+                </ListItem>
+                {/*<FormControlLabel*/}
+                {/*    className={classes.checkBox}*/}
+                {/*    control={<Checkbox*/}
+                {/*        value={displayRealTime}*/}
+                {/*        onChange={toggleDisplayRealTime}*/}
+                {/*        checked={displayRealTime}/>}*/}
+                {/*    label='Display Realtime'/>*/}
                 <ListSubheader>
                     Navigation
                 </ListSubheader>
@@ -69,10 +116,10 @@ const MySideDrawer = withStyles(styles)(
                     onClick={onItemClick('Schedule')}
                 />
                 <NavItem
-                    to='/page2'
-                    text='Page 2'
-                    Icon={WebIcon}
-                    onClick={onItemClick('Page 2')}
+                    to='/monitor'
+                    text='Monitor'
+                    Icon={DesktopWindowsIcon}
+                    onClick={onItemClick('Monitor')}
                 />
                 <NavItem
                     to='/page3'

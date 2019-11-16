@@ -70,6 +70,12 @@ export const toggleShowSeconds = () => {
     }
 };
 
+export const toggleDisplayRealTime = () => {
+    return {
+        type: actionTypes.SHOW_TOGGLE_DISPLAY_REALTIME
+    }
+};
+
 export const setPageTitle = (title) => {
     return {
         type: actionTypes.SHOW_SET_PAGE_TITLE,

@@ -7,6 +7,7 @@ import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import classes from './BlocksList.module.css';
+import FinishLine from "../../components/FinishLine/FinishLine";
 
 
 import AddIcon from '@material-ui/icons/Add';
@@ -66,7 +67,7 @@ class BlocksList extends Component {
     render() {
 
         let startTimeCounter = 0;
-        if (this.props.showRealTime) {
+        if (this.props.displayRealTime) {
             if (this.props.isLive) {
                 startTimeCounter = this.props.currentTime
             } else startTimeCounter = (this.props.showStartDateTime > this.props.currentTime) ? this.props.showStartDateTime : this.props.currentTime;
@@ -94,6 +95,13 @@ class BlocksList extends Component {
                         return null;
                     })}
                 </SortableContainer>
+                <FinishLine
+                    time={startTimeCounter}
+                    isLive={this.props.isLive}
+                    scheduledEndTime={this.props.scheduledEndTime}
+                    updatescheduledEndTime={this.props.onUpdateScheduledEndTime}/>
+
+                {this.props.finished(startTimeCounter)}
                 <Button
                     onClick={() => this.props.clicked(null, 'block/details', this.props.showId)}
                     variant="contained"
@@ -101,8 +109,10 @@ class BlocksList extends Component {
                     startIcon={<AddIcon/>}>
                     Add Block
                 </Button>
+
+
             </div>
-        )
+        );
     }
 }
 
@@ -111,20 +121,22 @@ const mapStateToProps = (state) => {
         showId: state.show.currentShow,
         blocks: state.show.blocks,
         parts: state.show.parts,
-        showRealTime: state.show.showRealTime,
+        displayRealTime: state.show.displayRealTime,
         currentTime: state.show.currentTime,
         showStartDateTime: state.show.showStartDateTime,
         runningPartDuration: state.live.runningPartDuration,
         runningPartNumber: state.live.runningPartNumber,
         runningBlockNumber: state.live.runningBlockNumber,
-        isLive: state.live.isLive
+        isLive: state.live.isLive,
+        scheduledEndTime: state.live.scheduledEndTime
 
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onUpdate: (showId, data, elementName) => dispatch(actions.updateOrder(showId, data, elementName))
+        onUpdate: (showId, data, elementName) => dispatch(actions.updateOrder(showId, data, elementName)),
+        onUpdateScheduledEndTime: (time) => dispatch(actions.updateScheduledEndTime(time))
     }
 };
 

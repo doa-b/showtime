@@ -5,7 +5,8 @@ export {
     updateOrder,
     startClock,
     toggleShowSeconds,
-    setPageTitle
+    setPageTitle,
+    toggleDisplayRealTime
 } from './showElements'
 
 export {
@@ -14,5 +15,6 @@ export {
     toggleIsPaused,
     incrementRunningPartDuration,
     partHasEnded,
-    showHasEnded
+    showHasEnded,
+    updateScheduledEndTime
 } from './live'

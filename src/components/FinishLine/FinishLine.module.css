@@ -1,0 +1,29 @@
+.FinishLine {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+    background: blue;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 2px #ccc;
+    color: white;
+    padding: 5px;
+}
+
+.Overtime {
+    color: red;
+    font-weight: bolder;
+    margin-left: 10px;
+}
+
+.Undertime {
+    color: greenyellow;
+    font-weight: bolder;
+    margin-left: 10px;
+}
+
+.Extratime {
+    margin-left: 10px;
+}

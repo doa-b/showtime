@@ -8,7 +8,8 @@ const initialState = {
     runningPartNumber: 0,
     runningBlockNumber: 0,
     runningPartDuration: 0,
-    showHasFinished: false
+    showHasFinished: false,
+    scheduledEndTime: 0
 };
 
 const skipToNextPart = (state, action) => {
@@ -50,6 +51,8 @@ const reducer = (state = initialState, action) => {
             return updateObject(state, {isPaused: true});
         case actionTypes.LIVE_END_OF_SHOW:
             return endOfShow(state);
+        case actionTypes.LIVE_UPDATE_SCHEDULED_END_TIME:
+            return updateObject(state, {scheduledEndTime: action.time});
         default:
             return state
     }

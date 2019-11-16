@@ -17,6 +17,9 @@ import PauseIcon from '@material-ui/icons/Pause';
  * Created by Doa on 23-10-2019.
  */
 class Schedule extends Component {
+    state = {
+        finishTime: 0
+    };
 
     // TODO maybe we need to add an updated flag to show reducer to let schedule auto re-render.
     //  Or else we use the loading flag
@@ -83,6 +86,9 @@ class Schedule extends Component {
         } else this.props.onEndOfShow();
     };
 
+    setFinishTimeHandler = (finishTime) => {
+        this.setState({finishTime: finishTime})
+    };
 
 // todo Remove duration from block in database. It is calculated on the fly
 
@@ -122,6 +128,7 @@ class Schedule extends Component {
                     <BlocksList
                         parentId={this.props.currentShow}
                         clicked={this.showDetailsHandler}
+                        finished={this.setFinishTimeHandler}
                     />
                 </div>
         }
@@ -131,6 +138,7 @@ class Schedule extends Component {
                 <>
                     <h3>{msToDate(this.props.showStartDateTime)}</h3>
                     <p>Scheduled Show Start Time {msToTime(this.props.showStartDateTime)}</p>
+                    <p>FinishTime {msToTime(this.state.finishTime)}</p>
                     <p>Current Time {msToTime(this.props.currentTime)}</p>
                     {liveControls}
                     {total}
