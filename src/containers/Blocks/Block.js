@@ -17,7 +17,8 @@ import AddIcon from '@material-ui/icons/Add';
 class Block extends Component {
 
     state = {
-        showChildren: true
+        showChildren: true,
+        maxDuration: 0
     };
 
     toggleVisibilityHandler = () => {
@@ -61,10 +62,11 @@ class Block extends Component {
 
         return (
             <div className={classes.Wrapper}>
+                <div className={classes.Empty}>
                 <div className={classes.Block}
                      style={{
                          background: this.props.blockData.color,
-                         color: textColor
+                         color: textColor,
                      }}>
                     {this.props.children}
                     <Time startTime={startTime}
@@ -78,6 +80,7 @@ class Block extends Component {
                         {arrow}
                     </div>
                 </div>
+            </div>
                 {parts}
             </div>
         );

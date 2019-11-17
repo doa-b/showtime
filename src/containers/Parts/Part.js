@@ -11,6 +11,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Time from "../../components/Time/Time";
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
+import ProgressBar from '../../components/ui/ProgressBar/ProgressBar'
 
 /**
  * Created by Doa on 23-10-2019.
@@ -43,12 +44,19 @@ class Part extends Component {
     render() {
         let startTime = this.props.startTime - this.props.partData.duration;
         let duration = this.props.partData.duration;
+        let progressBar = null;
         if (this.props.runningTime) {
-            duration -= this.props.runningTime
+            duration -= this.props.runningTime;
             if (duration === 0 && !this.props.isPaused) {
                 this.props.onPartEnd()
             }
+            progressBar = (
+                <ProgressBar
+                    full={this.props.partData.duration}
+                    timeLeft={duration}
+                    height='6px'/>)
         }
+
         let scenes = null;
         let arrow = <KeyboardArrowLeftIcon className={classes.Arrow}
                                            onClick={this.toggleVisibilityHandler}/>;
@@ -79,6 +87,7 @@ class Part extends Component {
                         onClick={() => this.props.clicked(this.props.partData.id, 'part/details')}>{this.props.partData.title}</div>
                     {arrow}
                 </div>
+                {progressBar}
                 {scenes}
             </div>
         )

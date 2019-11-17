@@ -20,24 +20,33 @@ import Paper from "@material-ui/core/Paper";
 
 const styles = theme => ({
     paper: {
+        margin: 'auto',
+        marginTop: 10,
         display: 'flex',
         flexDirection: 'column',
         width: '90%',
-        padding: theme.spacing(2),
+
         textAlign: 'center',
         color: theme.palette.text.secondary
     },
     title: {
-      marginBottom: 5,
+        padding: 5,
+        marginBottom: 1,
     },
     colorPicker: {
         display: 'flex',
-        alignContent: 'center',
-        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'center',
         flexDirection: 'row',
         flexGrow: 1,
     },
+
+    textColor: {
+        marginLeft: 10
+    },
     form: {
+        margin: 'auto',
         display: 'flex',
         flexDirection: 'column',
         width: '90%',
@@ -128,20 +137,21 @@ class BlockDetails extends Component {
 
         return (
             <Paper className={classes.paper}>
-                {this.state.order}
-                <span className={classes.title}style={{
+                {/*{this.state.order}*/}
+                <span className={classes.title} style={{
                     background: this.state.color,
                     color: textColor
                 }}>{this.state.title}</span>
                 <div className={classes.colorPicker}>
                     <HuePicker
+                        width='60%'
                         color={this.state.color}
                         onChangeComplete={this.colorChangedHandler}/>
-                    <div>
-                        Text colour white<Switch
-                    color='primary'
-                    checked={this.state.textColor}
-                    onChange={this.textColorChangedHandler}/>black
+                    <div className={classes.textColor}>
+                        Text colour: white<Switch
+                        color='primary'
+                        checked={this.state.textColor}
+                        onChange={this.textColorChangedHandler}/>black
                     </div>
                 </div>
 
@@ -172,40 +182,40 @@ class BlockDetails extends Component {
                         margin='normal'
                         variant='outlined'/>
                     <Autocomplete className={classes.team}
-                        value={this.state.team}
-                        id='team'
-                        multiple
-                        onChange={this.inputChangedHandler}
-                        groupBy={option => option.groups}
-                        getOptionLabel={option => option.firstName}
-                        options={this.props.users.map(option => option)}
-                        defaultValue={[this.props.users[1]]}
-                        filterOptions={filterOptions}
-                        filterSelectedOptions
-                        renderTags={(value, {className, onDelete}) =>
-                            value.map((option, index) => (
-                                <Chip
-                                    key={index}
-                                    variant="outlined"
-                                    data-tag-index={index}
-                                    tabIndex={-1}
-                                    label={option.firstName}
-                                    avatar={<Avatar alt={option.firstName} src={option.imageUrl}/>}
-                                    className={className}
-                                    onDelete={onDelete}
-                                />
-                            ))
-                        }
-                        renderInput={params => (
-                            <TextField
-                                {...params}
-                                variant="filled"
-                                label="Team members"
-                                placeholder="name"
-                                margin="normal"
-                                fullWidth
-                            />
-                        )}
+                                  value={this.state.team}
+                                  id='team'
+                                  multiple
+                                  onChange={this.inputChangedHandler}
+                                  groupBy={option => option.groups}
+                                  getOptionLabel={option => option.firstName}
+                                  options={this.props.users.map(option => option)}
+                                  defaultValue={[this.props.users[1]]}
+                                  filterOptions={filterOptions}
+                                  filterSelectedOptions
+                                  renderTags={(value, {className, onDelete}) =>
+                                      value.map((option, index) => (
+                                          <Chip
+                                              key={index}
+                                              variant="outlined"
+                                              data-tag-index={index}
+                                              tabIndex={-1}
+                                              label={option.firstName}
+                                              avatar={<Avatar alt={option.firstName} src={option.imageUrl}/>}
+                                              className={className}
+                                              onDelete={onDelete}
+                                          />
+                                      ))
+                                  }
+                                  renderInput={params => (
+                                      <TextField
+                                          {...params}
+                                          variant="filled"
+                                          label="Team members"
+                                          placeholder="name"
+                                          margin="normal"
+                                          fullWidth
+                                      />
+                                  )}
                     />
 
 
