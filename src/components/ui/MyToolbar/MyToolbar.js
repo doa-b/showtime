@@ -6,6 +6,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Typography from "@material-ui/core/Typography";
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
+import HomeIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import List from "@material-ui/core/List";
+import {NavLink} from "react-router-dom";
+
 
 const styles = theme => ({
     menuButton: {
@@ -37,6 +41,12 @@ const MyToolbar = withStyles(styles)(
                     >
                         <MenuIcon/>
                     </IconButton>
+
+                    <NavLink
+                        to='/'
+                    >
+                        Home <HomeIcon/>
+                    </NavLink>
                     <Typography
                         variant="h5"
                         color="inherit"

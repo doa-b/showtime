@@ -60,7 +60,7 @@ class Schedule extends Component {
             this.props.history.push({
                 pathname: pathName,
                 state: {
-                    id: elementId
+                    elementId: elementId
                 }
             })
         } else {

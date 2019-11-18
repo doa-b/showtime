@@ -43,9 +43,10 @@ export const setCurrentShow = (showId) => {
     }
 };
 
-export const fetchShowDataSuccess = (blocks, parts, scenes) => {
+export const fetchShowDataSuccess = (shows, blocks, parts, scenes) => {
     return {
         type: actionTypes.SHOW_FETCH_ALL_DATA_SUCCESS,
+        shows: shows,
         blocks: blocks,
         parts: parts,
         scenes: scenes,
@@ -122,12 +123,12 @@ export const fetch = () => {
         dispatch(showStart());
         const showId = getState().show.currentShow;
         console.log(showId);
-        axios.all([getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then(
-        axios.spread((blocks, parts, scenes) => {
+        axios.all([getAllShows(), getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then(
+        axios.spread((shows, blocks, parts, scenes) => {
             console.log(blocks);
             console.log(parts);
             console.log(scenes);
-            dispatch(fetchShowDataSuccess(blocks.data, parts.data, scenes.data));
+            dispatch(fetchShowDataSuccess(shows.data, blocks.data, parts.data, scenes.data));
         })).catch(error => {
             dispatch(showFail(error));
         })
@@ -163,6 +164,9 @@ export const startClock = () => {
 };
 
 // Axios helper functions
+const getAllShows = () => {
+    return axios.get('shows/.json');
+};
 const getAllBlocks = (showId) => {
     return axios.get('blocks/.json', {
         params: {
@@ -200,3 +204,7 @@ const UpdateOrderFromElements = (showId, data, elementName) => {
     console.log(requestsArray);
     return requestsArray
 };
+
+const SaveorUpdateTeam = (showId, data, elementName, elementId) => {
+
+}

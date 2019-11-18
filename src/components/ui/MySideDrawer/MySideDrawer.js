@@ -6,7 +6,6 @@ import {Checkbox, withStyles} from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import ListSubheader from "@material-ui/core/ListSubheader";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import HomeIcon from '@material-ui/icons/Home';
 import WebIcon from '@material-ui/icons/Web';
 import TuneIcon from '@material-ui/icons/Tune';
@@ -15,8 +14,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import Avatar from "@material-ui/core/Avatar";
-import Toolbar from "@material-ui/core/Toolbar";
+
 
 
 const styles = theme => ({

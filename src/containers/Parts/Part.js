@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 
 import classes from './Part.module.css'
-import StartTime from "../../components/StartTime/StartTime";
-import Duration from "../../components/Duration/Duration";
+
 import ScenesList from "../Scenes/ScenesList";
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
@@ -16,9 +15,6 @@ import ProgressBar from '../../components/ui/ProgressBar/ProgressBar'
 /**
  * Created by Doa on 23-10-2019.
  */
-
-// Todo convert this to class component and give its own state visible or not. Else we close them all
-
 class Part extends Component {
 
     state = {

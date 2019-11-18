@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes'
-import {updateObject, convertObjectsAndSortByKey, getCurrentUTCinMs} from '../../shared/utility';
+import {updateObject, convertObjectsAndSortByKey, getCurrentUTCinMs, convertObjectstoArray} from '../../shared/utility';
 
 const initialState = {
     shows: [],
@@ -8,6 +8,7 @@ const initialState = {
     scenes: [],
     users: [
         {
+            id: 'id0',
             firstName: 'Robin',
             LastName: 'Schenke',
             Phone: '0612345678',
@@ -17,6 +18,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id1',
             firstName: 'Jeroen',
             LastName: 'Schenke',
             Phone: '0612345678',
@@ -26,6 +28,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id2',
             firstName: 'Eve',
             LastName: '',
             Phone: '0612345678',
@@ -35,6 +38,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id3',
             firstName: 'Bernd',
             LastName: '',
             Phone: '0612345678',
@@ -44,6 +48,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id4',
             firstName: 'Bianca',
             LastName: '',
             Phone: '0612345678',
@@ -53,6 +58,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id5',
             firstName: 'Antonio',
             LastName: '',
             Phone: '0612345678',
@@ -62,6 +68,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id6',
             firstName: 'Carmen',
             LastName: '',
             Phone: '0612345678',
@@ -71,6 +78,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id7',
             firstName: 'Saskia',
             LastName: 'Bolk',
             Phone: '0612345678',
@@ -80,6 +88,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id8',
             firstName: 'Arno',
             LastName: 'Doppen',
             Phone: '0612345678',
@@ -89,6 +98,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id9',
             firstName: 'Eline',
             LastName: 'de Hond',
             Phone: '0612345678',
@@ -98,6 +108,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id10',
             firstName: 'Tessa',
             LastName: '',
             Phone: '0612345678',
@@ -107,6 +118,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id11',
             firstName: 'Jil',
             LastName: '',
             Phone: '0612345678',
@@ -116,6 +128,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id12',
             firstName: 'Doa',
             LastName: 'Bonifacio',
             Phone: '0612345678',
@@ -125,6 +138,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id13',
             firstName: 'Bob',
             LastName: '',
             Phone: '0612345678',
@@ -134,6 +148,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id14',
             firstName: 'Mac',
             LastName: 'Guyver',
             Phone: '0612345678',
@@ -143,6 +158,7 @@ const initialState = {
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
+            id: 'id15',
             firstName: 'John',
             LastName: 'Doa',
             Phone: '0612345678',
@@ -173,12 +189,14 @@ const savedShowElement = (state, action) => {
 
 const fetchedAllShowData = (state, action) => {
     const newState = {
+        shows: convertObjectsAndSortByKey(action.shows, 'order'),
         blocks: convertObjectsAndSortByKey(action.blocks, 'order'),
         parts: convertObjectsAndSortByKey(action.parts, 'order'),
-        scenes: convertObjectsAndSortByKey(action.scenes, 'order'),
+        scenes: convertObjectstoArray(action.scenes),
         error: null,
         loading: false
     };
+
     return updateObject(state, newState );
 };
 

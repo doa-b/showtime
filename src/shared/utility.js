@@ -11,6 +11,12 @@ export const updateObject = (oldObject, updatedProperties) => {
  * @param object the object of objects that needs to be converted to array of objects
  * @param orderKey the orderKey by which the new array needs to be sorted
  */
+
+function checkNested(obj, level,  ...rest) {
+    if (obj === undefined) return false
+    if (rest.length == 0 && obj.hasOwnProperty(level)) return true;
+    return checkNested(obj[level], ...rest)
+}
 export const convertObjectsAndSortByKey = (object, orderKey) => {
     // convert object of objects into array of objects, when you do not need the orderKey
     // let newArray = Object.values(object);
@@ -29,6 +35,41 @@ export const convertObjectsAndSortByKey = (object, orderKey) => {
     newArray.sort((a, b) => a[orderKey] - b[orderKey]);
     console.log(newArray)
     return newArray;
+};
+
+export const convertObjectstoArray = (object) => {
+    // convert object of objects into array of objects, when you do not need the Key
+    // let newArray = Object.values(object);
+
+    // convert object of objects into array of objects, when you DO not need the Key
+    let newArray = [];
+    for (let key in object) {
+        // check if object has a nested object
+
+        newArray.push(
+            {
+                ...object[key],
+                id: key
+            });
+    }
+    return newArray;
+};
+
+export const convertArrayToObject = (elementsArray, idField) => {
+    console.log(elementsArray)
+    let newObject = {};
+    elementsArray.map((element) => {
+        console.log(element)
+        const newElement = {...element};
+       delete newElement[idField]; // delete idField in object
+
+        console.log('newElement')
+        console.log(newElement);
+        return newObject[element[idField]] = newElement;
+    });
+    console.log('below is the newOject')
+    console.log(newObject)
+    return newObject;
 };
 
 export const calculateDuration = (parts) => {

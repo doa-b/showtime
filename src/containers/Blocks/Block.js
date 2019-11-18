@@ -27,15 +27,6 @@ class Block extends Component {
         });
     };
 
-    showDetailsHandler = () => {
-        this.props.history.push({
-            pathname: 'block/details',
-            state: {
-                id: this.props.blockData.id
-            }
-        })
-    };
-
     render() {
         let startTime = this.props.startTime - this.props.duration;
         let textColor = (this.props.blockData.textColorBlack) ? '#000' : '#fff';
@@ -47,7 +38,7 @@ class Block extends Component {
                 <span className={classes.Spacer}></span>
                 <IconButton size="small" color="primary"
                             className={classes.button}
-                            onClick={() => this.props.clicked(null, 'block/details', null, this.props.blockData.id)}
+                            onClick={() => this.props.clicked(null, 'part/details', null, this.props.blockData.id)}
                             aria-label="add">
                     <AddIcon/>
                 </IconButton>

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {compose} from "redux";
 import {withStyles} from '@material-ui/core/styles';
-import {TextField, Button} from "@material-ui/core";
+import {TextField, Button, FormControlLabel} from "@material-ui/core";
 import {connect} from 'react-redux'
-import {updateObject, top100Films} from '../../../shared/utility'
+import {updateObject, top100Films, convertArrayToObject, convertObjectstoArray} from '../../../shared/utility'
 import {HuePicker} from 'react-color'
 import Switch from "@material-ui/core/Switch";
 import Chip from '@material-ui/core/Chip'
@@ -13,6 +13,10 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import {createFilterOptions} from '@material-ui/lab/Autocomplete';
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
+import Select from '@material-ui/core/Select';
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
 
 /**
  * Created by Doa on 30-10-2019.
@@ -56,13 +60,17 @@ const styles = theme => ({
     },
     team: {
         border: 5
+    },
+    selectShow: {
+        textAlign: 'left',
+        alignItems: 'left',
+        alignContent: 'left'
     }
 });
 
 class BlockDetails extends Component {
 
     state = {
-        parent: '',
         showId: this.props.showId,
         order: this.props.blocks.length,
         title: 'your block title',
@@ -74,17 +82,10 @@ class BlockDetails extends Component {
     };
 
     componentDidMount() {
-        if (this.props.location.state && this.props.location.state.id) {
-            let currentBlock = this.props.blocks.filter((aBlock) => aBlock.id === this.props.location.state.id)[0];
+        if (this.props.location.state && this.props.location.state.elementId) {
+            let currentBlock = this.props.blocks.filter((aBlock) => aBlock.id === this.props.location.state.elementId)[0];
             if (currentBlock) {
-                this.setState(
-                    {
-                        title: currentBlock.title,
-                        description: currentBlock.description,
-                        order: currentBlock.order,
-                        color: currentBlock.color,
-                        textColorBlack: currentBlock.textColorBlack
-                    })
+                this.setState(updateObject(currentBlock, { team: convertObjectstoArray(currentBlock.team)}))
             }
         } else {
             this.setState(
@@ -95,23 +96,28 @@ class BlockDetails extends Component {
 
     inputChangedHandler = (event, value) => {
         console.log(value)
-        console.log(this.state);
         console.log(event);
         console.log(event.target)
-        if (value) {
-            this.setState({team: value})
-        }
         this.setState({[event.target.id]: event.target.value})
+    };
 
+    teamChangedHandler = (event, value) => {
+        this.setState({team: value})
+    };
+
+    showChangedHandler = (event, value) => {
+        this.setState ({showId: event.target.value} )
     };
     onSubmitHandler = (event) => {
         event.preventDefault();
+        const block = updateObject(this.state, {team: convertArrayToObject(this.state.team, 'id')})
         if (this.props.location.state && this.props.location.state.id) {
-            this.props.onUpdate(this.props.location.state.id, this.state, 'blocks')
+            this.props.onUpdate(this.props.location.state.id, block, 'blocks')
         } else {
-            this.props.onSave('blocks', this.state)
+            this.props.onSave('blocks', block)
         }
-
+        // TODO let this wait until saving to store is done
+        this.props.history.push('/');
     };
 
     colorChangedHandler = (color) => {
@@ -172,20 +178,33 @@ class BlockDetails extends Component {
                         label='cue'
                         margin='normal'
                         variant='outlined'/>
-                    <TextField
-                        onChange={this.inputChangedHandler}
-                        value={this.state.description}
-                        id='description'
-                        label='description'
-                        multiline
-                        rows={3}
-                        margin='normal'
-                        variant='outlined'/>
+                    <TextField className={classes.selectShow}
+                               onChange={this.inputChangedHandler}
+                               value={this.state.description}
+                               id='description'
+                               label='description'
+                               multiline
+                               rows={3}
+                               margin='normal'
+                               variant='outlined'/>
+                    <FormControl className={classes.selectShow}
+                                 id='showId'>
+                        <Select className={classes.selectShow}
+                                labelId='label'
+                                id='showId'
+                                variant='outlined'
+                                value={this.state.showId}
+                                onChange={this.showChangedHandler}>
+                            {this.props.shows.map(show => {
+                                return <MenuItem key={show.id} value={show.id}>{show.name}</MenuItem>
+                            })}
+                        </Select>
+                    </FormControl>
                     <Autocomplete className={classes.team}
                                   value={this.state.team}
                                   id='team'
                                   multiple
-                                  onChange={this.inputChangedHandler}
+                                  onChange={this.teamChangedHandler}
                                   groupBy={option => option.groups}
                                   getOptionLabel={option => option.firstName}
                                   options={this.props.users.map(option => option)}
@@ -234,6 +253,7 @@ const mapStateToProps = (state) => {
     return {
         showId: state.show.currentShow,
         blocks: state.show.blocks,
+        shows: state.show.shows,
         users: state.show.users,
     }
 };
