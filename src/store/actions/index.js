@@ -6,7 +6,8 @@ export {
     startClock,
     toggleShowSeconds,
     setPageTitle,
-    toggleDisplayRealTime
+    toggleDisplayRealTime,
+    setDisplayUser
 } from './showElements'
 
 export {

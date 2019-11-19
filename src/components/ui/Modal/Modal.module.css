@@ -1,0 +1,13 @@
+.Modal {
+    position: fixed;
+    z-index: 500;
+    margin-left: auto;
+    top: 10%;
+}
+
+@media (min-width: 600px) {
+    .Modal {
+        width: 500px;
+        left: calc(50% - 250px);
+    }
+}

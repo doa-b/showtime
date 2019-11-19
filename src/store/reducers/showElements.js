@@ -10,127 +10,127 @@ const initialState = {
         {
             id: 'id0',
             firstName: 'Robin',
-            LastName: 'Schenke',
+            lastName: 'Schenke',
             Phone: '0612345678',
             country: 'Netherlands',
             type: 'executive',
-            groups: 'Presentor',
+            groups: 'presenter',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
             id: 'id1',
             firstName: 'Jeroen',
-            LastName: 'Schenke',
+            lastName: 'Schenke',
             Phone: '0612345678',
             country: 'Netherlands',
             type: 'executive',
-            groups: 'Presentor',
+            groups: 'presenter',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
             id: 'id2',
             firstName: 'Eve',
-            LastName: '',
+            lastName: '',
             Phone: '0612345678',
             country: 'Switserland',
             type: 'executive',
-            groups: 'Presentor',
+            groups: 'presenter',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
             id: 'id3',
             firstName: 'Bernd',
-            LastName: '',
+            lastName: '',
             Phone: '0612345678',
             country: 'Germany',
             type: 'executive',
-            groups: 'Presentor',
+            groups: 'presenter',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
             id: 'id4',
             firstName: 'Bianca',
-            LastName: '',
+            lastName: '',
             Phone: '0612345678',
             country: 'Germany',
             type: 'executive',
-            groups: 'Hairdresser',
+            groups: 'artist',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
             id: 'id5',
             firstName: 'Antonio',
-            LastName: '',
+            lastName: '',
             Phone: '0612345678',
             country: 'Germany',
             type: 'executive',
-            groups: 'Hairdresser',
+            groups: 'artist',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
             id: 'id6',
             firstName: 'Carmen',
-            LastName: '',
+            lastName: '',
             Phone: '0612345678',
             country: 'Germany',
             type: 'executive',
-            groups: 'Hairdresser',
+            groups: 'artist',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
             id: 'id7',
             firstName: 'Saskia',
-            LastName: 'Bolk',
+            lastName: 'Bolk',
             Phone: '0612345678',
             country: 'Netherlands',
             type: 'executive',
-            groups: 'Hairdresser',
+            groups: 'artist',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
             id: 'id8',
             firstName: 'Arno',
-            LastName: 'Doppen',
+            lastName: 'Doppen',
             Phone: '0612345678',
             country: 'Netherlands',
             type: 'executive',
-            groups: 'Hairdresser',
+            groups: 'artist',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
             id: 'id9',
             firstName: 'Eline',
-            LastName: 'de Hond',
+            lastName: 'de Hond',
             Phone: '0612345678',
             country: 'Netherlands',
             type: 'executive',
-            groups: 'Hairdresser',
+            groups: 'artist',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
             id: 'id10',
             firstName: 'Tessa',
-            LastName: '',
+            lastName: '',
             Phone: '0612345678',
             country: 'Netherlands',
             type: 'executive',
-            groups: 'Model',
+            groups: 'model',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
             id: 'id11',
             firstName: 'Jil',
-            LastName: '',
+            lastName: '',
             Phone: '0612345678',
             country: 'Netherlands',
             type: 'executive',
-            groups: 'Model',
+            groups: 'model',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
             id: 'id12',
             firstName: 'Doa',
-            LastName: 'Bonifacio',
+            lastName: 'Bonifacio',
             Phone: '0612345678',
             country: 'Netherlands',
             type: 'administrator',
@@ -140,31 +140,31 @@ const initialState = {
         {
             id: 'id13',
             firstName: 'Bob',
-            LastName: '',
+            lastName: '',
             Phone: '0612345678',
             country: 'Netherlands',
             type: 'executive',
-            groups: 'Technical Lead',
+            groups: 'director',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
             id: 'id14',
             firstName: 'Mac',
-            LastName: 'Guyver',
+            lastName: 'Guyver',
             Phone: '0612345678',
             country: 'Netherlands',
             type: 'executive',
-            groups: 'Engineer',
+            groups: 'sound',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },
         {
             id: 'id15',
             firstName: 'John',
-            LastName: 'Doa',
+            lastName: 'Doa',
             Phone: '0612345678',
             country: 'Netherlands',
             type: 'executive',
-            groups: 'Engineer',
+            groups: 'lighting',
             imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
         },],
     error: null,
@@ -175,7 +175,8 @@ const initialState = {
     currentTime: 0,
     displaySeconds: true,
     displayRealTime: true,
-    pageTitle: 'Schedule'
+    pageTitle: 'Schedule',
+    displayUser: null
 };
 
 const savedShowElement = (state, action) => {
@@ -231,7 +232,8 @@ const reducer = (state = initialState, action) => {
 
             case actionTypes.SHOW_TOGGLE_DISPLAY_REALTIME:
             return updateObject(state, {displayRealTime: !state.displayRealTime});
-
+        case actionTypes.SHOW_SET_DISPLAY_USER:
+            return updateObject(state, {displayUser: action.user});
         default:
             return state
     }

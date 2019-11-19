@@ -8,6 +8,7 @@ import PartDetails from './containers/Parts/PartDetails/PartDetails'
 import Layout from './hoc/Layout/Layout';
 import Monitor from "./containers/Monitor/Monitor";
 
+
 function App() {
 
     let routes = (
@@ -20,9 +21,9 @@ function App() {
         </Switch>
     );
     return (
-            <Layout variant='temporary'>
-                {routes}
-            </Layout>
+        <Layout variant='temporary'>
+            {routes}
+        </Layout>
     );
 }
 

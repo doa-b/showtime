@@ -11,6 +11,17 @@ export const updateObject = (oldObject, updatedProperties) => {
  * @param object the object of objects that needs to be converted to array of objects
  * @param orderKey the orderKey by which the new array needs to be sorted
  */
+export const ROLES = [
+    'model',
+    'artist',
+    'dancer',
+    'singer',
+    'presenter',
+    'light',
+    'sound',
+    'dj',
+    'director'
+];
 
 function checkNested(obj, level,  ...rest) {
     if (obj === undefined) return false

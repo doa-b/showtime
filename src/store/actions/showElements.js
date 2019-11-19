@@ -77,6 +77,15 @@ export const toggleDisplayRealTime = () => {
     }
 };
 
+export const setDisplayUser = (user) => {
+    return {
+        type: actionTypes.SHOW_SET_DISPLAY_USER,
+        user: user
+    }
+};
+
+
+
 export const setPageTitle = (title) => {
     return {
         type: actionTypes.SHOW_SET_PAGE_TITLE,

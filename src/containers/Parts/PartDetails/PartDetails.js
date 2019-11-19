@@ -225,6 +225,7 @@ class PartDetails extends Component {
                                               avatar={<Avatar alt={option.firstName} src={option.imageUrl}/>}
                                               className={className}
                                               onDelete={onDelete}
+                                              onClick={()=>this.props.onSetDisplayUser(option)}
                                           />
                                       ))
                                   }
@@ -264,7 +265,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onSave: (element, data) => dispatch(actions.save(element, data)),
-        onUpdate: (showId, data, elementName) => dispatch(actions.update(showId, data, elementName))
+        onUpdate: (showId, data, elementName) => dispatch(actions.update(showId, data, elementName)),
+        onSetDisplayUser: (user) => dispatch(actions.setDisplayUser(user))
     }
 };
 

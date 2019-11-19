@@ -1,9 +1,15 @@
 import React, {Component, useState} from 'react';
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
+import {SnackbarProvider} from 'notistack';
+
+
+import Button from "@material-ui/core/Button";
 
 import MyToolbar from "../../components/ui/MyToolbar/MyToolbar";
 import MySideDrawer from "../../components/ui/MySideDrawer/MySideDrawer";
+import Modal from '../../components/ui/Modal/Modal'
+import DisplayUser from "../../components/DisplayUser/DisplayUser";
 
 /**
  * Created by Doa on 23-10-2019.
@@ -29,8 +35,32 @@ class Layout extends Component {
     };
 
     render() {
+        let modal = null;
+        const notistackRef = React.createRef();
+        const onClickDismiss = key => () => {
+            notistackRef.current.closeSnackbar(key);
+        };
+        if (this.props.displayUser) {
+            modal = (
+                <Modal show
+                       modalClosed={() => this.props.onSetDisplayUser(null)}>
+                    <DisplayUser
+                        user={this.props.displayUser}
+                        close={() => this.props.onSetDisplayUser(null)}/>
+                </Modal>
+            )
+        }
+
         return (
-            <>
+            <SnackbarProvider
+                ref={notistackRef}
+                action={(key) => (
+                    <Button onClick={onClickDismiss(key)}>
+                        'Dismiss'
+                    </Button>
+                )}
+                maxSnack={3}>
+                {modal}
                 <MyToolbar
                     title={this.props.pageTitle}
                     onMenuClick={this.toggleDrawer}
@@ -47,7 +77,8 @@ class Layout extends Component {
                     toggleDisplayRealTime={this.props.onToggleRealTime}
                 />
                 {this.props.children}
-            </>);
+            </SnackbarProvider>
+        )
     }
 }
 
@@ -56,6 +87,7 @@ const mapStateToProps = (state) => {
         showName: state.show.showName,
         displayRealTime: state.show.displayRealTime,
         displaySeconds: state.show.displaySeconds,
+        displayUser: state.show.displayUser,
         pageTitle: state.show.pageTitle,
         isLive: state.live.isLive,
 
@@ -66,7 +98,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onToggle: () => dispatch(actions.toggleShowSeconds()),
         onToggleRealTime: () => dispatch(actions.toggleDisplayRealTime()),
-        onSetPageTitle: (title) => dispatch (actions.setPageTitle(title))
+        onSetPageTitle: (title) => dispatch(actions.setPageTitle(title)),
+        onSetDisplayUser: (user) => dispatch(actions.setDisplayUser(user))
     }
 };
 

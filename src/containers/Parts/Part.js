@@ -11,6 +11,7 @@ import Time from "../../components/Time/Time";
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import ProgressBar from '../../components/ui/ProgressBar/ProgressBar'
+import DisplayCrew from "../../components/DisplayCrew/DisplayCrew";
 
 /**
  * Created by Doa on 23-10-2019.
@@ -79,8 +80,10 @@ class Part extends Component {
                     <Time startTime={startTime}
                           duration={duration}
                           live={this.props.runningTime}/>
-                    <div
-                        onClick={() => this.props.clicked(this.props.partData.id, 'part/details')}>{this.props.partData.title}</div>
+                    <div className={classes.Title}
+                         onClick={() => this.props.clicked(this.props.partData.id, 'part/details')}>{this.props.partData.title}</div>
+                    <div className={classes.vl}></div>
+                    <DisplayCrew team={this.props.partData.team}/>
                     {arrow}
                 </div>
                 {progressBar}
