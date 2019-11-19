@@ -1,7 +1,6 @@
 import axios from 'axios'
 import * as actionTypes from './actionTypes';
-import {addSecondToClock, initiateClock} from "./showElements";
-import {LIVE_INCREMENT_RUNNING_PART_DURATION} from "./actionTypes";
+
 
 export const setIsLiveAndPlay = () => {
     return {
@@ -30,7 +29,6 @@ export const resetRunningPartDuration = () => {
 };
 
 export const incrementRunningPartDuration = () => {
-    console.log('INCREMENTING LIVE_INCREMENT_RUNNING_PART_DURATION');
     return {
         type: actionTypes.LIVE_INCREMENT_RUNNING_PART_DURATION
     }

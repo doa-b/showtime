@@ -83,7 +83,9 @@ class Part extends Component {
                     <div className={classes.Title}
                          onClick={() => this.props.clicked(this.props.partData.id, 'part/details')}>{this.props.partData.title}</div>
                     <div className={classes.vl}></div>
-                    <DisplayCrew team={this.props.partData.team}/>
+                    <DisplayCrew
+                        team={this.props.partData.team}
+                        deadLine={startTime - 58000}/>
                     {arrow}
                 </div>
                 {progressBar}

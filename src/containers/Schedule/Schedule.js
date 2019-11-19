@@ -5,8 +5,6 @@ import {withRouter} from 'react-router-dom'
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import BlocksList from "../Blocks/BlocksList";
-import DisplayUser from '../../components/DisplayUser/DisplayUser'
-import DisplayCrew from '../../components/DisplayCrew/DisplayCrew'
 import {msToDate, msToTime} from "../../shared/utility";
 import {withStyles} from '@material-ui/core/styles';
 import {Typography} from "@material-ui/core";
@@ -15,7 +13,6 @@ import Fab from '@material-ui/core/Fab';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import PauseIcon from '@material-ui/icons/Pause';
-import Modal from "@material-ui/core/Modal";
 
 /**
  * Created by Doa on 23-10-2019.
@@ -194,19 +191,7 @@ class Schedule extends Component {
         if (!this.props.showHasFinished) {
             body = (
                 <>
-                    <button onClick={this.openUserModal}>
-                        Open
-                    </button>
-                    <Modal
-                        open={this.state.showUser}
-                        onClose={this.closeUserModal}>
-                        <div>
-                            <DisplayUser user='kip'/>
-                        </div>
-                    </Modal>
-
                     <div className={classes.paper}>{head}</div>
-
                     {total}
                 </>
             )

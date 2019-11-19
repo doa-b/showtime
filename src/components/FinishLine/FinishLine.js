@@ -11,7 +11,6 @@ import {msToTime} from "../../shared/utility";
 const FinishLine = ({time, scheduledEndTime, isLive, updatescheduledEndTime}) => {
 
     useEffect(() => {
-        console.log('mounted or updated')
         if (!isLive && time !== scheduledEndTime) {
             updatescheduledEndTime(time);
         }

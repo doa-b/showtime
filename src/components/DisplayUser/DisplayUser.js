@@ -20,8 +20,6 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CloseIcon from '@material-ui/icons/Close';
 
-
-
 const styles = theme => ({
     card: {
         maxWidth: 322

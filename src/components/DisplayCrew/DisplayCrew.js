@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-
+import {compose} from "redux";
 import {ROLES, convertObjectstoArray} from '../../shared/utility'
 import Chip from '@material-ui/core/Chip';
 import Avatar from "@material-ui/core/Avatar";
 import withStyles from "@material-ui/core/styles/withStyles";
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
+import {withSnackbar} from 'notistack';
 
 /**
  * Created by Doa on 18-11-2019.
@@ -16,26 +17,28 @@ const styles = theme => ({
     },
 });
 
-const displayCrew = (props) => {
-    return ROLES.map((role) => {
-        return (
-            <RoleCast
-                key={role}
-                cast={convertObjectstoArray(props.team)
-                    .filter((actor) => actor.groups === role)}
-                role={role}
-                onSetDisplayUser={props.onSetDisplayUser}
-            />
-        )
+const deadlineWarning = (actorName, enqueueSnackbar) => {
+    const message = actorName + ' to Stage, 1 minute to start';
+    enqueueSnackbar(message, {
+        variant: 'info',
+        preventDuplicate: true
     })
 };
 
+// TODO make RoleCast Inline in displayCrew!!!
 
-const RoleCast = withStyles(styles)(
-    ({classes, cast, role, onSetDisplayUser}) => {
+const displayCrew = ({classes, team, onSetDisplayUser, currentTime, deadLine, isPaused, enqueueSnackbar}) => {
+
+
+    return ROLES.map((role) => {
+        const cast = convertObjectstoArray(team)
+            .filter((actor) => actor.groups === role);
 
         if (cast && cast.length > 0) {
             const actors = cast.map((actor) => {
+                if (currentTime === deadLine && !isPaused) {
+                    deadlineWarning(actor.firstName, enqueueSnackbar)
+                }
                 return (
                     <span className={classes.root} key={actor.id}>
                 <Chip key={actor.id}
@@ -43,19 +46,26 @@ const RoleCast = withStyles(styles)(
                       variant='outlined'
                       avatar={<Avatar alt={actor.firstName} src={actor.imageUrl}/>}
                       label={actor.firstName}
-                      onClick={()=> onSetDisplayUser(actor)}/>
+                      onClick={() => onSetDisplayUser(actor)}/>
                      </span>
                 )
             });
-
             return (
-                <div className={classes.root}>
+                <div key={role}
+                     className={classes.root}>
                     <b>{role}</b>
                     {actors}
                 </div>)
-        } else return null
-    });
+        }
+    })
+};
 
+const mapStateToProps = (state) => {
+    return {
+        currentTime: state.show.currentTime,
+        isPaused: state.live.isPaused
+    }
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -63,4 +73,7 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(null, mapDispatchToProps)(displayCrew)
+export default compose(
+    withSnackbar,
+    withStyles(styles),
+    connect(mapStateToProps, mapDispatchToProps))(displayCrew);
