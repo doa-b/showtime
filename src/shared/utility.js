@@ -97,6 +97,15 @@ export const msToDate = (miliseconds) => {
     return date.toDateString();
 };
 
+export const durationToDateTime = (duration) => {
+  const date = new Date (duration);
+  console.log(date)
+    return date;
+};
+export const dateToMs = (date) => {
+    return date.getUTCMilliseconds()
+};
+
 export const msToTime = (miliseconds, withSeconds = true) => {
     var milliseconds = parseInt((miliseconds % 1000) / 100),
         seconds = Math.floor((miliseconds / 1000) % 60),

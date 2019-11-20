@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import StartTime from '../../components/StartTime/StartTime'
 import Duration from '../../components/Duration/Duration'
 import Time from '../../components/Time/Time'
-import PartsList from "../Parts/PartsList";
+import PartsList from "../Parts/PartsList/PartsList";
 
 import classes from './Block.module.css'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';

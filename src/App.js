@@ -1,5 +1,7 @@
 import React from 'react';
 import {Route, Switch, withRouter, Redirect} from 'react-router-dom'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
 
 import './App.css';
 import Schedule from './containers/Schedule/Schedule';
@@ -21,9 +23,11 @@ function App() {
         </Switch>
     );
     return (
+        <MuiPickersUtilsProvider utils={MomentUtils}>
         <Layout variant='temporary'>
             {routes}
         </Layout>
+        </MuiPickersUtilsProvider>
     );
 }
 

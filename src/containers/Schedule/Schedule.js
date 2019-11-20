@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom'
 
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
-import BlocksList from "../Blocks/BlocksList";
+import BlocksList from "../Blocks/BlocksList/BlocksList";
 import {msToDate, msToTime} from "../../shared/utility";
 import {withStyles} from '@material-ui/core/styles';
 import {Typography} from "@material-ui/core";

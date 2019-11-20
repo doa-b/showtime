@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 
-import Block from './Block'
+import Block from '../Block'
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
-import * as actions from "../../store/actions";
+import * as actions from "../../../store/actions";
 import {connect} from "react-redux";
 import classes from './BlocksList.module.css';
-import FinishLine from "../../components/FinishLine/FinishLine";
+import FinishLine from "../../../components/FinishLine/FinishLine";
 
 
 import AddIcon from '@material-ui/icons/Add';

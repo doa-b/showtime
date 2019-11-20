@@ -1,22 +1,32 @@
 import React, {Component} from 'react';
 import {compose} from "redux";
+import {KeyboardTimePicker} from '@material-ui/pickers'
+
 import {withStyles} from '@material-ui/core/styles';
 import {TextField, Button, FormControlLabel} from "@material-ui/core";
 import {connect} from 'react-redux'
-import {updateObject, top100Films, convertArrayToObject, convertObjectstoArray} from '../../../shared/utility'
+import {
+    updateObject,
+    top100Films,
+    convertArrayToObject,
+    convertObjectstoArray,
+    msToTime,
+    dateToMs,
+    durationToDateTime
+} from '../../../shared/utility'
 import {HuePicker} from 'react-color'
 import Switch from "@material-ui/core/Switch";
 import Chip from '@material-ui/core/Chip'
 import * as actions from "../../../store/actions";
-import {update} from "../../../store/actions";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {createFilterOptions} from '@material-ui/lab/Autocomplete';
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import Select from '@material-ui/core/Select';
 import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
+import moment from "moment";
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
 /**
  * Created by Doa on 30-10-2019.
@@ -58,6 +68,18 @@ const styles = theme => ({
         textAlign: 'center',
         color: theme.palette.text.secondary
     },
+
+    titleAndDuration: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'baseline'
+    },
+
+    titleInput: {
+        flexGrow: 2
+    },
     team: {
         border: 5
     },
@@ -65,6 +87,11 @@ const styles = theme => ({
         textAlign: 'left',
         alignItems: 'left',
         alignContent: 'left'
+    },
+    timePicker: {
+        width: 150,
+        marginLeft: 10,
+        marginBottom: 0
     }
 });
 
@@ -77,7 +104,7 @@ class PartDetails extends Component {
         title: 'your part title',
         cue: '',
         description: '',
-        duration: 120000,
+        duration: moment(120000),
         color: '#0017ff',
         textColorBlack: false,
         team: [this.props.users[0]]
@@ -88,7 +115,8 @@ class PartDetails extends Component {
             if (this.props.location.state.elementId) {
                 let currentPart = this.props.parts.filter((aPart) => aPart.id === this.props.location.state.elementId)[0];
                 if (currentPart) {
-                    this.setState(updateObject(currentPart, {team: convertObjectstoArray(currentPart.team)}))
+                    this.setState(updateObject(currentPart,
+                        {team: convertObjectstoArray(currentPart.team), duration: moment(currentPart.duration)}));
                 }
             } else {
                 const numberOfPartsinBlock = this.props.parts.filter((aPart) => aPart.BlockId === this.props.location.state.parentId).length;
@@ -100,7 +128,6 @@ class PartDetails extends Component {
     }
 
     inputChangedHandler = (event, value) => {
-        console.log(this.state);
         this.setState({[event.target.id]: event.target.value})
     };
 
@@ -108,19 +135,16 @@ class PartDetails extends Component {
         this.setState({team: value})
     };
 
-    blockChangedHandler = (event, value) => {
-        this.setState({blockId: event.target.value})
+    blockChangedHandler = (event) => {
+        this.setState({BlockId: event.target.value})
     };
-    onSubmitHandler = (event) => {
-        event.preventDefault();
-        const part = updateObject(this.state, {team: convertArrayToObject(this.state.team, 'id')})
-        if (this.props.location.state && this.props.location.state.elementId) {
-            this.props.onUpdate(this.props.location.state.elementId, part, 'parts')
-        } else {
-            this.props.onSave('parts', part)
-        }
-        // TODO let this wait until saving to store is done
-        this.props.history.push('/');
+
+    durationChangedHandler = (date) => {
+        console.log(date);
+        console.log('this is the value: ' + date.valueOf());
+
+        console.log(this.state.duration);
+        this.setState({duration: date})
     };
 
     colorChangedHandler = (color) => {
@@ -131,6 +155,21 @@ class PartDetails extends Component {
         this.setState((prevState) => {
             return {textColorBlack: !prevState.textColorBlack};
         });
+    };
+    onSubmitHandler = (event) => {
+        event.preventDefault();
+        const part = updateObject(this.state,
+            {
+                team: convertArrayToObject(this.state.team, 'id'),
+                duration: this.state.duration.valueOf()
+            });
+        if (this.props.location.state && this.props.location.state.elementId) {
+            this.props.onUpdate(this.props.location.state.elementId, part, 'parts')
+        } else {
+            this.props.onSave('parts', part)
+        }
+        // TODO let this wait until saving to store is done
+        this.props.history.push('/');
     };
 
 // TODO introduce full name, this makes searching more easy. Replace type with Role
@@ -166,14 +205,29 @@ class PartDetails extends Component {
 
                 <form className={classes.form}
                       onSubmit={this.onSubmitHandler}>
-                    <TextField
-                        onChange={this.inputChangedHandler}
-                        value={this.state.title}
-                        required
-                        id='title'
-                        label='title'
-                        margin='normal'
-                        variant='outlined'/>
+                    <div className={classes.titleAndDuration}>
+                        <TextField className={classes.titleInput}
+                            onChange={this.inputChangedHandler}
+                            value={this.state.title}
+                            required
+                            id='title'
+                            label='title'
+                            margin='normal'
+                            variant='outlined'/>
+                        <KeyboardTimePicker
+                            className={classes.timePicker}
+                            required
+                            keyboardIcon={<AccessTimeIcon/>}
+                            inputVariant='outlined'
+                            ampm={false}
+                            openTo="minutes"
+                            views={["minutes", "seconds"]}
+                            format="mm:ss"
+                            label="Duration"
+                            value={this.state.duration}
+                            onChange={this.durationChangedHandler}
+                        />
+                    </div>
                     <TextField
                         onChange={this.inputChangedHandler}
                         value={this.state.cue}
@@ -182,14 +236,14 @@ class PartDetails extends Component {
                         margin='normal'
                         variant='outlined'/>
                     <TextField
-                               onChange={this.inputChangedHandler}
-                               value={this.state.description}
-                               id='description'
-                               label='description'
-                               multiline
-                               rows={3}
-                               margin='normal'
-                               variant='outlined'/>
+                        onChange={this.inputChangedHandler}
+                        value={this.state.description}
+                        id='description'
+                        label='description'
+                        multiline
+                        rows={3}
+                        margin='normal'
+                        variant='outlined'/>
                     <FormControl className={classes.selectBlock}
                                  id='blockId'>
                         <Select className={classes.selectBlock}
@@ -225,7 +279,7 @@ class PartDetails extends Component {
                                               avatar={<Avatar alt={option.firstName} src={option.imageUrl}/>}
                                               className={className}
                                               onDelete={onDelete}
-                                              onClick={()=>this.props.onSetDisplayUser(option)}
+                                              onClick={() => this.props.onSetDisplayUser(option)}
                                           />
                                       ))
                                   }

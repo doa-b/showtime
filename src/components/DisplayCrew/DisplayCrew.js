@@ -26,16 +26,18 @@ const deadlineWarning = (actorName, enqueueSnackbar) => {
 };
 
 const displayCrew = ({classes, team, onSetDisplayUser, currentTime, deadLine, isPaused, enqueueSnackbar}) => {
-
+    let number = 0;
     return ROLES.map((role) => {
         const cast = convertObjectstoArray(team)
             .filter((actor) => actor.groups === role);
 
         if (cast && cast.length > 0) {
+            number = 0;
             const actors = cast.map((actor) => {
                 if (currentTime === deadLine && !isPaused) {
                     deadlineWarning(actor.firstName, enqueueSnackbar)
                 }
+                number++
                 return (
                     <span className={classes.root} key={actor.id}>
                 <Chip key={actor.id}
@@ -50,7 +52,7 @@ const displayCrew = ({classes, team, onSetDisplayUser, currentTime, deadLine, is
             return (
                 <div key={role}
                      className={classes.root}>
-                    <b>{role}</b>
+                    <b>{(number >1) ? role + 's' : role}</b>
                     {actors}
                 </div>)
         }

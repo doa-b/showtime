@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom'
 
-import Part from './Part'
+import Part from '../Part'
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
-import * as actions from "../../store/actions";
+import * as actions from "../../../store/actions";
 import {connect} from "react-redux";
 
 import classes from './PartsList.module.css'

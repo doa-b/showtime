@@ -58,9 +58,6 @@ const styles = theme => ({
         textAlign: 'center',
         color: theme.palette.text.secondary
     },
-    team: {
-        border: 5
-    },
     selectShow: {
         textAlign: 'left',
         alignItems: 'left',
@@ -77,8 +74,7 @@ class BlockDetails extends Component {
         cue: '',
         description: '',
         color: '#0017ff',
-        textColorBlack: false,
-        team: [this.props.users[0]]
+        textColorBlack: false
     };
 
     componentDidMount() {
@@ -99,10 +95,6 @@ class BlockDetails extends Component {
         console.log(event);
         console.log(event.target)
         this.setState({[event.target.id]: event.target.value})
-    };
-
-    teamChangedHandler = (event, value) => {
-        this.setState({team: value})
     };
 
     showChangedHandler = (event, value) => {
@@ -200,44 +192,6 @@ class BlockDetails extends Component {
                             })}
                         </Select>
                     </FormControl>
-                    <Autocomplete className={classes.team}
-                                  value={this.state.team}
-                                  id='team'
-                                  multiple
-                                  onChange={this.teamChangedHandler}
-                                  groupBy={option => option.groups}
-                                  getOptionLabel={option => option.firstName}
-                                  options={this.props.users.map(option => option)}
-                                  defaultValue={[this.props.users[1]]}
-                                  filterOptions={filterOptions}
-                                  filterSelectedOptions
-                                  renderTags={(value, {className, onDelete}) =>
-                                      value.map((option, index) => (
-                                          <Chip
-                                              key={index}
-                                              variant="outlined"
-                                              data-tag-index={index}
-                                              tabIndex={-1}
-                                              label={option.firstName}
-                                              avatar={<Avatar alt={option.firstName} src={option.imageUrl}/>}
-                                              className={className}
-                                              onDelete={onDelete}
-                                          />
-                                      ))
-                                  }
-                                  renderInput={params => (
-                                      <TextField
-                                          {...params}
-                                          variant="filled"
-                                          label="Team members"
-                                          placeholder="name"
-                                          margin="normal"
-                                          fullWidth
-                                      />
-                                  )}
-                    />
-
-
                     <Button
                         type='submit'
                     >
@@ -254,7 +208,6 @@ const mapStateToProps = (state) => {
         showId: state.show.currentShow,
         blocks: state.show.blocks,
         shows: state.show.shows,
-        users: state.users.users,
     }
 };
 
