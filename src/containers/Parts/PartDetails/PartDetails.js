@@ -114,8 +114,8 @@ class PartDetails extends Component {
     onSubmitHandler = (event) => {
         event.preventDefault();
         const part = updateObject(this.state, {team: convertArrayToObject(this.state.team, 'id')})
-        if (this.props.location.state && this.props.location.state.id) {
-            this.props.onUpdate(this.props.location.state.id, part, 'parts')
+        if (this.props.location.state && this.props.location.state.elementId) {
+            this.props.onUpdate(this.props.location.state.elementId, part, 'parts')
         } else {
             this.props.onSave('parts', part)
         }
@@ -240,8 +240,6 @@ class PartDetails extends Component {
                                       />
                                   )}
                     />
-
-
                     <Button
                         type='submit'
                     >
@@ -258,7 +256,7 @@ const mapStateToProps = (state) => {
         showId: state.show.currentShow,
         blocks: state.show.blocks,
         parts: state.show.parts,
-        users: state.show.users,
+        users: state.users.users,
     }
 };
 

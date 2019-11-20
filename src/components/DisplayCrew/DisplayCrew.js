@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {compose} from "redux";
 import {ROLES, convertObjectstoArray} from '../../shared/utility'
 import Chip from '@material-ui/core/Chip';
@@ -25,10 +25,7 @@ const deadlineWarning = (actorName, enqueueSnackbar) => {
     })
 };
 
-// TODO make RoleCast Inline in displayCrew!!!
-
 const displayCrew = ({classes, team, onSetDisplayUser, currentTime, deadLine, isPaused, enqueueSnackbar}) => {
-
 
     return ROLES.map((role) => {
         const cast = convertObjectstoArray(team)

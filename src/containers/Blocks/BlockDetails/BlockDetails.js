@@ -254,7 +254,7 @@ const mapStateToProps = (state) => {
         showId: state.show.currentShow,
         blocks: state.show.blocks,
         shows: state.show.shows,
-        users: state.show.users,
+        users: state.users.users,
     }
 };
 

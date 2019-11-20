@@ -10,14 +10,14 @@ import * as serviceWorker from './serviceWorker';
 import './index.css';
 
 import App from './App';
-import authReducer from './store/reducers/auth'
+import usersReducer from './store/reducers/users'
 import showElementsReducer from './store/reducers/showElements'
 import liveReducer from './store/reducers/live'
 
 axios.defaults.baseURL = 'https://showtime-201ca.firebaseio.com/';
 
 const rootReducer = combineReducers({
-    auth: authReducer,
+    users: usersReducer,
     show: showElementsReducer,
     live: liveReducer
 });

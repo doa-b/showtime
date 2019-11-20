@@ -84,8 +84,6 @@ export const setDisplayUser = (user) => {
     }
 };
 
-
-
 export const setPageTitle = (title) => {
     return {
         type: actionTypes.SHOW_SET_PAGE_TITLE,
