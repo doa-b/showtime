@@ -15,7 +15,8 @@ const initialState = {
     displaySeconds: true,
     displayRealTime: true,
     pageTitle: 'Schedule',
-    displayUser: null
+    displayUser: null,
+    isEditable: true
 };
 
 const savedShowElement = (state, action) => {
@@ -73,6 +74,8 @@ const reducer = (state = initialState, action) => {
             return updateObject(state, {displayRealTime: !state.displayRealTime});
         case actionTypes.SHOW_SET_DISPLAY_USER:
             return updateObject(state, {displayUser: action.user});
+        case actionTypes.SHOW_TOGGLE_IS_EDITABLE:
+            return updateObject(state, {isEditable: !state.isEditable});
         default:
             return state
     }

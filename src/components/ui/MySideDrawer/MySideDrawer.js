@@ -15,8 +15,6 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-
-
 const styles = theme => ({
     root: {
         flexGrow: 1
@@ -45,8 +43,11 @@ const styles = theme => ({
 });
 
 const MySideDrawer = withStyles(styles)(
-    ({classes, variant, open, onClose, onItemClick,
-         showSeconds, toggleShowSeconds, displayRealTime, toggleDisplayRealTime}) => (
+    ({
+         classes, variant, open, onClose, onItemClick,
+         showSeconds, toggleShowSeconds, displayRealTime, toggleDisplayRealTime,
+         isEditable, toggleIsEditable
+     }) => (
         <Drawer variant={variant} open={open} onClose={onClose}>
             {/*div to offset the drawer with the heighth of the Toolbar, when the variant is persistent*/}
             <div
@@ -100,9 +101,9 @@ const MySideDrawer = withStyles(styles)(
                 {/*TODO Only show this when access level is high enough, else always of. Toggle + and handles*/}
                 <ListItem>
                     <Checkbox
-                        value={displayRealTime}
-                        onChange={toggleDisplayRealTime}
-                        checked={displayRealTime}/>
+                        value={isEditable}
+                        onChange={toggleIsEditable}
+                        checked={isEditable}/>
                     <ListItemText>
                         Edit Mode
                     </ListItemText>

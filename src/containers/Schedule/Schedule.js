@@ -64,7 +64,7 @@ class Schedule extends Component {
         this.setState({showUser: false})
     };
 
-    showDetailsHandler = (elementId, pathName, orderNumber, parentId) => {
+    showDetailsHandler = (elementId, pathName, parentId) => {
         if (elementId) {
             this.props.history.push({
                 pathname: pathName,

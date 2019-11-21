@@ -77,6 +77,11 @@ export const toggleDisplayRealTime = () => {
     }
 };
 
+export const toggleIsEditable = () => {
+    return {
+        type: actionTypes.SHOW_TOGGLE_IS_EDITABLE
+    }
+};
 export const setDisplayUser = (user) => {
     return {
         type: actionTypes.SHOW_SET_DISPLAY_USER,

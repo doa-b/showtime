@@ -61,7 +61,8 @@ class Part extends Component {
         if (this.state.showChildren) {
             scenes = <div className={classes.Below}>
                 <span className={classes.Spacer}></span>
-                <IconButton size="small" color="primary" className={classes.button} aria-label="add">
+                <IconButton size="small" color="primary" className={classes.button} aria-label="add"
+                            onClick={() => this.props.clicked(null, 'scene/details', this.props.partData.id)}>
                     <AddIcon/>
                 </IconButton>
                 <ScenesList

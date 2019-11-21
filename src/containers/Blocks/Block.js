@@ -38,7 +38,7 @@ class Block extends Component {
                 <span className={classes.Spacer}></span>
                 <IconButton size="small" color="primary"
                             className={classes.button}
-                            onClick={() => this.props.clicked(null, 'part/details', null, this.props.blockData.id)}
+                            onClick={() => this.props.clicked(null, 'part/details', this.props.blockData.id)}
                             aria-label="add">
                     <AddIcon/>
                 </IconButton>

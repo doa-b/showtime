@@ -76,6 +76,8 @@ class Layout extends Component {
                     toggleShowSeconds={this.props.onToggle}
                     displayRealTime={this.props.displayRealTime}
                     toggleDisplayRealTime={this.props.onToggleRealTime}
+                    isEditable={this.props.isEditable}
+                    toggleIsEditable={this.props.onToggleIsEditable}
                 />
                 {this.props.children}
             </SnackbarProvider>
@@ -88,6 +90,7 @@ const mapStateToProps = (state) => {
         showName: state.show.showName,
         displayRealTime: state.show.displayRealTime,
         displaySeconds: state.show.displaySeconds,
+        isEditable: state.show.isEditable,
         displayUser: state.show.displayUser,
         pageTitle: state.show.pageTitle,
         isLive: state.live.isLive,
@@ -100,7 +103,8 @@ const mapDispatchToProps = (dispatch) => {
         onToggle: () => dispatch(actions.toggleShowSeconds()),
         onToggleRealTime: () => dispatch(actions.toggleDisplayRealTime()),
         onSetPageTitle: (title) => dispatch(actions.setPageTitle(title)),
-        onSetDisplayUser: (user) => dispatch(actions.setDisplayUser(user))
+        onSetDisplayUser: (user) => dispatch(actions.setDisplayUser(user)),
+        onToggleIsEditable: () => dispatch(actions.toggleIsEditable())
     }
 };
 

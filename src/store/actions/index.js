@@ -7,7 +7,8 @@ export {
     toggleShowSeconds,
     setPageTitle,
     toggleDisplayRealTime,
-    setDisplayUser
+    setDisplayUser,
+    toggleIsEditable
 } from './showElements'
 
 export {
