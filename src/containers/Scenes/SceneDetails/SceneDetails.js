@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {compose} from 'redux';
-
 import {KeyboardTimePicker} from '@material-ui/pickers'
-import {sceneCategories} from '../../../shared/utility'
+
 
 import {withStyles} from '@material-ui/core/styles';
 import {TextField, Button} from '@material-ui/core';
@@ -10,7 +9,8 @@ import {connect} from 'react-redux'
 import {
     updateObject,
     convertArrayToObject,
-    convertObjectstoArray,   
+    convertObjectstoArray,
+    sceneCategories
 } from '../../../shared/utility'
 import {HuePicker} from 'react-color'
 import Switch from '@material-ui/core/Switch';
@@ -25,6 +25,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import moment from 'moment';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import InputLabel from "@material-ui/core/InputLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 const styles = theme => ({
     paper: {
@@ -33,13 +35,15 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         width: '90%',
-
         textAlign: 'center',
         color: theme.palette.text.secondary
     },
     title: {
+        border: '1px solid #ccc',
+        boxShadow: '2px 2px 2px #ccc',
         padding: 5,
         marginBottom: 1,
+        alignItems: 'center'
     },
     colorPicker: {
         display: 'flex',
@@ -77,56 +81,81 @@ const styles = theme => ({
     team: {
         border: 5
     },
-    selectBlock: {
-        textAlign: 'left',
-        alignItems: 'left',
-        alignContent: 'left'
+    select: {
+        flexGrow: 1,
     },
     durationPicker: {
         width: 150,
         marginLeft: 10,
         marginBottom: 0
     },
-    category: {
-        margin: 10
+    startTimePicker: {
+        width: 150,
+        marginRight: 10,
+        marginBottom: 0
+    },
+    categorySelect: {
+        flexGrow: 1,
+        marginRight: 10
+    },
+    categorySelection: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    selecters: {
+        textAlign: 'left',
+        marginTop: theme.spacing(.5),
+        marginBottom: theme.spacing(1),
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
     }
 });
+
 /**
  * Created by Doa on 30-10-2019.
  */
-class PartDetails extends Component {
+class SceneDetails extends Component {
 
     state = {
         showId: this.props.showId,
-        BlockId: '',
+        partId: '',
         order: 0,
-        title: 'your part title',
+        title: 'your scene title',
         cue: '',
         description: '',
         duration: moment(120000),
-        color: '#0017ff',
-        textColorBlack: false,
+        startTime: moment(60000),
+        color: '#ffffff',
+        textColorBlack: true,
         team: [this.props.users[0]],
+        category: 0,
     };
 
     componentDidMount() {
         if (this.props.location.state) {
             if (this.props.location.state.elementId) {
-                let currentPart = this.props.parts.filter((aPart) => aPart.id === this.props.location.state.elementId)[0];
-                if (currentPart) {
-                    this.setState(updateObject(currentPart,
-                        {team: convertObjectstoArray(currentPart.team), duration: moment(currentPart.duration)}));
+                let currentScene = this.props.scenes.filter((aScene) => aScene.id === this.props.location.state.elementId)[0];
+                if (currentScene) {
+                    this.setState(updateObject(currentScene,
+                        {
+                            team: convertObjectstoArray(currentScene.team),
+                            duration: moment(currentScene.duration),
+                            startTime: moment(currentScene.startTime)
+                        }));
                 }
             } else {
-                const numberOfPartsinBlock = this.props.parts.filter((aPart) => aPart.BlockId === this.props.location.state.parentId).length;
+                const numberOfScenesinPart = this.props.scenes.filter((aScene) => aScene.partId === this.props.location.state.parentId).length;
                 this.setState(
-                    {order: numberOfPartsinBlock, BlockId: this.props.location.state.parentId}
+                    {order: numberOfScenesinPart, partId: this.props.location.state.parentId}
                 )
             }
         }
     }
 
-    inputChangedHandler = (event, value) => {
+    inputChangedHandler = (event) => {
+        console.log(this.state);
         this.setState({[event.target.id]: event.target.value})
     };
 
@@ -134,8 +163,12 @@ class PartDetails extends Component {
         this.setState({team: value})
     };
 
-    blockChangedHandler = (event) => {
-        this.setState({BlockId: event.target.value})
+    partChangedHandler = (event) => {
+        this.setState({partId: event.target.value})
+    };
+
+    categoryChangedHandler = (event) => {
+        this.setState({category: event.target.value})
     };
 
     durationChangedHandler = (date) => {
@@ -144,6 +177,10 @@ class PartDetails extends Component {
 
         console.log(this.state.duration);
         this.setState({duration: date})
+    };
+
+    startTimeChangedHandler = (date) => {
+        this.setState({startTime: date})
     };
 
     colorChangedHandler = (color) => {
@@ -157,15 +194,16 @@ class PartDetails extends Component {
     };
     onSubmitHandler = (event) => {
         event.preventDefault();
-        const part = updateObject(this.state,
+        const scene = updateObject(this.state,
             {
                 team: convertArrayToObject(this.state.team, 'id'),
-                duration: this.state.duration.valueOf()
+                duration: this.state.duration.valueOf(),
+                startTime: this.state.startTime.valueOf()
             });
         if (this.props.location.state && this.props.location.state.elementId) {
-            this.props.onUpdate(this.props.location.state.elementId, part, 'parts')
+            this.props.onUpdate(this.props.location.state.elementId, scene, 'scenes')
         } else {
-            this.props.onSave('parts', part)
+            this.props.onSave('scenes', scene)
         }
         // TODO let this wait until saving to store is done
         this.props.history.push('/');
@@ -183,10 +221,11 @@ class PartDetails extends Component {
         return (
             <Paper className={classes.paper}>
                 {/*{this.state.order}*/}
+
                 <span className={classes.title} style={{
                     background: this.state.color,
                     color: textColor
-                }}>{this.state.title}</span>
+                }}> {sceneCategories[this.state.category].icon}{' '+ this.state.title}</span>
                 <div className={classes.colorPicker}>
                     <HuePicker
                         width='60%'
@@ -195,7 +234,7 @@ class PartDetails extends Component {
                     <div className={classes.textColor}>
                         Text colour: white<Switch
                         color='primary'
-                        checked={this.state.textColorBlack}
+                        checked={this.state. textColorBlack}
                         onChange={this.textColorChangedHandler}/>black
                     </div>
                 </div>
@@ -203,6 +242,20 @@ class PartDetails extends Component {
                 <form className={classes.form}
                       onSubmit={this.onSubmitHandler}>
                     <div className={classes.titleAndDuration}>
+                        <KeyboardTimePicker
+                            id='startTime'
+                            className={classes.startTimePicker}
+                            required
+                            keyboardIcon={<AccessTimeIcon/>}
+                            inputVariant='outlined'
+                            ampm={false}
+                            openTo='minutes'
+                            views={['minutes', 'seconds']}
+                            format='mm:ss'
+                            label='Relative StartTime'
+                            value={this.state.startTime}
+                            onChange={this.startTimeChangedHandler}
+                        />
                         <TextField className={classes.titleInput}
                                    onChange={this.inputChangedHandler}
                                    value={this.state.title}
@@ -241,19 +294,43 @@ class PartDetails extends Component {
                         rows={3}
                         margin='normal'
                         variant='outlined'/>
-                    <FormControl className={classes.selectBlock}
-                                 id='blockId'>
-                        <Select className={classes.selectBlock}
-                                labelId='label'
-                                id='blockId'
-                                variant='outlined'
-                                value={this.state.BlockId}
-                                onChange={this.blockChangedHandler}>
-                            {this.props.blocks.map(block => {
-                                return <MenuItem key={block.id} value={block.id}>{block.title}</MenuItem>
-                            })}
-                        </Select>
-                    </FormControl>
+                    <div className={classes.selecters}>
+                        <FormControl className={classes.categorySelect}
+                                     id='category'>
+                            <FormHelperText>Choose a category</FormHelperText>
+                            <Select className={classes.categorySelection}
+                                    autoWidth
+                                    labelId='categoryLabel'
+                                    id='category'
+                                    variant='outlined'
+                                    value={this.state.category}
+                                    onChange={this.categoryChangedHandler}>
+                                {sceneCategories.map((category, index) => {
+                                    return (
+                                        <MenuItem className={classes.categorySelection} key={[index]} value={index}>
+                                            {category.icon}
+                                            {category.label}
+                                        </MenuItem>)
+                                })}
+                            </Select>
+                        </FormControl>
+                        <FormControl className={classes.select}
+                                     id='partId'>
+                            <FormHelperText>Choose the parent Part</FormHelperText>
+                            <Select className={classes.select}
+                                    autoWidth
+                                    labelId='label'
+                                    id='partId'
+                                    variant='outlined'
+                                    value={this.state.partId}
+                                    onChange={this.partChangedHandler}>
+                                {this.props.parts.map(part => {
+                                    return <MenuItem key={part.id} value={part.id}>{part.title}</MenuItem>
+                                })}
+                            </Select>
+                        </FormControl>
+
+                    </div>
                     <Autocomplete className={classes.team}
                                   value={this.state.team}
                                   id='team'
@@ -305,8 +382,8 @@ class PartDetails extends Component {
 const mapStateToProps = (state) => {
     return {
         showId: state.show.currentShow,
-        blocks: state.show.blocks,
         parts: state.show.parts,
+        scenes: state.show.scenes,
         users: state.users.users,
     }
 };
@@ -321,4 +398,4 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
     withStyles(styles),
-    connect(mapStateToProps, mapDispatchToProps))(PartDetails)
+    connect(mapStateToProps, mapDispatchToProps))(SceneDetails)

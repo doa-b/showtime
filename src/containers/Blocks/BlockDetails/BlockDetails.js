@@ -148,7 +148,7 @@ class BlockDetails extends Component {
                     <div className={classes.textColor}>
                         Text colour: white<Switch
                         color='primary'
-                        checked={this.state.textColor}
+                        checked={this.state. textColorBlack}
                         onChange={this.textColorChangedHandler}/>black
                     </div>
                 </div>

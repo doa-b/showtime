@@ -24,15 +24,6 @@ class ScenesList extends Component {
             };
     }
 
-    showDetailsHandler = (sceneId) => {
-        this.props.history.push({
-            pathname: 'block/details',
-            state: {
-                parentId: sceneId
-            }
-        })
-    };
-
     componentDidUpdate(prevProps, prevState) {
         if (prevState.items !== this.state.items) {
             this.props.onUpdate(this.props.showId, this.state.items, 'scenes');
@@ -45,7 +36,7 @@ class ScenesList extends Component {
             children={<DragHandle/>}
             sceneData={value}
             startTime={this.props.startTime}
-            detailClicked={this.showDetailsHandler}
+            detailClicked={this.props.clicked}
         />);
 
     onSortEnd = ({oldIndex, newIndex}) => {

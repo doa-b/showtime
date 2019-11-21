@@ -9,6 +9,7 @@ import BlockDetails from './containers/Blocks/BlockDetails/BlockDetails'
 import PartDetails from './containers/Parts/PartDetails/PartDetails'
 import Layout from './hoc/Layout/Layout';
 import Monitor from "./containers/Monitor/Monitor";
+import SceneDetails from "./containers/Scenes/SceneDetails/SceneDetails";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" exact component={Schedule}/>
             <Route path="/block/details" exact component={BlockDetails}/>
             <Route path="/part/details" exact component={PartDetails}/>
+            <Route path="/scene/details" exact component={SceneDetails}/>
             <Route path="/monitor" exact component={Monitor}/>
             <Redirect to="/"/>
         </Switch>

@@ -97,13 +97,16 @@ const MySideDrawer = withStyles(styles)(
                         Display Realtime
                     </ListItemText>
                 </ListItem>
-                {/*<FormControlLabel*/}
-                {/*    className={classes.checkBox}*/}
-                {/*    control={<Checkbox*/}
-                {/*        value={displayRealTime}*/}
-                {/*        onChange={toggleDisplayRealTime}*/}
-                {/*        checked={displayRealTime}/>}*/}
-                {/*    label='Display Realtime'/>*/}
+                {/*TODO Only show this when access level is high enough, else always of. Toggle + and handles*/}
+                <ListItem>
+                    <Checkbox
+                        value={displayRealTime}
+                        onChange={toggleDisplayRealTime}
+                        checked={displayRealTime}/>
+                    <ListItemText>
+                        Edit Mode
+                    </ListItemText>
+                </ListItem>
                 <ListSubheader>
                     Navigation
                 </ListSubheader>
