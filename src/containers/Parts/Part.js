@@ -12,6 +12,7 @@ import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import ProgressBar from '../../components/ui/ProgressBar/ProgressBar'
 import DisplayCrew from "../../components/DisplayCrew/DisplayCrew";
+import OptionsMenu from "../../components/ui/OptionsMenu/OptionsMenu";
 
 /**
  * Created by Doa on 23-10-2019.
@@ -55,8 +56,7 @@ class Part extends Component {
         }
 
         let scenes = null;
-        let arrow = <KeyboardArrowLeftIcon className={classes.Arrow}
-                                           onClick={this.toggleVisibilityHandler}/>;
+        let arrow = <KeyboardArrowLeftIcon onClick={this.toggleVisibilityHandler}/>;
 
         if (this.state.showChildren) {
             scenes = <div className={classes.Below}>
@@ -66,12 +66,12 @@ class Part extends Component {
                     <AddIcon/>
                 </IconButton>
                 <ScenesList
+                    isRunning={this.props.runningTime}
                     parentId={this.props.partData.id}
                     startTime={startTime}
                     clicked={this.props.clicked}/>
             </div>
-            arrow = <KeyboardArrowDownIcon className={classes.Arrow}
-                                           onClick={this.toggleVisibilityHandler}/>
+            arrow = <KeyboardArrowDownIcon onClick={this.toggleVisibilityHandler}/>
         }
 
         return (
@@ -87,7 +87,14 @@ class Part extends Component {
                     <DisplayCrew
                         team={this.props.partData.team}
                         deadLine={startTime - 58000}/>
-                    {arrow}
+                    <div className={classes.Controls}>
+                        <OptionsMenu
+                            elementType = 'parts'
+                            element = {this.props.partData}
+                            parent = {this.props.partData.blockId}/>
+                        {arrow}
+                    </div>
+
                 </div>
                 {progressBar}
                 {scenes}

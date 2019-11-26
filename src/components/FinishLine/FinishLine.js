@@ -22,10 +22,10 @@ const FinishLine = ({time, scheduledEndTime, isLive, updatescheduledEndTime}) =>
     if (time > scheduledEndTime) {
         extraTime = (
             <div className={classes.Extratime}>overtime:
-        <span className={classes.Overtime}>{'+'+ msToTime(time - scheduledEndTime)}</span>
+        <span className={classes.Overtime}>{'+'+ msToTime(time - scheduledEndTime, true)}</span>
             </div>)
     } else if (time < scheduledEndTime) {
-        extraTime = <span className={classes.Undertime}>{'Undertime: - ' + msToTime(scheduledEndTime - time)}</span>;
+        extraTime = <span className={classes.Undertime}>{'Undertime: - ' + msToTime(scheduledEndTime - time, true)}</span>;
     }
 
     return (

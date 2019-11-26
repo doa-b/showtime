@@ -1,0 +1,22 @@
+.FullWidthText {
+    width: 1000px;
+    font-size: 25.5vw;
+}
+
+.Wrapper {
+    text-align: center;
+}
+
+.CurrentPart {
+    background: #09d3ac;
+    padding: .5% 0;
+}
+
+.NextPart {
+    background: #cccccc;
+    padding: .5% 0;
+}
+
+.Next {
+    font-size: 144px;
+}

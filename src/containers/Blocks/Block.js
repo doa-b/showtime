@@ -9,6 +9,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
+import OptionsMenu from "../../components/ui/OptionsMenu/OptionsMenu";
 
 
 /**
@@ -68,6 +69,10 @@ class Block extends Component {
                         {this.props.blockData.title}
                         {(this.props.running) ? '  running' : null}</div>
                     <div className={classes.Controls}>
+                        <OptionsMenu
+                            elementType = 'blocks'
+                            element = {this.props.blockData}
+                            parent = {this.props.blockData.showId}/>
                         {arrow}
                     </div>
                 </div>

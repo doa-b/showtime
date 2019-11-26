@@ -1,3 +1,6 @@
+import * as accessLevels from '../shared/utility'
+import {ACCESS_LEVEL_ADMINISTRATOR} from "../shared/utility";
+
 export const dummyUsers = [
     {
         id: 'id0',
@@ -5,7 +8,7 @@ export const dummyUsers = [
         lastName: 'Schenke',
         Phone: '0612345678',
         country: 'Netherlands',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_EXECUTIVE,
         groups: 'presenter',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
@@ -15,7 +18,7 @@ export const dummyUsers = [
         lastName: 'Schenke',
         Phone: '0612345678',
         country: 'Netherlands',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_EXECUTIVE,
         groups: 'presenter',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
@@ -25,9 +28,9 @@ export const dummyUsers = [
         lastName: '',
         Phone: '0612345678',
         country: 'Switserland',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_EXECUTIVE,
         groups: 'presenter',
-        imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
         id: 'id3',
@@ -35,7 +38,7 @@ export const dummyUsers = [
         lastName: '',
         Phone: '0612345678',
         country: 'Germany',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_TRINITY,
         groups: 'presenter',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
@@ -45,9 +48,9 @@ export const dummyUsers = [
         lastName: '',
         Phone: '0612345678',
         country: 'Germany',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_TRINITY,
         groups: 'artist',
-        imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
         id: 'id5',
@@ -55,7 +58,7 @@ export const dummyUsers = [
         lastName: '',
         Phone: '0612345678',
         country: 'Germany',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_TRINITY,
         groups: 'artist',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
@@ -65,9 +68,9 @@ export const dummyUsers = [
         lastName: '',
         Phone: '0612345678',
         country: 'Germany',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_TRINITY,
         groups: 'artist',
-        imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
         id: 'id7',
@@ -75,9 +78,9 @@ export const dummyUsers = [
         lastName: 'Bolk',
         Phone: '0612345678',
         country: 'Netherlands',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_TRINITY,
         groups: 'artist',
-        imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
         id: 'id8',
@@ -85,7 +88,7 @@ export const dummyUsers = [
         lastName: 'Doppen',
         Phone: '0612345678',
         country: 'Netherlands',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_TRINITY,
         groups: 'artist',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
@@ -95,9 +98,9 @@ export const dummyUsers = [
         lastName: 'de Hond',
         Phone: '0612345678',
         country: 'Netherlands',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_TRINITY,
         groups: 'artist',
-        imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
         id: 'id10',
@@ -105,9 +108,9 @@ export const dummyUsers = [
         lastName: '',
         Phone: '0612345678',
         country: 'Netherlands',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
         groups: 'model',
-        imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
         id: 'id11',
@@ -115,9 +118,9 @@ export const dummyUsers = [
         lastName: '',
         Phone: '0612345678',
         country: 'Netherlands',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
         groups: 'model',
-        imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
         id: 'id12',
@@ -125,7 +128,7 @@ export const dummyUsers = [
         lastName: 'Bonifacio',
         Phone: '0612345678',
         country: 'Netherlands',
-        type: 'administrator',
+        type: accessLevels.ACCESS_LEVEL_ADMINISTRATOR,
         groups: 'dj',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
@@ -135,7 +138,7 @@ export const dummyUsers = [
         lastName: '',
         Phone: '0612345678',
         country: 'Netherlands',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_ADMINISTRATOR,
         groups: 'director',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
@@ -145,17 +148,58 @@ export const dummyUsers = [
         lastName: 'Guyver',
         Phone: '0612345678',
         country: 'Netherlands',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_SUPPORT,
         groups: 'sound',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
     {
         id: 'id15',
         firstName: 'John',
-        lastName: 'Doa',
+        lastName: 'Doe',
         Phone: '0612345678',
         country: 'Netherlands',
-        type: 'executive',
+        type: accessLevels.ACCESS_LEVEL_SUPPORT,
         groups: 'lighting',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
-    },];
+    },
+    {
+        id: 'id16',
+        firstName: 'Dancer 1',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'dancer',
+        imageUrl: 'https://image.tmdb.org/t/p/original/5MgWM8pkUiYkj9MEaEpO0Ir1FD9.jpg'
+    },
+    {
+        id: 'id17',
+        firstName: 'Dancer 2',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'dancer',
+        imageUrl: 'https://image.tmdb.org/t/p/original/5MgWM8pkUiYkj9MEaEpO0Ir1FD9.jpg'
+    },
+    {
+        id: 'id18',
+        firstName: 'Dancer 3',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'dancer',
+        imageUrl: 'https://image.tmdb.org/t/p/original/5MgWM8pkUiYkj9MEaEpO0Ir1FD9.jpg'
+    },
+    {
+        id: 'id19',
+        firstName: 'Matej',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Germany',
+        type: accessLevels.ACCESS_LEVEL_TRINITY,
+        groups: 'artist',
+        imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+    },
+];

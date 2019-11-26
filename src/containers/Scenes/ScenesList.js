@@ -30,6 +30,11 @@ class ScenesList extends Component {
         }
     }
 
+    optionsClicked = () => {
+
+
+};
+
     SortableItem = sortableElement(({value}) =>
 
         <Scene
@@ -37,6 +42,8 @@ class ScenesList extends Component {
             sceneData={value}
             startTime={this.props.startTime}
             detailClicked={this.props.clicked}
+            isRunning={this.props.isRunning}
+            currentTime={this.props.currentTime}
         />);
 
     onSortEnd = ({oldIndex, newIndex}) => {
@@ -49,7 +56,7 @@ class ScenesList extends Component {
         return (
                 <SortableContainer onSortEnd={this.onSortEnd} useDragHandle>
                     {this.state.items.map((value, index) => (
-                        <this.SortableItem key={value.id} index={index} value={value}/>
+                        <this.SortableItem key={index} index={index} value={value}/>
                     ))}
                 </SortableContainer>
 
@@ -61,7 +68,8 @@ class ScenesList extends Component {
 const mapStateToProps = (state) => {
     return {
         showId: state.show.currentShow,
-        scenes: state.show.scenes
+        scenes: state.show.scenes,
+        currentTime: state.show.currentTime
     }
 };
 

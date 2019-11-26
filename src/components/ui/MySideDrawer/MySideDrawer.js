@@ -125,7 +125,7 @@ const MySideDrawer = withStyles(styles)(
                 />
                 <NavItem
                     to='/page3'
-                    text='Page 3'
+                    text='Other Shows'
                     Icon={WebIcon}
                     onClick={onItemClick('Page 3')}
                 />

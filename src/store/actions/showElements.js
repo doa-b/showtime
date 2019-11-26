@@ -2,6 +2,7 @@ import axios from 'axios'
 
 import * as actionTypes from './actionTypes';
 import {incrementRunningPartDuration} from "./live";
+import {updateObject} from "../../shared/utility";
 
 export const showStart = () => {
     return {
@@ -96,6 +97,14 @@ export const setPageTitle = (title) => {
     }
 };
 
+// export const setOptionsMenuAndAnchor = (elementType, anchor) => {
+//   return {
+//       type: actionTypes.SHOW_SET_OPTIONS_MENU_AND_ANCHOR,
+//       elementType: elementType,
+//      anchor: anchor
+//   }
+// };
+
 // Asynchronous actionCreators
 
 export const save = (elementName, data) => {
@@ -117,9 +126,73 @@ export const save = (elementName, data) => {
     }
 };
 
+export const copyPartAndScenes = (partData, partId) => {
+    return (dispatch, getState) => {
+        dispatch(showStart());
+        axios.post(`parts.json`, partData)
+            .then((response => {
+                const scenes = getState().show.scenes.filter(aScene => aScene.partId === partId);
+                const newSceneRequests = [];
+                if (scenes.length > 0) {
+                    scenes.map((scene) => {
+                        const newScene = updateObject(scene, {partId: response.data.name, id: null});
+                        return newSceneRequests.push(axios.post(`scenes.json`, newScene))
+                    });
+                    axios.all(newSceneRequests)
+                        .then((response => {
+                            console.log(response);
+                            dispatch(fetch())
+                        }))
+                        .catch(error => {
+                            dispatch(showFail(error));
+                        });
+                } else dispatch(fetch())
+            }))
+            .catch(error => {
+                dispatch(showFail(error));
+            });
+    }
+};
+
+export const copyBlockPartsAndScenes = (blockData, blockId) => {
+    return (dispatch, getState) => {
+        dispatch(showStart());
+        console.log('blockID: '+ blockId);
+        axios.post(`blocks.json`, blockData)
+            .then((response => {
+                const parts = getState().show.parts.filter(aPart => aPart.blockId === blockId);
+                console.log(parts);
+                const newPartRequests = [];
+                if (parts.length > 0) {
+                    parts.map((part) => {
+                        const newPart = updateObject(part, {blockId: response.data.name, id: null});
+                        return dispatch(copyPartAndScenes(newPart, part.id))
+                    })
+                } else dispatch(fetch())
+            }))
+            .catch(error => {
+                dispatch(showFail(error));
+            });
+    }
+};
+
+
 export const update = (id, data, elementName) => {
     return dispatch => {
         axios.put(`${elementName}/${id}.json`, data)
+            .then((response => {
+                console.log(response);
+                dispatch(fetch())
+            }))
+            .catch(error => {
+                dispatch(showFail(error));
+            });
+    }
+};
+
+export const deleteElement = (id, elementType) => {
+    return dispatch => {
+        axios.delete(`${elementType}/${id}.json`)
             .then((response => {
                 console.log(response);
                 dispatch(fetch())

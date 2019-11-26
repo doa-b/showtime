@@ -36,7 +36,7 @@ class PartsList extends Component {
         super(props);
         this.state =
             {
-                items: this.props.parts.filter(aPart => aPart.BlockId === this.props.parentId),
+                items: this.props.parts.filter(aPart => aPart.blockId === this.props.parentId),
             };
     }
 
@@ -76,7 +76,7 @@ class PartsList extends Component {
                     )} else {
                         if (index > this.props.runningPartNumber) {
                             item = (<SortableItem
-                                    key={value.id}
+                                    key={index}
                                     index={index}
                                     value={value}
                                     startTime={-this.props.runningTime + (startTimeCounter += value.duration)}

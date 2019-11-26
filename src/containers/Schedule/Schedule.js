@@ -50,7 +50,8 @@ class Schedule extends Component {
     };
 
     componentDidMount() {
-        this.props.onFetch('-Lrst6TmmyYrkouGmiac');
+        this.props.onSetPageTitle('Schedule');
+        this.props.onFetch(this.props.currentShow);
         if (this.props.currentTime === 0) {
             this.props.onStartClock();
         }
@@ -65,6 +66,7 @@ class Schedule extends Component {
     };
 
     showDetailsHandler = (elementId, pathName, parentId) => {
+        this.props.onSetPageTitle(pathName.split('/')[0] + ' details')
         if (elementId) {
             this.props.history.push({
                 pathname: pathName,
@@ -86,7 +88,7 @@ class Schedule extends Component {
         for (let i = 1; i < 2; i++) {
             let part = {
                 showId: this.props.currentShow,
-                BlockId: '-Lrst8o1hZiIjJSePXFu',
+                blockId: '-Lrst8o1hZiIjJSePXFu',
                 order: i,
                 title: `Block 0: this is part ${i}`,
                 starttime: 0,
@@ -102,7 +104,7 @@ class Schedule extends Component {
         let nextBlock = this.props.runningBlock;
         const runningBlockId = this.props.blocks[this.props.runningBlock].id;
         const runningBlockPartsAmount =
-            this.props.parts.filter(aPart => aPart.BlockId === runningBlockId).length;
+            this.props.parts.filter(aPart => aPart.blockId === runningBlockId).length;
         console.log(runningBlockPartsAmount);
         console.log('running Part ' + this.props.runningPart);
 
@@ -161,7 +163,7 @@ class Schedule extends Component {
             head = (
                 <div className={classes.liveView}>
                     <Typography variant='h2'>
-                        {msToTime(this.props.currentTime)}
+                        {msToTime(this.props.currentTime, true)}
                     </Typography>
                     <Fab className={classes.actionButton}
                          color='primary' aria-label='play'
@@ -177,7 +179,7 @@ class Schedule extends Component {
             )
         }
 
-        if (this.props.blocks.length > 0 && this.props.parts && this.props.scenes) {
+        if (!this.props.loading) {
             total =
                 <div>
                     <BlocksList
@@ -227,7 +229,8 @@ const mapDispatchToProps = (dispatch) => {
         onStartTheShow: () => dispatch(actions.startTheShow()),
         onTogglePause: () => dispatch(actions.toggleIsPaused()),
         onSetNextPart: (nextPart, nextBlock) => dispatch(actions.setNextPart(nextPart, nextBlock)),
-        onEndOfShow: () => dispatch(actions.showHasEnded())
+        onEndOfShow: () => dispatch(actions.showHasEnded()),
+        onSetPageTitle: (title) => dispatch(actions.setPageTitle(title))
     }
 };
 

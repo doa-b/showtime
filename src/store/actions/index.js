@@ -8,7 +8,10 @@ export {
     setPageTitle,
     toggleDisplayRealTime,
     setDisplayUser,
-    toggleIsEditable
+    toggleIsEditable,
+    deleteElement,
+    copyPartAndScenes,
+    copyBlockPartsAndScenes
 } from './showElements'
 
 export {

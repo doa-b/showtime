@@ -6,9 +6,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Typography from "@material-ui/core/Typography";
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
-import HomeIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import List from "@material-ui/core/List";
 import {NavLink} from "react-router-dom";
+import trinityLogo from '../../../assets/images/trinity-haircare-circles.png'
 
 
 const styles = theme => ({
@@ -17,14 +17,19 @@ const styles = theme => ({
         marginRight: 20
     },
     toolBar: {
-        alignContent: 'space-around' // TODO werkt nog niet
+       alignItems: 'center'
     },
     avatar: {
-        marginLeft: 10
+        marginLeft: 'auto'
     },
     toolbarMargin: theme.mixins.toolbar,
     aboveDrawer: {
         zIndex: theme.zIndex.drawer + 1
+    },
+    logo: {
+        height: 35,
+        marginTop: 5,
+        marginRight: 10
     }
 });
 
@@ -42,10 +47,8 @@ const MyToolbar = withStyles(styles)(
                         <MenuIcon/>
                     </IconButton>
 
-                    <NavLink
-                        to='/'
-                    >
-                        Home <HomeIcon/>
+                    <NavLink to='/'>
+                        <img className={classes.logo} src={trinityLogo} alt='trinity logo'/>
                     </NavLink>
                     <Typography
                         variant="h5"

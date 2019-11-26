@@ -83,10 +83,6 @@ class BlockDetails extends Component {
             if (currentBlock) {
                 this.setState(updateObject(currentBlock, { team: convertObjectstoArray(currentBlock.team)}))
             }
-        } else {
-            this.setState(
-                {order: this.props.blocks.length}
-            )
         }
     }
 
@@ -102,9 +98,9 @@ class BlockDetails extends Component {
     };
     onSubmitHandler = (event) => {
         event.preventDefault();
-        const block = updateObject(this.state, {team: convertArrayToObject(this.state.team, 'id')})
-        if (this.props.location.state && this.props.location.state.id) {
-            this.props.onUpdate(this.props.location.state.id, block, 'blocks')
+        const block = updateObject(this.state);
+        if (this.props.location.state && this.props.location.state.elementId) {
+            this.props.onUpdate(this.props.location.state.elementId, block, 'blocks')
         } else {
             this.props.onSave('blocks', block)
         }

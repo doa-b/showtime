@@ -9,14 +9,17 @@ const initialState = {
     error: null,
     loading: false,
     currentShow: '-Lrst6TmmyYrkouGmiac',
-    showName: 'Fall Trend Show',
+    //currentShow: '-Lrx3-oBw6jhk6A601Yo',
+    showName: 'Fall Trend Show', // TODO can be removed
     showStartDateTime: getCurrentUTCinMs() + 30000,
     currentTime: 0,
     displaySeconds: true,
     displayRealTime: true,
     pageTitle: 'Schedule',
     displayUser: null,
-    isEditable: true
+    isEditable: true,
+    optionsMenu: null,
+    optionsMenuAnchor: null
 };
 
 const savedShowElement = (state, action) => {
@@ -33,11 +36,11 @@ const fetchedAllShowData = (state, action) => {
         shows: convertObjectsAndSortByKey(action.shows, 'order'),
         blocks: convertObjectsAndSortByKey(action.blocks, 'order'),
         parts: convertObjectsAndSortByKey(action.parts, 'order'),
-        scenes: convertObjectstoArray(action.scenes),
+        // TODO was there a reason NOT to sort scenes?
+        scenes: convertObjectsAndSortByKey(action.scenes, 'order'),
         error: null,
         loading: false
     };
-
     return updateObject(state, newState );
 };
 
@@ -76,6 +79,8 @@ const reducer = (state = initialState, action) => {
             return updateObject(state, {displayUser: action.user});
         case actionTypes.SHOW_TOGGLE_IS_EDITABLE:
             return updateObject(state, {isEditable: !state.isEditable});
+        case actionTypes.SHOW_SET_OPTIONS_MENU_AND_ANCHOR:
+            return updateObject(state, {optionsMenu: action.elementType, optionsMenuAnchor: action.anchor });
         default:
             return state
     }

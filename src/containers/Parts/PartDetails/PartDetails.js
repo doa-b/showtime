@@ -98,7 +98,7 @@ class PartDetails extends Component {
 
     state = {
         showId: this.props.showId,
-        BlockId: '',
+        blockId: '',
         order: 0,
         title: 'your part title',
         cue: '',
@@ -118,9 +118,9 @@ class PartDetails extends Component {
                         {team: convertObjectstoArray(currentPart.team), duration: moment(currentPart.duration)}));
                 }
             } else {
-                const numberOfPartsinBlock = this.props.parts.filter((aPart) => aPart.BlockId === this.props.location.state.parentId).length;
+                const numberOfPartsinBlock = this.props.parts.filter((aPart) => aPart.blockId === this.props.location.state.parentId).length;
                 this.setState(
-                    {order: numberOfPartsinBlock, BlockId: this.props.location.state.parentId}
+                    {order: numberOfPartsinBlock, blockId: this.props.location.state.parentId}
                 )
             }
         }
@@ -135,7 +135,7 @@ class PartDetails extends Component {
     };
 
     blockChangedHandler = (event) => {
-        this.setState({BlockId: event.target.value})
+        this.setState({blockId: event.target.value})
     };
 
     durationChangedHandler = (date) => {
@@ -247,7 +247,7 @@ class PartDetails extends Component {
                                 labelId='label'
                                 id='blockId'
                                 variant='outlined'
-                                value={this.state.BlockId}
+                                value={this.state.blockId}
                                 onChange={this.blockChangedHandler}>
                             {this.props.blocks.map(block => {
                                 return <MenuItem key={block.id} value={block.id}>{block.title}</MenuItem>

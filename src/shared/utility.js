@@ -1,10 +1,10 @@
 import React from 'react'
-import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
-import VolumeUpIcon from '@material-ui/icons/VolumeUp';
-import VideocamIcon from '@material-ui/icons/Videocam';
-import ImageIcon from '@material-ui/icons/Image';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import EmojiObjectsIcon from '@material-ui/icons/EmojiObjectsOutlined';
+import VolumeUpIcon from '@material-ui/icons/VolumeUpOutlined';
+import VideocamIcon from '@material-ui/icons/VideocamOutlined';
+import ImageIcon from '@material-ui/icons/ImageOutlined';
+import AssignmentIcon from '@material-ui/icons/AssignmentOutlined';
+import EmojiPeopleIcon from '@material-ui/icons/EmojiPeopleOutlined';
 
 
 // function that sets an object immutably

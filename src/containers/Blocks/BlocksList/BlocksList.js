@@ -65,7 +65,6 @@ class BlocksList extends Component {
     };
 
     render() {
-
         let startTimeCounter = 0;
         if (this.props.displayRealTime) {
             if (this.props.isLive) {
@@ -80,10 +79,10 @@ class BlocksList extends Component {
                     {this.state.items.map((value, index) => {
                         if (index >= this.props.runningBlockNumber) {
                             duration = this.calculateDuration(this.props.parts.filter(
-                                (part) => part.BlockId === value.id), index);
+                                (part) => part.blockId === value.id), index);
                             return (
                                 <this.SortableItem
-                                    key={value.id}
+                                    key={index}
                                     index={index}
                                     value={value}
                                     duration={duration}
@@ -100,15 +99,15 @@ class BlocksList extends Component {
                     isLive={this.props.isLive}
                     scheduledEndTime={this.props.scheduledEndTime}
                     updatescheduledEndTime={this.props.onUpdateScheduledEndTime}/>
-                <Button
+                <div className={classes.AddBlock}>
+                    <Button
                     onClick={() => this.props.clicked(null, 'block/details', this.props.showId)}
                     variant="contained"
                     color="primary"
                     startIcon={<AddIcon/>}>
                     Add Block
                 </Button>
-
-
+                </div>
             </div>
         );
     }
