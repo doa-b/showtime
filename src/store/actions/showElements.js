@@ -20,9 +20,6 @@ export const elementSaveSucces = (elementName, data, elementId) => {
     }
 };
 
-// todo See how burgerbuilder does that with change ingredient in reducer!!!
-// todo https://codeburst.io/javascript-array-distinct-5edc93501dc4
-//todo https://stackoverflow.com/questions/50898249/determine-whether-to-push-or-update-object-in-array-based-on-unique-id
 export const updateElement = () => {
     return {
         type: actionTypes.SHOW_UPDATE_ELEMENT
@@ -127,13 +124,9 @@ export const deleteElement = (id, elementType) => {
         } else if (elementType === 'parts') {
             parts = (getState().show.parts.filter(aPart => aPart.id === id))
         }
-        console.log('delete parts')
-        console.log(parts)
         if (parts.length > 0) {
             parts.map((part) => {
                 const scenes = getState().show.scenes.filter(aScene => aScene.partId === part.id);
-                console.log('delete scenes')
-                console.log(scenes)
                 if (scenes.length > 0) {
                     scenes.map((scene) => {
                         return axios.delete(`scenes/${scene.id}.json`) // delete its scenes
@@ -161,7 +154,7 @@ export const copyPartAndScenes = (partData, partId) => {
                 const newSceneRequests = [];
                 if (scenes.length > 0) {
                     scenes.map((scene) => {
-                        const newScene = updateObject(scene, {partId: response.data.name, id: null});
+                        const newScene = updateObject(scene, {partId: response.data.name, id: null, showId: partData.showId});
                         return newSceneRequests.push(axios.post(`scenes.json`, newScene))
                     });
                     axios.all(newSceneRequests)
@@ -190,7 +183,7 @@ export const copyBlockPartsAndScenes = (blockData, blockId) => {
                 console.log(parts);
                 if (parts.length > 0) {
                     parts.map((part) => {
-                        const newPart = updateObject(part, {blockId: response.data.name, id: null});
+                        const newPart = updateObject(part, {blockId: response.data.name, id: null, showId: blockData.showId});
                         return dispatch(copyPartAndScenes(newPart, part.id))
                     })
                 } else dispatch(fetch())
@@ -301,7 +294,3 @@ const UpdateOrderFromElements = (showId, data, elementName) => {
     console.log(requestsArray);
     return requestsArray
 };
-
-const SaveorUpdateTeam = (showId, data, elementName, elementId) => {
-
-}

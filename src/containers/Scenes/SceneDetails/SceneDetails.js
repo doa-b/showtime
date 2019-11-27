@@ -220,8 +220,6 @@ class SceneDetails extends Component {
 
         return (
             <Paper className={classes.paper}>
-                {/*{this.state.order}*/}
-
                 <span className={classes.title} style={{
                     background: this.state.color,
                     color: textColor

@@ -6,7 +6,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {Link} from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
-import {Dialog, ListItemText} from "@material-ui/core";
+import {Dialog, ListItemText, Typography} from "@material-ui/core";
 import * as actions from "../../../store/actions";
 import {compose} from "redux";
 import {connect} from "react-redux";
@@ -25,6 +25,10 @@ const styles = theme => ({
     },
     delete: {
         color: 'red'
+    },
+    dialogHeader: {
+        textAlign: 'center',
+        margin: 10
     }
 });
 
@@ -96,12 +100,12 @@ const optionsMenu = withStyles(styles)(
         ;
 
         const deleteClicked = () => {
-           setAlert(true);
+            setAlert(true);
         };
 
         const deleteConfirmed = () => {
             onDelete(element.id, elementType);
-           closeAllDialogs();
+            closeAllDialogs();
         };
 
 
@@ -123,9 +127,9 @@ const optionsMenu = withStyles(styles)(
         return (
             <>
                 <Tooltip title={'More options'}>
-                <MoreHorizIcon
-                    className={classes.optionsMenu}
-                    onClick={(e) => setAnchor(e.currentTarget)}/>
+                    <MoreHorizIcon
+                        className={classes.optionsMenu}
+                        onClick={(e) => setAnchor(e.currentTarget)}/>
                 </Tooltip>
                 <Menu
                     anchorEl={anchor}
@@ -144,7 +148,9 @@ const optionsMenu = withStyles(styles)(
                     </MenuItem>
                 </Menu>
                 <Dialog open={Boolean(dialog)} onClose={() => setDialog(null)}>
-                    {dialog} to:
+                    <Typography className={classes.dialogHeader} variant='body1'>
+                        {dialog} to
+                    </Typography>
                     <List>
                         {optionsMenu.map((option, index) => (
                             <ListItem
@@ -161,7 +167,8 @@ const optionsMenu = withStyles(styles)(
                 <Dialog open={alert} onClose={closeAllDialogs}>
                     <DialogContent>
                         <DialogContentText>
-                            Are you sure to delete this {elementType.slice(0, -1)}? This action will also delete all its children
+                            Are you sure to delete this {elementType.slice(0, -1)}? This action will also delete all its
+                            children
                         </DialogContentText>
                         <DialogActions>
                             <Button onClick={closeAllDialogs} color="primary">

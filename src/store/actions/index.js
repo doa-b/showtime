@@ -11,7 +11,8 @@ export {
     toggleIsEditable,
     deleteElement,
     copyPartAndScenes,
-    copyBlockPartsAndScenes
+    copyBlockPartsAndScenes,
+    setCurrentShow
 } from './showElements'
 
 export {
