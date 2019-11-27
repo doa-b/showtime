@@ -97,14 +97,6 @@ export const setPageTitle = (title) => {
     }
 };
 
-// export const setOptionsMenuAndAnchor = (elementType, anchor) => {
-//   return {
-//       type: actionTypes.SHOW_SET_OPTIONS_MENU_AND_ANCHOR,
-//       elementType: elementType,
-//      anchor: anchor
-//   }
-// };
-
 // Asynchronous actionCreators
 
 export const save = (elementName, data) => {
@@ -176,7 +168,6 @@ export const copyBlockPartsAndScenes = (blockData, blockId) => {
     }
 };
 
-
 export const update = (id, data, elementName) => {
     return dispatch => {
         axios.put(`${elementName}/${id}.json`, data)
@@ -207,12 +198,8 @@ export const fetch = () => {
     return (dispatch, getState) => {
         dispatch(showStart());
         const showId = getState().show.currentShow;
-        console.log(showId);
         axios.all([getAllShows(), getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then(
         axios.spread((shows, blocks, parts, scenes) => {
-            console.log(blocks);
-            console.log(parts);
-            console.log(scenes);
             dispatch(fetchShowDataSuccess(shows.data, blocks.data, parts.data, scenes.data));
         })).catch(error => {
             dispatch(showFail(error));
@@ -222,12 +209,17 @@ export const fetch = () => {
 
 export const updateOrder = (showId, data, elementName) => {
     return dispatch => {
-        dispatch(showStart());
         axios.all(UpdateOrderFromElements(showId, data, elementName)).then(
         axios.spread((response) => {
-            console.log(response);
             dispatch(updateElement);
-            dispatch(fetch(showId))
+
+            // NOTE: Fetching is done here (duplicate code) to prevent page from 'reloading'.
+            axios.all([getAllShows(), getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then(
+                axios.spread((shows, blocks, parts, scenes) => {
+                    dispatch(fetchShowDataSuccess(shows.data, blocks.data, parts.data, scenes.data));
+                })).catch(error => {
+                dispatch(showFail(error));
+            })
         }))
             .catch(error => {
                 dispatch(showFail(error));
