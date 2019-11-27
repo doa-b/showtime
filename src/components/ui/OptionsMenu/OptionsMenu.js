@@ -14,6 +14,10 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import {updateObject} from "../../../shared/utility";
 import Tooltip from "@material-ui/core/Tooltip";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
     optionsMenu: {
@@ -34,7 +38,8 @@ const optionsMenu = withStyles(styles)(
      }) => {
 
         const [anchor, setAnchor] = useState(null);
-        const [dialog, setDialog] = useState(false);
+        const [dialog, setDialog] = useState(null);
+        const [alert, setAlert] = useState(false);
         let optionsMenu = [];
         let newParent = {};
         let order = 100;
@@ -83,7 +88,7 @@ const optionsMenu = withStyles(styles)(
                     if (elementType === 'parts') {
                         onCopyPartAndScenes(newElement, element.id)
                     } else {
-                        console.log('copying Blocks')
+                        console.log('copying Blocks');
                         onCopyBlockPartsAndScenes(newElement, element.id)
                     }
                 }
@@ -91,9 +96,12 @@ const optionsMenu = withStyles(styles)(
         ;
 
         const deleteClicked = () => {
-            console.log(element.id);
+           setAlert(true);
+        };
+
+        const deleteConfirmed = () => {
             onDelete(element.id, elementType);
-            setAnchor(null)
+           closeAllDialogs();
         };
 
 
@@ -105,6 +113,12 @@ const optionsMenu = withStyles(styles)(
         const closeMenu = (e) => {
             setAnchor(null)
         };
+
+        const closeAllDialogs = () => {
+            setDialog(null);
+            setAnchor(null);
+            setAlert(false);
+        }
 
         return (
             <>
@@ -144,6 +158,22 @@ const optionsMenu = withStyles(styles)(
                         ))}
                     </List>
                 </Dialog>
+                <Dialog open={alert} onClose={closeAllDialogs}>
+                    <DialogContent>
+                        <DialogContentText>
+                            Are you sure to delete this {elementType.slice(0, -1)}? This action will also delete all its children
+                        </DialogContentText>
+                        <DialogActions>
+                            <Button onClick={closeAllDialogs} color="primary">
+                                No
+                            </Button>
+                            <Button onClick={deleteConfirmed} color="primary" autoFocus>
+                                Yes
+                            </Button>
+                        </DialogActions>
+                    </DialogContent>
+                </Dialog>
+
             </>);
     }
 );

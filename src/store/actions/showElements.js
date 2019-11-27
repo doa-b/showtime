@@ -118,6 +118,40 @@ export const save = (elementName, data) => {
     }
 };
 
+export const deleteElement = (id, elementType) => {
+    return (dispatch, getState) => {
+        let parts = [];
+        // check if this element has children and add to  multiple request Array
+        if (elementType === 'blocks') {
+            parts = getState().show.parts.filter(aPart => aPart.blockId === id)
+        } else if (elementType === 'parts') {
+            parts = (getState().show.parts.filter(aPart => aPart.id === id))
+        }
+        console.log('delete parts')
+        console.log(parts)
+        if (parts.length > 0) {
+            parts.map((part) => {
+                const scenes = getState().show.scenes.filter(aScene => aScene.partId === part.id);
+                console.log('delete scenes')
+                console.log(scenes)
+                if (scenes.length > 0) {
+                    scenes.map((scene) => {
+                        return axios.delete(`scenes/${scene.id}.json`) // delete its scenes
+                    });
+                }
+                return axios.delete(`parts/${part.id}.json`); // delete part
+            })
+        }
+        axios.delete(`${elementType}/${id}.json`).// delete element
+        then((response => {
+            setTimeout(() => dispatch(fetch()), 1000) // set a 1 sec timeout to let the deletions finish before refresh
+        }))
+            .catch(error => {
+                dispatch(showFail(error));
+            });
+    }
+};
+
 export const copyPartAndScenes = (partData, partId) => {
     return (dispatch, getState) => {
         dispatch(showStart());
@@ -149,12 +183,11 @@ export const copyPartAndScenes = (partData, partId) => {
 export const copyBlockPartsAndScenes = (blockData, blockId) => {
     return (dispatch, getState) => {
         dispatch(showStart());
-        console.log('blockID: '+ blockId);
+        console.log('blockID: ' + blockId);
         axios.post(`blocks.json`, blockData)
             .then((response => {
                 const parts = getState().show.parts.filter(aPart => aPart.blockId === blockId);
                 console.log(parts);
-                const newPartRequests = [];
                 if (parts.length > 0) {
                     parts.map((part) => {
                         const newPart = updateObject(part, {blockId: response.data.name, id: null});
@@ -181,27 +214,14 @@ export const update = (id, data, elementName) => {
     }
 };
 
-export const deleteElement = (id, elementType) => {
-    return dispatch => {
-        axios.delete(`${elementType}/${id}.json`)
-            .then((response => {
-                console.log(response);
-                dispatch(fetch())
-            }))
-            .catch(error => {
-                dispatch(showFail(error));
-            });
-    }
-};
-
 export const fetch = () => {
     return (dispatch, getState) => {
         dispatch(showStart());
         const showId = getState().show.currentShow;
         axios.all([getAllShows(), getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then(
-        axios.spread((shows, blocks, parts, scenes) => {
-            dispatch(fetchShowDataSuccess(shows.data, blocks.data, parts.data, scenes.data));
-        })).catch(error => {
+            axios.spread((shows, blocks, parts, scenes) => {
+                dispatch(fetchShowDataSuccess(shows.data, blocks.data, parts.data, scenes.data));
+            })).catch(error => {
             dispatch(showFail(error));
         })
     };
@@ -210,17 +230,17 @@ export const fetch = () => {
 export const updateOrder = (showId, data, elementName) => {
     return dispatch => {
         axios.all(UpdateOrderFromElements(showId, data, elementName)).then(
-        axios.spread((response) => {
-            dispatch(updateElement);
+            axios.spread((response) => {
+                dispatch(updateElement);
 
-            // NOTE: Fetching is done here (duplicate code) to prevent page from 'reloading'.
-            axios.all([getAllShows(), getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then(
-                axios.spread((shows, blocks, parts, scenes) => {
-                    dispatch(fetchShowDataSuccess(shows.data, blocks.data, parts.data, scenes.data));
-                })).catch(error => {
-                dispatch(showFail(error));
-            })
-        }))
+                // NOTE: Fetching is done here (duplicate code) to prevent page from 'reloading'.
+                axios.all([getAllShows(), getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then(
+                    axios.spread((shows, blocks, parts, scenes) => {
+                        dispatch(fetchShowDataSuccess(shows.data, blocks.data, parts.data, scenes.data));
+                    })).catch(error => {
+                    dispatch(showFail(error));
+                })
+            }))
             .catch(error => {
                 dispatch(showFail(error));
             })
