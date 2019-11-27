@@ -13,6 +13,7 @@ import {connect} from "react-redux";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import {updateObject} from "../../../shared/utility";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const styles = theme => ({
     optionsMenu: {
@@ -107,9 +108,11 @@ const optionsMenu = withStyles(styles)(
 
         return (
             <>
+                <Tooltip title={'More options'}>
                 <MoreHorizIcon
                     className={classes.optionsMenu}
                     onClick={(e) => setAnchor(e.currentTarget)}/>
+                </Tooltip>
                 <Menu
                     anchorEl={anchor}
                     open={Boolean(anchor)}
@@ -140,7 +143,6 @@ const optionsMenu = withStyles(styles)(
                             </ListItem>
                         ))}
                     </List>
-
                 </Dialog>
             </>);
     }

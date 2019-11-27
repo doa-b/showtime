@@ -31,7 +31,7 @@ const FinishLine = ({time, scheduledEndTime, isLive, updatescheduledEndTime}) =>
     return (
         <>
             <div className={classes.FinishLine}>
-                Finish: {msToTime(time)}
+                Finish: {msToTime(time, false)}
                 {extraTime}
             </div>
         </>);

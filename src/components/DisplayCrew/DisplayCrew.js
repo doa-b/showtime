@@ -52,7 +52,7 @@ const displayCrew = ({classes, team, onSetDisplayUser, currentTime, deadLine, is
             return (
                 <div key={role}
                      className={classes.root}>
-                    <b>{(number >1) ? role + 's' : role}</b>
+                    <i>{(number >1) ? role + 's' : role}</i>
                     {actors}
                 </div>)
         } else return null;

@@ -13,6 +13,7 @@ import {connect} from "react-redux";
 import ProgressBar from '../../components/ui/ProgressBar/ProgressBar'
 import DisplayCrew from "../../components/DisplayCrew/DisplayCrew";
 import OptionsMenu from "../../components/ui/OptionsMenu/OptionsMenu";
+import {Tooltip} from "@material-ui/core";
 
 /**
  * Created by Doa on 23-10-2019.
@@ -56,22 +57,28 @@ class Part extends Component {
         }
 
         let scenes = null;
-        let arrow = <KeyboardArrowLeftIcon onClick={this.toggleVisibilityHandler}/>;
+        let arrow = <Tooltip title='unfold details' placement='left-end'>
+            <KeyboardArrowLeftIcon onClick={this.toggleVisibilityHandler}/>
+        </Tooltip>;
 
         if (this.state.showChildren) {
             scenes = <div className={classes.Below}>
                 <span className={classes.Spacer}></span>
+                <Tooltip title='Add Scene'>
                 <IconButton size="small" color="primary" className={classes.button} aria-label="add"
                             onClick={() => this.props.clicked(null, 'scene/details', this.props.partData.id)}>
                     <AddIcon/>
                 </IconButton>
+                </Tooltip>
                 <ScenesList
                     isRunning={this.props.runningTime}
                     parentId={this.props.partData.id}
                     startTime={startTime}
                     clicked={this.props.clicked}/>
             </div>
-            arrow = <KeyboardArrowDownIcon onClick={this.toggleVisibilityHandler}/>
+            arrow = <Tooltip title='hide details' placement='left-end'>
+                <KeyboardArrowDownIcon onClick={this.toggleVisibilityHandler} />
+            </Tooltip>
         }
 
         return (
@@ -81,7 +88,7 @@ class Part extends Component {
                     <Time startTime={startTime}
                           duration={duration}
                           live={this.props.runningTime}/>
-                          <div className={classes.Title}
+                    <div className={classes.Title}
                          onClick={() => this.props.clicked(this.props.partData.id, 'part/details')}>{this.props.partData.title}</div>
                     <div className={classes.vl}></div>
                     <DisplayCrew
@@ -89,9 +96,9 @@ class Part extends Component {
                         deadLine={startTime - 58000}/>
                     <div className={classes.Controls}>
                         <OptionsMenu
-                            elementType = 'parts'
-                            element = {this.props.partData}
-                            parent = {this.props.partData.blockId}/>
+                            elementType='parts'
+                            element={this.props.partData}
+                            parent={this.props.partData.blockId}/>
                         {arrow}
                     </div>
 

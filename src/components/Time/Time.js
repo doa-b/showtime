@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import classes from './Time.module.css'
 import * as actions from "../../store/actions";
 import {msToTime} from "../../shared/utility";
+import Tooltip from "@material-ui/core/Tooltip";
 
 /**
  * Created by Doa on 24-10-2019.
@@ -19,12 +20,16 @@ const startTime = (props) => {
     }
     return (
         <div className={classes.Time}>
+            <Tooltip title='Toggle realtime'>
             <div className={classes.StartTime} onClick={props.onClick}>
-                {startTime}
+                    {startTime}
             </div>
+            </Tooltip>
+            <Tooltip title='Duration'>
             <div className={classes.Duration}>
                 {duration}
             </div>
+            </Tooltip>
         </div>
     );
 };
