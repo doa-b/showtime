@@ -40,12 +40,12 @@ const scene = withStyles(styles)(({
 
 
     if (isRunning) {
-        time = (<Time startTime={realStartTime}
-                      duration={sceneData.duration - runningPartDuration}
-                      live/>);
 
         if (realStartTime < showTime) {
             if (showTime < realStartTime + sceneData.duration) {
+                time = (<Time startTime={realStartTime}
+                              duration={sceneData.duration - runningPartDuration}
+                              live/>);
                 style = {backgroundColor: 'yellow'} // scene is running now
             } else style = {display: 'none'} // scene is finished
         } else {
