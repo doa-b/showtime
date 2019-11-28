@@ -105,11 +105,9 @@ export const save = (elementName, data) => {
                 dispatch(elementSaveSucces(elementName, data, response.data.name));
                 if (elementName === 'shows') {
                     dispatch(setCurrentShow(response.data.name))
-                } else {
-                    dispatch(fetch())
                 }
-            }))
-            .catch(error => {
+                dispatch(fetch())
+            })).catch(error => {
                 dispatch(showFail(error));
             });
     }

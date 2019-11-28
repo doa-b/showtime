@@ -12,6 +12,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import logo from '../../../assets/images/trinity-logo-dark-transparent.png';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import DesktopWindowsIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import {Link, NavLink} from "react-router-dom";
 
 
 const styles = theme => ({
@@ -67,11 +69,14 @@ class ShowList extends Component {
         this.props.history.push('/');
     };
 
+    newShowClickedHandler = () => {
+
+    };
     render() {
         const {classes} = this.props;
         return (
             <Paper className={classes.paper}>
-                <Typography variant='h3' component='h1'>
+                <Typography variant='h4' component='h1'>
                     Choose a show
                 </Typography>
                 <List>
@@ -117,8 +122,9 @@ class ShowList extends Component {
                     ))}
                     <ListItem key='a100'
                               className={classes.addNewListItem}
-                              button>
-                        <AddCircleOutlineIcon fontSize='large'/>
+                              button
+                              component={NavLink}
+                              to='/show/details'>
                         <ListItemText
                             primary={
                                 <Typography
@@ -126,11 +132,9 @@ class ShowList extends Component {
                                     variant='h4'>
                                     Add new show
                                 </Typography>}/>
+                        <AddCircleOutlineIcon/>
                     </ListItem>
-
-
                 </List>
-
             </Paper>);
 
     }

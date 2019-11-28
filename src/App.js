@@ -11,6 +11,7 @@ import Layout from './hoc/Layout/Layout';
 import Monitor from "./containers/Monitor/Monitor";
 import SceneDetails from "./containers/Scenes/SceneDetails/SceneDetails";
 import ShowList from "./containers/Shows/ShowList/ShowList";
+import ShowDetails from "./containers/Shows/ShowDetails/ShowDetails";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
     let routes = (
         <Switch>
             <Route path="/" exact component={Schedule}/>
+            <Route path="/show/details" exact component={ShowDetails}/>
             <Route path="/block/details" exact component={BlockDetails}/>
             <Route path="/part/details" exact component={PartDetails}/>
             <Route path="/scene/details" exact component={SceneDetails}/>
