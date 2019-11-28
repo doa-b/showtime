@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { withRouter } from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 
 import Scene from '../../components/Scenes/Scene'
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
@@ -33,7 +33,7 @@ class ScenesList extends Component {
     optionsClicked = () => {
 
 
-};
+    };
 
     SortableItem = sortableElement(({value}) =>
 
@@ -43,7 +43,6 @@ class ScenesList extends Component {
             startTime={this.props.startTime}
             detailClicked={this.props.clicked}
             isRunning={this.props.isRunning}
-            currentTime={this.props.currentTime}
         />);
 
     onSortEnd = ({oldIndex, newIndex}) => {
@@ -54,11 +53,11 @@ class ScenesList extends Component {
 
     render() {
         return (
-                <SortableContainer onSortEnd={this.onSortEnd} useDragHandle>
-                    {this.state.items.map((value, index) => (
-                        <this.SortableItem key={index} index={index} value={value}/>
-                    ))}
-                </SortableContainer>
+            <SortableContainer onSortEnd={this.onSortEnd} useDragHandle>
+                {this.state.items.map((value, index) => (
+                    <this.SortableItem key={index} index={index} value={value}/>
+                ))}
+            </SortableContainer>
 
         )
         // return <this.SortableList items={this.state.items} onSortEnd={this.onSortEnd} useDragHandle/>;

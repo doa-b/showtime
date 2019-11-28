@@ -8,8 +8,8 @@ const initialState = {
     scenes: [],
     error: null,
     loading: false,
-    currentShow: '-Lrst6TmmyYrkouGmiac',
-    // currentShow: '-Lrx3-oBw6jhk6A601Yo',
+    // currentShow: '-Lrst6TmmyYrkouGmiac',
+    currentShow: '-Lrx3-oBw6jhk6A601Yo',
     showName: 'Fall Trend Show', // TODO can be removed
     showStartDateTime: getCurrentUTCinMs() + 30000,
     currentTime: 0,

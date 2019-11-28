@@ -9,7 +9,8 @@ const initialState = {
     runningBlockNumber: 0,
     runningPartDuration: 0,
     showHasFinished: false,
-    scheduledEndTime: 0
+    scheduledEndTime: 0,
+    previousState: null,
 };
 
 const skipToNextPart = (state, action) => {
@@ -44,7 +45,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.LIVE_TOGGLE_IS_PAUSED:
             return updateObject(state, {isPaused: !state.isPaused});
         case actionTypes.LIVE_RESET_RUNNING_PART_DURATION:
-            return updateObject(state, {runningPartDuration: 0});
+            return updateObject(state, {runningPartDuration: action.value});
         case actionTypes.LIVE_INCREMENT_RUNNING_PART_DURATION:
             return updateObject(state, {runningPartDuration: state.runningPartDuration + 1000});
         case actionTypes.LIVE_END_PART:
@@ -53,6 +54,8 @@ const reducer = (state = initialState, action) => {
             return endOfShow(state);
         case actionTypes.LIVE_UPDATE_SCHEDULED_END_TIME:
             return updateObject(state, {scheduledEndTime: action.time});
+        case actionTypes.LIVE_SAVE_PREVIOUS_STATE:
+            return updateObject(state, {previousState: action.previousState});
         default:
             return state
     }

@@ -20,7 +20,9 @@ export {
     setNextPart,
     toggleIsPaused,
     incrementRunningPartDuration,
+    resetRunningPartDuration,
     partHasEnded,
     showHasEnded,
-    updateScheduledEndTime
+    updateScheduledEndTime,
+    savePreviousState
 } from './live'

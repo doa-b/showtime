@@ -12,7 +12,9 @@ import {Typography} from "@material-ui/core";
 import Fab from '@material-ui/core/Fab';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
+import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PauseIcon from '@material-ui/icons/Pause';
+import {preventInertiaScroll} from "react-select/src/internal/ScrollLock/utils";
 
 /**
  * Created by Doa on 23-10-2019.
@@ -42,8 +44,6 @@ const styles = theme => ({
 
 class Schedule extends Component {
 
-    // TODO maybe we need to add an updated flag to show reducer to let schedule auto re-render.
-    //  Or else we use the loading flag
     state = {
         showUser: false,
         userId: ''
@@ -59,10 +59,6 @@ class Schedule extends Component {
 
     openUserModal = (user) => {
         this.setState({showUser: true, user: user})
-    };
-
-    closeUserModal = () => {
-        this.setState({showUser: false})
     };
 
     showDetailsHandler = (elementId, pathName, parentId) => {
@@ -84,24 +80,16 @@ class Schedule extends Component {
         }
     };
 
-    saveDummyPartsHandler = () => {
-        for (let i = 1; i < 2; i++) {
-            let part = {
-                showId: this.props.currentShow,
-                blockId: '-Lrst8o1hZiIjJSePXFu',
-                order: i,
-                title: `Block 0: this is part ${i}`,
-                starttime: 0,
-                duration: 60000
-            };
-            this.props.onSave('parts', part);
-        }
-    };
-
     skipToNextPartHandler = () => {
-        console.log(this.props);
         let nextPart = this.props.runningPart;
         let nextBlock = this.props.runningBlock;
+        // save the previous state when user clicks on Next, so he can return to it
+        const previousState = {
+            runningPartNumber: nextPart,
+            runningBlockNumber: nextBlock,
+            runningPartDuration: this.props.runningPartDuration
+        };
+        this.props.onSavePreviousState(previousState);
         const runningBlockId = this.props.blocks[this.props.runningBlock].id;
         const runningBlockPartsAmount =
             this.props.parts.filter(aPart => aPart.blockId === runningBlockId).length;
@@ -121,12 +109,16 @@ class Schedule extends Component {
         } else this.props.onEndOfShow();
     };
 
-// todo Remove duration from block in database. It is calculated on the fly
+    returnToPreviousHandler = () => {
+        const p = this.props.previousState;
+        this.props.onSetNextPart(p.runningPartNumber, p.runningBlockNumber);
+        this.props. onResetRunningPartDuration(p.runningPartDuration)
+        this.props.onSavePreviousState(null)
+    };
 
     render() {
         const {classes} = this.props;
-        let body = <h2>Show has ended</h2>
-        let total = <p>Loading...</p>;
+        let page = <p>Loading...</p>;
 
         let liveControls = (
             <Fab variant="extended" aria-label="start"
@@ -138,7 +130,7 @@ class Schedule extends Component {
         let head = (
             <>
                 <Typography variant='h2' component='h1'>
-                    Trinity Fall Trend Show Switserland
+                    Trinity International Trend Day
                 </Typography>
                 <div className={classes.dateTime}>
                     <Typography variant='h6'>
@@ -158,10 +150,21 @@ class Schedule extends Component {
 
         if (this.props.isLive) {
             let playPause = (this.props.isPaused) ?
-                <PlayArrowIcon fontSize='large'/> : <PauseIcon fontSize='large'/>
+                <PlayArrowIcon fontSize='large' color='secondary'/> : <PauseIcon fontSize='large'/>
+
+            let previous = null;
+            if (this.props.previousState) {
+                previous = (
+                    <Fab className={classes.actionButton}
+                                color='primary' aria-label='back'
+                                onClick={this.returnToPreviousHandler}>
+                    <SkipPreviousIcon fontSize={'large'}/>
+                </Fab>)
+            }
 
             head = (
                 <div className={classes.liveView}>
+                    {previous}
                     <Typography variant='h2'>
                         {msToTime(this.props.currentTime, true)}
                     </Typography>
@@ -179,9 +182,12 @@ class Schedule extends Component {
             )
         }
 
-        if (!this.props.loading) {
-            total =
+        if (!this.props.loading && !this.props.showHasFinished) {
+            page =
                 <div>
+                    <div className={classes.paper}>
+                        {this.props.show.filter((show) => show.id === this.props.currentShow).title}
+                        {head}</div>
                     <BlocksList
                         parentId={this.props.currentShow}
                         clicked={this.showDetailsHandler}
@@ -190,15 +196,10 @@ class Schedule extends Component {
                 </div>
         }
 
-        if (!this.props.showHasFinished) {
-            body = (
-                <>
-                    <div className={classes.paper}>{head}</div>
-                    {total}
-                </>
-            )
+        if (this.props.showHasFinished) {
+            page = <h2>Show has ended</h2>
         }
-        return body
+        return page
     }
 }
 
@@ -207,8 +208,8 @@ const mapStateToProps = (state) => {
         currentShow: state.show.currentShow,
         showName: state.show.showName,
         showStartDateTime: state.show.showStartDateTime,
-        runningPartDuration: state.show.runningPartDuration,
         currentTime: state.show.currentTime,
+        show: state.show.shows,
         blocks: state.show.blocks,
         parts: state.show.parts,
         scenes: state.show.scenes,
@@ -216,8 +217,10 @@ const mapStateToProps = (state) => {
         isLive: state.live.isLive,
         isPaused: state.live.isPaused,
         runningPart: state.live.runningPartNumber,
+        runningPartDuration: state.live.runningPartDuration,
         runningBlock: state.live.runningBlockNumber,
-        showHasFinished: state.live.showHasFinished
+        showHasFinished: state.live.showHasFinished,
+        previousState: state.live.previousState
     }
 };
 
@@ -230,7 +233,9 @@ const mapDispatchToProps = (dispatch) => {
         onTogglePause: () => dispatch(actions.toggleIsPaused()),
         onSetNextPart: (nextPart, nextBlock) => dispatch(actions.setNextPart(nextPart, nextBlock)),
         onEndOfShow: () => dispatch(actions.showHasEnded()),
-        onSetPageTitle: (title) => dispatch(actions.setPageTitle(title))
+        onSetPageTitle: (title) => dispatch(actions.setPageTitle(title)),
+        onSavePreviousState: (previousState) => dispatch(actions.savePreviousState(previousState)),
+        onResetRunningPartDuration: (value) => dispatch(actions.resetRunningPartDuration(value))
     }
 };
 

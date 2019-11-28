@@ -127,7 +127,13 @@ const MySideDrawer = withStyles(styles)(
                     to='/shows'
                     text='Other Shows'
                     Icon={WebIcon}
-                    onClick={onItemClick('Page 3')}
+                    onClick={onItemClick('Compact View')}
+                />
+                <NavItem
+                    to='/compact-view'
+                    text='Compact View'
+                    Icon={WebIcon}
+                    onClick={onItemClick('Compact View')}
                 />
             </List>
         </Drawer>

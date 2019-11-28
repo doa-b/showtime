@@ -12,6 +12,7 @@ import Monitor from "./containers/Monitor/Monitor";
 import SceneDetails from "./containers/Scenes/SceneDetails/SceneDetails";
 import ShowList from "./containers/Shows/ShowList/ShowList";
 import ShowDetails from "./containers/Shows/ShowDetails/ShowDetails";
+import CompactView from "./containers/CompactView/CompactView";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="/scene/details" exact component={SceneDetails}/>
             <Route path="/monitor" exact component={Monitor}/>
             <Route path="/shows" exact component={ShowList}/>
+            <Route path="/compact-view" exact component={CompactView}/>
             <Redirect to="/"/>
         </Switch>
     );

@@ -3,10 +3,10 @@ import {withStyles} from '@material-ui/core/styles';
 import {sceneCategories, convertObjectstoArray} from '../../shared/utility'
 
 
-
 import Time from "../Time/Time";
 import SimpleCrewList from "../SimpleCrewList/SimpleCrewList";
 import OptionsMenu from "../ui/OptionsMenu/OptionsMenu";
+import {connect} from "react-redux";
 
 const styles = theme => ({
     scene: {
@@ -28,35 +28,53 @@ const styles = theme => ({
 /**
  * Created by Doa on 23-10-2019.
  */
-const scene = withStyles(styles)(({classes, startTime, currentTime, sceneData, children, detailClicked, isRunning, optionsClicked}) => {
+const scene = withStyles(styles)(({
+                                      classes, startTime, currentTime, displayRealTime,
+                                      runningPartDuration, sceneData, children, detailClicked, isRunning
+                                  }) => {
 
     let realStartTime = startTime + sceneData.startTime;
-    let style = {}
+    let showTime = (displayRealTime) ? currentTime : runningPartDuration;
+    let style = {};
+    let time = <Time startTime={realStartTime} duration={sceneData.duration}/>
+
 
     if (isRunning) {
-        if (realStartTime < currentTime) {
-            if (currentTime < realStartTime + sceneData.duration) {
+        time = (<Time startTime={realStartTime}
+                      duration={sceneData.duration - runningPartDuration}
+                      live/>);
+
+        if (realStartTime < showTime) {
+            if (showTime < realStartTime + sceneData.duration) {
                 style = {backgroundColor: 'yellow'} // scene is running now
-            } else  style = {display: 'none'} // scene is finished
-        } else {}// scene will run later
+            } else style = {display: 'none'} // scene is finished
+        } else {
+        }// scene will run later
     }
 
     return (
         <div className={classes.scene}
              style={style}>
             {children}
-            <Time startTime={realStartTime}
-                  duration={sceneData.duration}/>
+            {time}
             <div>{sceneCategories[sceneData.category].icon}</div>
             <div className={classes.title}
                  onClick={() => detailClicked(sceneData.id, 'scene/details')}>{sceneData.title}</div>
             <SimpleCrewList team={sceneData.team}/>
             <OptionsMenu
-            elementType = 'scenes'
-            element = {sceneData}
-            parent = {sceneData.partId}/>
+                elementType='scenes'
+                element={sceneData}
+                parent={sceneData.partId}/>
         </div>
     )
 });
 
-export default scene;
+const mapStateToProps = (state) => {
+    return {
+        currentTime: state.show.currentTime,
+        runningPartDuration: state.live.runningPartDuration,
+        displayRealTime: state.show.displayRealTime
+    };
+};
+
+export default connect(mapStateToProps)(scene);

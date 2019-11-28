@@ -22,9 +22,10 @@ export const changeCurrentPartNumber = (nextPart, nextBlock) => {
     }
 };
 
-export const resetRunningPartDuration = () => {
+export const resetRunningPartDuration = (value = 0) => {
     return {
-        type: actionTypes.LIVE_RESET_RUNNING_PART_DURATION
+        type: actionTypes.LIVE_RESET_RUNNING_PART_DURATION,
+        value: value
     }
 };
 
@@ -50,6 +51,13 @@ export const updateScheduledEndTime = (time) => {
     return {
         type: actionTypes.LIVE_UPDATE_SCHEDULED_END_TIME,
         time: time
+    }
+};
+
+export const savePreviousState = (previousState) => {
+    return {
+        type: actionTypes.LIVE_SAVE_PREVIOUS_STATE,
+        previousState: previousState
     }
 };
 

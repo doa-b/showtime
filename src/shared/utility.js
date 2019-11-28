@@ -117,7 +117,7 @@ export const dateToMs = (date) => {
     return date.getUTCMilliseconds()
 };
 
-export const msToTime = (miliseconds, withSeconds) => {
+export const msToTime = (miliseconds, withSeconds, withHours = true) => {
     // add leading zero for number <10
     const alz = (value) => {
       return (value<10) ? '0'+value : value;
@@ -127,10 +127,12 @@ export const msToTime = (miliseconds, withSeconds) => {
         seconds = Math.floor((miliseconds / 1000) % 60),
         minutes = Math.floor((miliseconds / (1000 * 60)) % 60),
         hours = Math.floor((miliseconds / (1000 * 60 * 60)) % 24);
+     const showHours = (withHours) ? alz(hours) + ':' : '';
+
 
     if (withSeconds) {
-        return alz(hours) + ":" + alz(minutes) + ":" + alz(seconds)
-    } else return alz(hours) + ":" + alz(minutes);
+        return showHours + alz(minutes) + ":" + alz(seconds)
+    } else return showHours + alz(minutes);
 };
 
 export const getCurrentUTCinMs = () => {

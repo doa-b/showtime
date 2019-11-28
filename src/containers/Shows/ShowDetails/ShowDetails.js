@@ -38,13 +38,6 @@ const styles = theme => ({
         textAlign: 'center',
         color: theme.palette.text.secondary
     },
-    title: {
-        border: '1px solid #ccc',
-        boxShadow: '2px 2px 2px #ccc',
-        padding: 5,
-        marginBottom: 1,
-        alignItems: 'center'
-    },
     form: {
         margin: 'auto',
         display: 'flex',
@@ -54,7 +47,6 @@ const styles = theme => ({
         textAlign: 'center',
         color: theme.palette.text.secondary
     },
-    titleInput: {},
     dateTimePicker: {
         width: '50%',
         wordWrap: 'break-word',
@@ -170,10 +162,6 @@ class ShowDetails extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {}
-};
-
 const mapDispatchToProps = (dispatch) => {
     return {
         onSave: (element, data) => dispatch(actions.save(element, data)),
@@ -184,4 +172,4 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
     withStyles(styles),
-    connect(mapStateToProps, mapDispatchToProps))(ShowDetails)
+    connect(null, mapDispatchToProps))(ShowDetails)
