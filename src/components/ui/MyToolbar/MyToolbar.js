@@ -60,7 +60,7 @@ const MyToolbar = withStyles(styles)(
                     <Avatar
                         className={classes.avatar}
                         alt='logged in user'
-                        src='https://image.tmdb.org/t/p/original/i5kxTQ9GSGKY6CaI8F3cdwoF3KD.jpg'/>
+                        src='http://djdoa.nl/DJDoa_WebPages/__Old_Website/doa_avatar_small.jpg'/>
                 </Toolbar>
             </AppBar>
             <div className={classes.toolbarMargin}/>

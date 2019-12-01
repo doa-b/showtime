@@ -60,7 +60,7 @@ const MySideDrawer = withStyles(styles)(
                     <img
                         className={classes.avatar}
                         alt='logged in user'
-                        src='https://image.tmdb.org/t/p/original/i5kxTQ9GSGKY6CaI8F3cdwoF3KD.jpg'/>
+                        src='http://djdoa.nl/DJDoa_WebPages/__Old_Website/doa_avatar_small.jpg'/>
                 </ListItem>
                 <ListSubheader>
                     Doa Bonifacio
@@ -130,10 +130,10 @@ const MySideDrawer = withStyles(styles)(
                     onClick={onItemClick('Compact View')}
                 />
                 <NavItem
-                    to='/compact-view'
-                    text='Compact View'
+                    to='/mobile'
+                    text='Mobile view'
                     Icon={WebIcon}
-                    onClick={onItemClick('Compact View')}
+                    onClick={onItemClick('Mobile view')}
                 />
             </List>
         </Drawer>

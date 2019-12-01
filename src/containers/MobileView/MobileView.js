@@ -3,8 +3,9 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import {connect} from "react-redux";
 import * as actions from "../../store/actions";
 import {compose} from "redux";
-import {convertObjectstoArray, msToTime } from "../../shared/utility";
+import {convertObjectstoArray, msToTime} from "../../shared/utility";
 import Avatar from "@material-ui/core/Avatar";
+import Spinner from "../../components/ui/Spinner/Spinner";
 
 const styles = () => ({
     root: {},
@@ -13,7 +14,7 @@ const styles = () => ({
         width: '100%',
         border: '1px solid #ccc',
         boxShadow: '2px 2px 2px #ccc',
-        padding: 5
+        padding: 5,
     },
     startTime: {
         marginRight: 5
@@ -54,13 +55,17 @@ const styles = () => ({
         margin: 'auto',
         height: 15,
         width: 15
+    },
+    cue: {
+        marginLeft: 2,
+        color: 'grey'
     }
 });
 
 /**
  * Created by Doa on 28-11-2019.
  */
-class compactView extends Component {
+class mobileView extends Component {
 
     state = {
         currentUser: 'id12',
@@ -71,7 +76,7 @@ class compactView extends Component {
         if (this.props.shows.length === 0) {
             this.props.onFetch(this.props.currentShow);
         }
-        this.props.onSetPageTitle('Compact');
+        this.props.onSetPageTitle('Mobile');
     }
 
 
@@ -79,7 +84,8 @@ class compactView extends Component {
         const {classes, blocks, parts, scenes, loading, showStartDateTime} = this.props;
 
         let startTimeCounter = showStartDateTime;
-        let page = <h2>Loading...</h2>;
+        let page = <Spinner/>
+        let sceneCounter = 0;
 
         if (!loading) {
             page = (
@@ -109,7 +115,16 @@ class compactView extends Component {
                                             {scenesArray.map((scene, index) => {
                                                 const team = convertObjectstoArray(scene.team);
                                                 const mustShow = team.filter((actor) => actor.firstName === 'Doa').length > 0;
-                                                const style = (mustShow) ? {} : {display: 'none'};
+                                                let style = {};
+                                                let cue = null;
+                                                if (mustShow) {
+                                                    sceneCounter += 1;
+                                                    if (sceneCounter === 2) {
+                                                        cue = <i className={classes.cue}>{scene.cue}</i>
+
+                                                    }
+                                                } else style = {display: 'none'};
+                                                style = (mustShow) ? {} : {display: 'none'};
                                                 console.log(style);
                                                 return (
                                                     <div key={index} className={classes.scene}
@@ -117,7 +132,8 @@ class compactView extends Component {
                                                         <Avatar
                                                             className={classes.avatar}
                                                             alt='me'
-                                                            src='https://image.tmdb.org/t/p/original/i5kxTQ9GSGKY6CaI8F3cdwoF3KD.jpg'/>
+                                                            src='http://djdoa.nl/DJDoa_WebPages/__Old_Website/doa_avatar_small.jpg'/>
+                                                        {cue}
                                                         <span className={classes.sceneStartTime}>
                                                               {msToTime(scene.startTime, true, false)}
                                                          </span>
@@ -162,4 +178,4 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
     withStyles(styles),
-    connect(mapStateToProps, mapDispatchToProps))(compactView);
+    connect(mapStateToProps, mapDispatchToProps))(mobileView);

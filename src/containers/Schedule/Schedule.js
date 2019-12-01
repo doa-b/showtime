@@ -5,6 +5,7 @@ import {withRouter} from 'react-router-dom'
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import BlocksList from "../Blocks/BlocksList/BlocksList";
+import Spinner from '../../components/ui/Spinner/Spinner'
 import {msToDate, msToTime} from "../../shared/utility";
 import {withStyles} from '@material-ui/core/styles';
 import {Typography} from "@material-ui/core";
@@ -14,33 +15,34 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PauseIcon from '@material-ui/icons/Pause';
-import {preventInertiaScroll} from "react-select/src/internal/ScrollLock/utils";
+
 
 /**
  * Created by Doa on 23-10-2019.
 
  */
 const styles = theme => ({
-    root: {
-        display: 'flex',
-    },
-    dateTime: {
-        width: '100%',
-    },
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        color: theme.palette.text.secondary
-    },
-    liveView: {
-        display: 'flex',
-        justifyContent: 'center',
-        width: '100%',
-    },
-    actionButton: {
-        marginLeft: 10
-    }
-});
+        root: {
+            display: 'flex',
+        },
+        dateTime: {
+            width: '100%',
+        },
+        paper: {
+            padding: theme.spacing(2),
+            textAlign: 'center',
+            color: theme.palette.text.secondary
+        },
+        liveView: {
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%',
+        },
+        actionButton: {
+            marginLeft: 10
+        }
+    })
+;
 
 class Schedule extends Component {
 
@@ -62,7 +64,7 @@ class Schedule extends Component {
     };
 
     showDetailsHandler = (elementId, pathName, parentId) => {
-        this.props.onSetPageTitle(pathName.split('/')[0] + ' details')
+        this.props.onSetPageTitle(pathName.split('/')[0] + ' details');
         if (elementId) {
             this.props.history.push({
                 pathname: pathName,
@@ -112,13 +114,13 @@ class Schedule extends Component {
     returnToPreviousHandler = () => {
         const p = this.props.previousState;
         this.props.onSetNextPart(p.runningPartNumber, p.runningBlockNumber);
-        this.props. onResetRunningPartDuration(p.runningPartDuration)
+        this.props.onResetRunningPartDuration(p.runningPartDuration)
         this.props.onSavePreviousState(null)
     };
 
     render() {
         const {classes} = this.props;
-        let page = <p>Loading...</p>;
+        let page = <Spinner/>
 
         let liveControls = (
             <Fab variant="extended" aria-label="start"
@@ -127,66 +129,67 @@ class Schedule extends Component {
             </Fab>
         );
 
-        let head = (
-            <>
-                <Typography variant='h2' component='h1'>
-                    Trinity International Trend Day
-                </Typography>
-                <div className={classes.dateTime}>
-                    <Typography variant='h6'>
-                        {msToDate(this.props.showStartDateTime)}
+        if (this.props.shows.length > 0 && !this.props.showHasFinished) {
+            const show = this.props.shows.filter((show) => show.id === this.props.currentShow)[0];
+
+            let head = (
+                <>
+                    <Typography variant='h2' component='h1'>
+                        {show.title}
                     </Typography>
-                    <Typography variant='h6'>
-                        {msToTime(this.props.showStartDateTime)}
-                    </Typography>
-                    <Fab variant="extended" aria-label="start"
-                         onClick={this.props.onStartTheShow} className={classes.fab}>
-                        Start The Show!
-                    </Fab>
+                    <div className={classes.dateTime}>
+                        <Typography variant='h6'>
+                            {msToDate(this.props.showStartDateTime)}
+                        </Typography>
+                        <Typography variant='h6'>
+                            {msToTime(this.props.showStartDateTime)}
+                        </Typography>
+                        <Fab variant="extended" aria-label="start"
+                             onClick={this.props.onStartTheShow} className={classes.fab}>
+                            Start The Show!
+                        </Fab>
 
-                </div>
-            </>
-        );
+                    </div>
+                </>
+            );
 
-        if (this.props.isLive) {
-            let playPause = (this.props.isPaused) ?
-                <PlayArrowIcon fontSize='large' color='secondary'/> : <PauseIcon fontSize='large'/>
+            if (this.props.isLive) {
+                let playPause = (this.props.isPaused) ?
+                    <PlayArrowIcon fontSize='large' color='secondary'/> : <PauseIcon fontSize='large'/>
 
-            let previous = null;
-            if (this.props.previousState) {
-                previous = (
-                    <Fab className={classes.actionButton}
-                                color='primary' aria-label='back'
-                                onClick={this.returnToPreviousHandler}>
-                    <SkipPreviousIcon fontSize={'large'}/>
-                </Fab>)
+                let previous = null;
+                if (this.props.previousState) {
+                    previous = (
+                        <Fab className={classes.actionButton}
+                             color='primary' aria-label='back'
+                             onClick={this.returnToPreviousHandler}>
+                            <SkipPreviousIcon fontSize={'large'}/>
+                        </Fab>)
+                }
+
+                head = (
+                    <div className={classes.liveView}>
+                        {previous}
+                        <Typography variant='h2'>
+                            {msToTime(this.props.currentTime, true)}
+                        </Typography>
+                        <Fab className={classes.actionButton}
+                             color='primary' aria-label='play'
+                             onClick={this.props.onTogglePause}>
+                            {playPause}
+                        </Fab>
+                        <Fab className={classes.actionButton}
+                             color='primary' aria-label='play'
+                             onClick={this.skipToNextPartHandler}>
+                            <SkipNextIcon fontSize='large'/>
+                        </Fab>
+                    </div>
+                )
             }
 
-            head = (
-                <div className={classes.liveView}>
-                    {previous}
-                    <Typography variant='h2'>
-                        {msToTime(this.props.currentTime, true)}
-                    </Typography>
-                    <Fab className={classes.actionButton}
-                         color='primary' aria-label='play'
-                         onClick={this.props.onTogglePause}>
-                        {playPause}
-                    </Fab>
-                    <Fab className={classes.actionButton}
-                         color='primary' aria-label='play'
-                         onClick={this.skipToNextPartHandler}>
-                        <SkipNextIcon fontSize='large'/>
-                    </Fab>
-                </div>
-            )
-        }
-
-        if (!this.props.loading && !this.props.showHasFinished) {
             page =
                 <div>
                     <div className={classes.paper}>
-                        {this.props.show.filter((show) => show.id === this.props.currentShow).title}
                         {head}</div>
                     <BlocksList
                         parentId={this.props.currentShow}
@@ -209,7 +212,7 @@ const mapStateToProps = (state) => {
         showName: state.show.showName,
         showStartDateTime: state.show.showStartDateTime,
         currentTime: state.show.currentTime,
-        show: state.show.shows,
+        shows: state.show.shows,
         blocks: state.show.blocks,
         parts: state.show.parts,
         scenes: state.show.scenes,
