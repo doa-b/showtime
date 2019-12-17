@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import withStyles from '@material-ui/core/styles/withStyles'
-import {compose} from "redux";
-import {connect} from "react-redux";
 import {withSnackbar} from 'notistack';
 
 import Card from '@material-ui/core/Card';

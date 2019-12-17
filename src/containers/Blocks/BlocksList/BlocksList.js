@@ -118,8 +118,8 @@ const mapStateToProps = (state) => {
         showId: state.show.currentShow,
         blocks: state.show.blocks,
         parts: state.show.parts,
-        displayRealTime: state.show.displayRealTime,
-        currentTime: state.show.currentTime,
+        displayRealTime: state.global.displayRealTime,
+        currentTime: state.global.currentTime,
         showStartDateTime: state.show.showStartDateTime,
         runningPartDuration: state.live.runningPartDuration,
         runningPartNumber: state.live.runningPartNumber,
@@ -136,9 +136,6 @@ const mapDispatchToProps = (dispatch) => {
         onUpdateScheduledEndTime: (time) => dispatch(actions.updateScheduledEndTime(time))
     }
 };
-
-// todo alternative render method: https://github.com/clauderic/react-sortable-hoc/blob/master/examples/drag-handle.js
-// todo scroll down https://github.com/clauderic/react-sortable-hoc to see how to pass down props
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlocksList);
 

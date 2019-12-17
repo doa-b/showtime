@@ -198,7 +198,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onSave: (element, data) => dispatch(actions.save(element, data)),
-        // onUpdate: (showId, data, elementName) => dispatch(actions.update(showId, data, elementName)),
         onDelete: (id, elementType) => dispatch(actions.deleteElement(id, elementType)),
         onCopyPartAndScenes: (partData, partId) => dispatch(actions.copyPartAndScenes(partData, partId)),
         onCopyBlockPartsAndScenes: (blockData, blockId) => dispatch(actions.copyBlockPartsAndScenes(blockData, blockId))

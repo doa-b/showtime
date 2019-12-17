@@ -61,7 +61,7 @@ const displayCrew = ({classes, team, onSetDisplayUser, currentTime, deadLine, is
 
 const mapStateToProps = (state) => {
     return {
-        currentTime: state.show.currentTime,
+        currentTime: state.global.currentTime,
         isPaused: state.live.isPaused
     }
 };

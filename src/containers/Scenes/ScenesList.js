@@ -68,7 +68,7 @@ const mapStateToProps = (state) => {
     return {
         showId: state.show.currentShow,
         scenes: state.show.scenes,
-        currentTime: state.show.currentTime
+        currentTime: state.global.currentTime
     }
 };
 

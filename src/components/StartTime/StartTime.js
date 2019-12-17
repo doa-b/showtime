@@ -19,8 +19,8 @@ const startTime = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        displaySeconds: state.show.displaySeconds,
-        displayRealTime: state.show.displayRealTime
+        displaySeconds: state.global.displaySeconds,
+        displayRealTime: state.global.displayRealTime
     }
 };
 

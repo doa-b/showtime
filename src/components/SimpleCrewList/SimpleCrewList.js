@@ -1,8 +1,6 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import {sceneCategories, convertObjectstoArray} from '../../shared/utility'
-import {compose} from "redux";
-import {withSnackbar} from "notistack";
 import {connect} from "react-redux";
 import * as actions from "../../store/actions";
 

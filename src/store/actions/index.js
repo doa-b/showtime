@@ -3,18 +3,22 @@ export {
     fetch,
     update,
     updateOrder,
+    deleteElement,
+    copyPartAndScenes,
+    copyBlockPartsAndScenes,
+    setCurrentShow,
+
+} from './showElements'
+
+export {
     startClock,
     toggleShowSeconds,
     setPageTitle,
     toggleDisplayRealTime,
     setDisplayUser,
     toggleIsEditable,
-    deleteElement,
-    copyPartAndScenes,
-    copyBlockPartsAndScenes,
-    setCurrentShow,
     setShowAllScenes
-} from './showElements'
+} from './global'
 
 export {
     startTheShow,

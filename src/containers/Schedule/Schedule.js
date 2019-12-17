@@ -213,7 +213,7 @@ const mapStateToProps = (state) => {
         currentShow: state.show.currentShow,
         showName: state.show.showName,
         showStartDateTime: state.show.showStartDateTime,
-        currentTime: state.show.currentTime,
+        currentTime: state.global.currentTime,
         shows: state.show.shows,
         blocks: state.show.blocks,
         parts: state.show.parts,

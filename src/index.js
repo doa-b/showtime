@@ -13,13 +13,15 @@ import App from './App';
 import usersReducer from './store/reducers/users'
 import showElementsReducer from './store/reducers/showElements'
 import liveReducer from './store/reducers/live'
+import globalReducer from './store/reducers/global'
 
 axios.defaults.baseURL = 'https://showtime-201ca.firebaseio.com/';
 
 const rootReducer = combineReducers({
     users: usersReducer,
     show: showElementsReducer,
-    live: liveReducer
+    live: liveReducer,
+    global: globalReducer
 });
 
 const composeEnhancers = (process.env.NODE_ENV ==='development') ?

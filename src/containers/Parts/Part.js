@@ -120,7 +120,7 @@ class Part extends Component {
 const mapStateToProps = (state) => {
     return {
         isPaused: state.live.isPaused,
-        showAllScenes: state.show.showAllScenes
+        showAllScenes: state.global.showAllScenes
     }
 };
 

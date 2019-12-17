@@ -26,7 +26,6 @@ export const updateElement = () => {
     }
 };
 
-
 export const showFail = (error) => {
     return {
         type: actionTypes.SHOW_FAIL,
@@ -51,59 +50,9 @@ export const fetchShowDataSuccess = (shows, blocks, parts, scenes) => {
     }
 };
 
-export const initiateClock = () => {
-    return {
-        type: actionTypes.SHOW_INITIATE_CLOCK
-    };
-};
-
-export const addSecondToClock = () => {
-    return {
-        type: actionTypes.SHOW_INCREMENT_CLOCK
-    }
-};
-
-export const toggleShowSeconds = () => {
-    return {
-        type: actionTypes.SHOW_TOGGLE_SHOW_SECONDS
-    }
-};
-
-export const toggleDisplayRealTime = () => {
-    return {
-        type: actionTypes.SHOW_TOGGLE_DISPLAY_REALTIME
-    }
-};
-
-export const toggleIsEditable = () => {
-    return {
-        type: actionTypes.SHOW_TOGGLE_IS_EDITABLE
-    }
-};
-export const setDisplayUser = (user) => {
-    return {
-        type: actionTypes.SHOW_SET_DISPLAY_USER,
-        user: user
-    }
-};
-
-export const setPageTitle = (title) => {
-    return {
-        type: actionTypes.SHOW_SET_PAGE_TITLE,
-        pageTitle: title
-    }
-};
-
 export const clearData = () => {
     return {
         type: actionTypes.SHOW_CLEAR_DATA
-    }
-};
-
-export const setShowAllScenes = (value) => {
-    return {
-        type: actionTypes.SHOW_SET_SHOW_ALL_SCENES,
-        value: value
     }
 };
 
@@ -250,19 +199,6 @@ export const updateOrder = (showId, data, elementName) => {
                 dispatch(showFail(error));
             })
     };
-};
-
-export const startClock = () => {
-    return (dispatch, getState) => {
-        dispatch(initiateClock());
-        setInterval(() => {
-            const isPlaying = !getState().live.isPaused;
-            dispatch(addSecondToClock());
-            if (isPlaying) {
-                dispatch(incrementRunningPartDuration());
-            }
-        }, 1000)
-    }
 };
 
 // Axios helper functions

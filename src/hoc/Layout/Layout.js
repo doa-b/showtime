@@ -93,12 +93,12 @@ class Layout extends Component {
 const mapStateToProps = (state) => {
     return {
         showName: state.show.showName,
-        displayRealTime: state.show.displayRealTime,
-        displaySeconds: state.show.displaySeconds,
-        isEditable: state.show.isEditable,
-        displayUser: state.show.displayUser,
-        pageTitle: state.show.pageTitle,
-        showAllScenes: state.show.showAllScenes,
+        displayRealTime: state.global.displayRealTime,
+        displaySeconds: state.global.displaySeconds,
+        isEditable: state.global.isEditable,
+        displayUser: state.global.displayUser,
+        pageTitle: state.global.pageTitle,
+        showAllScenes: state.global.showAllScenes,
         isLive: state.live.isLive,
 
     }

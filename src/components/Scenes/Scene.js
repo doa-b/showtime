@@ -71,9 +71,9 @@ const scene = withStyles(styles)(({
 
 const mapStateToProps = (state) => {
     return {
-        currentTime: state.show.currentTime,
+        currentTime: state.global.currentTime,
         runningPartDuration: state.live.runningPartDuration,
-        displayRealTime: state.show.displayRealTime
+        displayRealTime: state.global.displayRealTime
     };
 };
 

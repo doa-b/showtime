@@ -36,7 +36,7 @@ const startTime = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        displaySeconds: state.show.displaySeconds
+        displaySeconds: state.global.displaySeconds
     }
 };
 
