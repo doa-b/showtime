@@ -1,37 +1,74 @@
 import React from 'react';
 import {connect} from 'react-redux'
-
-import classes from './Time.module.css'
+import withStyles from "@material-ui/core/styles/withStyles";
 import * as actions from "../../store/actions";
 import {msToTime} from "../../shared/utility";
 import Tooltip from "@material-ui/core/Tooltip";
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import * as PropTypes from "prop-types";
+
+const styles = () => ({
+    time: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        padding: '0px 5px 0px 5px'
+    },
+    startTime: {
+        padding: '0px 5px 0px 5px',
+        margin: '0px 5px 0px 5px',
+        //border: 1px solid #ccc;
+        cursor: 'pointer'
+    },
+    duration: {
+        padding: '0px 5px 0px 5px',
+        margin: '0px 5px 0px 5px',
+        border: '1px solid #ccc'
+    }
+});
 
 /**
- * Created by Doa on 24-10-2019.
+ * React functional component that displays the startTime and Duration of show Element
+ * <br />Created by Doa on 24-10-2019.
  */
-// TODO replace startTime Display with Play Icon when this item is playing
-const startTime = (props) => {
-    let startTime = msToTime(props.startTime, props.displaySeconds);
-    if (props.live) startTime = 'LIVE';
-    let duration = msToTime(props.duration, props.displaySeconds);
-    if (props.duration <= 0) {
-        startTime = <span style={{color: "red"}}>Time is up!</span>;
-        duration = null;
+const startTime = withStyles(styles)(({classes, startTime, displaySeconds, duration, live, onClick}) => {
+
+    let startTimeDisplay = msToTime(startTime, displaySeconds);
+    if (live) startTimeDisplay = <PlayArrowIcon fontSize='small'/>;
+    let durationDisplay = msToTime(duration, displaySeconds);
+    if (duration <= 0) {
+        startTimeDisplay = <span style={{color: "red"}}>Time is up!</span>;
+        durationDisplay = null;
     }
     return (
-        <div className={classes.Time}>
+        <div className={classes.time}>
             <Tooltip title='Toggle realtime'>
-            <div className={classes.StartTime} onClick={props.onClick}>
-                    {startTime}
-            </div>
+                <div className={classes.startTime} onClick={onClick}>
+                    {startTimeDisplay}
+                </div>
             </Tooltip>
             <Tooltip title='Duration'>
-            <div className={classes.Duration}>
-                {duration}
-            </div>
+                <div className={classes.duration}>
+                    {durationDisplay}
+                </div>
             </Tooltip>
         </div>
     );
+});
+
+const {func, bool, number} = PropTypes;
+
+startTime.propTypes = {
+    /** calculated startTime of this showElement in ms */
+    startTime: number,
+    /** duration of this showElement in ms */
+    duration: number,
+    /** true when show is running */
+    live: bool,
+    /** true if this component needs to display seconds in time*/
+    displaySeconds: bool,
+    /** function tho handle click on startTimeDisplay element. Toggles between realtime and showtime */
+    onClick: func,
 };
 
 const mapStateToProps = (state) => {
@@ -46,4 +83,5 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
+/* @component */
 export default connect(mapStateToProps, mapDispatchToProps)(startTime);

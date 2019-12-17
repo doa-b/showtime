@@ -16,11 +16,6 @@ import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PauseIcon from '@material-ui/icons/Pause';
 
-
-/**
- * Created by Doa on 23-10-2019.
-
- */
 const styles = theme => ({
         root: {
             display: 'flex',
@@ -44,6 +39,9 @@ const styles = theme => ({
     })
 ;
 
+/**
+ * Created by Doa on 23-10-2019.
+ */
 class Schedule extends Component {
 
     state = {
@@ -60,6 +58,11 @@ class Schedule extends Component {
         }
     }
 
+    /**
+     * Opens the modal with backdrop to display DisplayUser component
+     * @public
+     * @param user: the user to display in the modal
+     */
     openUserModal = (user) => {
         this.setState({showUser: true, user: user})
     };
@@ -246,6 +249,7 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
+/* @component */
 export default compose(
     withRouter,
     withStyles(styles),

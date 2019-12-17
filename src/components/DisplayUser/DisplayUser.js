@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import * as PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles'
 import {withSnackbar} from 'notistack';
 
@@ -18,7 +19,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CloseIcon from '@material-ui/icons/Close';
 
-const styles = theme => ({
+const styles = () => ({
     card: {
         maxWidth: 322
     },
@@ -40,8 +41,9 @@ const styles = theme => ({
         width: '100%'
     }
 });
-/**
- * Created by Doa on 19-11-2019.
+/** React functional component that displays details of one user.
+ * Also dispatches Snackbar Messages
+ * <br />Created by Doa on 19-11-2019.
  */
 const displayUser = withStyles(styles)(
     ({classes, user, close, enqueueSnackbar}) => {
@@ -49,17 +51,29 @@ const displayUser = withStyles(styles)(
         const [message, setMessage] = useState('');
         const [expanded, setExpanded] = useState(false);
 
+        /**
+         * Toggle Icon to display expanded
+         * */
         const ExpandIcon = ({expanded}) =>
             expanded ? <ExpandMoreIcon/> : <ChevronLeftIcon/>;
 
+        /**
+         * Toggle expand. Shows extra info
+         * */
         const toggleExpanded = () => {
             setExpanded(!expanded);
         };
 
-        const inputChangedHandler = (event, value) => {
+        /**         *
+         * Binds message textfield
+         */
+        const inputChangedHandler = (event) => {
             setMessage(event.target.value)
         };
 
+        /**
+         * Sends a Snackbar message, based on message textfield
+         * */
         const sendMessageHandler = () => {
             enqueueSnackbar(message, {
                 variant: 'warning',
@@ -78,10 +92,10 @@ const displayUser = withStyles(styles)(
                             <CloseIcon/>
                         </IconButton>
                     }
-                avatar={
-                    <IconButton size='small' aria-label="edit">
-                    <EditIcon/>
-                    </IconButton>}
+                    avatar={
+                        <IconButton size='small' aria-label="edit">
+                            <EditIcon/>
+                        </IconButton>}
                 />
                 <CardMedia
                     className={classes.media}
@@ -127,4 +141,12 @@ const displayUser = withStyles(styles)(
         );
     });
 
+displayUser.propTypes = {
+    /** The userdetails to display*/
+    user: PropTypes.object,
+    /** Function to close the modal and userDetails display. Sets DisplayUser in store*/
+    close: PropTypes.func
+};
+/* @component */
+// noinspection JSCheckFunctionSignatures
 export default withSnackbar(displayUser);

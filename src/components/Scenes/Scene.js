@@ -1,6 +1,7 @@
 import React from 'react';
+import * as PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import {sceneCategories, convertObjectstoArray} from '../../shared/utility'
+import { sceneCategories } from '../../shared/utility'
 
 
 import Time from "../Time/Time";
@@ -8,7 +9,7 @@ import SimpleCrewList from "../SimpleCrewList/SimpleCrewList";
 import OptionsMenu from "../ui/OptionsMenu/OptionsMenu";
 import {connect} from "react-redux";
 
-const styles = theme => ({
+const styles = () => ({
     scene: {
         display: 'flex',
         fleDirection: 'row',
@@ -25,8 +26,8 @@ const styles = theme => ({
     }
 });
 
-/**
- * Created by Doa on 23-10-2019.
+/** React functional component that displays all the sceneDetails
+ * <br />Created by Doa on 23-10-2019.
  */
 const scene = withStyles(styles)(({
                                       classes, startTime, currentTime, displayRealTime,
@@ -36,7 +37,7 @@ const scene = withStyles(styles)(({
     let realStartTime = startTime + sceneData.startTime;
     let showTime = (displayRealTime) ? currentTime : runningPartDuration;
     let style = {};
-    let time = <Time startTime={realStartTime} duration={sceneData.duration}/>
+    let time = <Time startTime={realStartTime} duration={sceneData.duration}/>;
 
 
     if (isRunning) {
@@ -69,6 +70,25 @@ const scene = withStyles(styles)(({
     )
 });
 
+const {func, object, bool, number} = PropTypes;
+
+scene.propTypes = {
+    /** startTime of this scene*/
+    startTime: number,
+    /** current Time in milliseconds */
+    currentTime: number,
+    /** true if component needs to show time relative to show start*/
+    displayRealTime: bool,
+    /** time in ms that this scenes parent Part is running*/
+    runningPartDuration: number,
+    /** details of this scene*/
+    sceneData: object,
+    /** function that is called when scene is clicked. Opens a new 'page' to scene Details*/
+    detailClicked: func,
+    /** true if current show is live */
+    isRunning: bool
+};
+
 const mapStateToProps = (state) => {
     return {
         currentTime: state.global.currentTime,
@@ -76,5 +96,5 @@ const mapStateToProps = (state) => {
         displayRealTime: state.global.displayRealTime
     };
 };
-
+/* @component */
 export default connect(mapStateToProps)(scene);
