@@ -103,6 +103,16 @@ export const dummyUsers = [
         imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
+        id: 'id19',
+        firstName: 'Matej',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Germany',
+        type: accessLevels.ACCESS_LEVEL_TRINITY,
+        groups: 'artist',
+        imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+    },
+    {
         id: 'id10',
         firstName: 'Tessa',
         lastName: '',
@@ -130,7 +140,7 @@ export const dummyUsers = [
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_ADMINISTRATOR,
         groups: 'dj',
-        imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+        imageUrl: 'http://djdoa.nl/DJDoa_WebPages/__Old_Website/doa_avatar_small.jpg'
     },
     {
         id: 'id13',
@@ -159,7 +169,17 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_SUPPORT,
-        groups: 'lighting',
+        groups: 'light',
+        imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
+    },
+    {
+        id: 'id20',
+        firstName: 'Johhny',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_TRINITY,
+        groups: 'photographer',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
     {
@@ -191,15 +211,5 @@ export const dummyUsers = [
         type: accessLevels.ACCESS_LEVEL_MEMBER,
         groups: 'dancer',
         imageUrl: 'https://image.tmdb.org/t/p/original/5MgWM8pkUiYkj9MEaEpO0Ir1FD9.jpg'
-    },
-    {
-        id: 'id19',
-        firstName: 'Matej',
-        lastName: '',
-        Phone: '0612345678',
-        country: 'Germany',
-        type: accessLevels.ACCESS_LEVEL_TRINITY,
-        groups: 'artist',
-        imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
-    },
+    }
 ];

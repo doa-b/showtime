@@ -11,7 +11,7 @@ const initialState = {
     // currentShow: '-Lrst6TmmyYrkouGmiac',
     currentShow: '-Lrx3-oBw6jhk6A601Yo',
     showName: 'Fall Trend Show', // TODO can be removed
-    showStartDateTime: getCurrentUTCinMs() + 30000,
+    showStartDateTime: getCurrentUTCinMs() + 30000, // TODO temporary
     currentTime: 0,
     displaySeconds: true,
     displayRealTime: true,
@@ -19,7 +19,8 @@ const initialState = {
     displayUser: null,
     isEditable: true,
     optionsMenu: null,
-    optionsMenuAnchor: null
+    optionsMenuAnchor: null,
+    showAllScenes: false
 };
 
 const savedShowElement = (state, action) => {
@@ -42,6 +43,17 @@ const fetchedAllShowData = (state, action) => {
         loading: false
     };
     return updateObject(state, newState );
+};
+
+const dataCleared = (state) => {
+    const newState = {
+        shows: [],
+        blocks: [],
+        parts: [],
+        scenes: [],
+        showStartDateTime: getCurrentUTCinMs() + 30000
+    };
+    return updateObject(state, newState)
 };
 
 const reducer = (state = initialState, action) => {
@@ -81,6 +93,10 @@ const reducer = (state = initialState, action) => {
             return updateObject(state, {isEditable: !state.isEditable});
         case actionTypes.SHOW_SET_OPTIONS_MENU_AND_ANCHOR:
             return updateObject(state, {optionsMenu: action.elementType, optionsMenuAnchor: action.anchor });
+        case actionTypes.SHOW_CLEAR_DATA:
+            return dataCleared(state);
+        case actionTypes.SHOW_SET_SHOW_ALL_SCENES:
+            return updateObject(state, {showAllScenes: action.value});
         default:
             return state
     }

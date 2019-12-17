@@ -94,6 +94,19 @@ export const setPageTitle = (title) => {
     }
 };
 
+export const clearData = () => {
+    return {
+        type: actionTypes.SHOW_CLEAR_DATA
+    }
+};
+
+export const setShowAllScenes = (value) => {
+    return {
+        type: actionTypes.SHOW_SET_SHOW_ALL_SCENES,
+        value: value
+    }
+};
+
 // Asynchronous actionCreators
 
 export const save = (elementName, data) => {
@@ -104,6 +117,7 @@ export const save = (elementName, data) => {
                 console.log(response);
                 dispatch(elementSaveSucces(elementName, data, response.data.name));
                 if (elementName === 'shows') {
+                    dispatch(clearData());
                     dispatch(setCurrentShow(response.data.name))
                 }
                 dispatch(fetch())

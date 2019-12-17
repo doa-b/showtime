@@ -1,7 +1,9 @@
 import * as actionTypes from '../actions/actionTypes'
 import {updateObject} from "../../shared/utility";
 
-
+// save isLive, isPaused, runningPartNumber, runningBlockNumber, showId
+// runningPartStartTime, showHasFinished and scheduledEndTime when show goes live.
+// And update when controls are clicked
 const initialState = {
     isLive: false,
     isPaused: true,

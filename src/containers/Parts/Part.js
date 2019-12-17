@@ -21,8 +21,15 @@ import {Tooltip} from "@material-ui/core";
 class Part extends Component {
 
     state = {
-        showChildren: true
+        showChildren: this.props.showAllScenes
     };
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('componentDidUpdate Part');
+        if (prevProps.showAllScenes !== this.props.showAllScenes) {
+            this.setState({showChildren: this.props.showAllScenes})
+        }
+    }
 
     toggleVisibilityHandler = () => {
         console.log('çlicked');
@@ -112,7 +119,8 @@ class Part extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isPaused: state.live.isPaused
+        isPaused: state.live.isPaused,
+        showAllScenes: state.show.showAllScenes
     }
 };
 

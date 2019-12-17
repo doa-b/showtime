@@ -5,6 +5,7 @@ import VideocamIcon from '@material-ui/icons/VideocamOutlined';
 import ImageIcon from '@material-ui/icons/ImageOutlined';
 import AssignmentIcon from '@material-ui/icons/AssignmentOutlined';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeopleOutlined';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCameraOutlined';
 
 
 // function that sets an object immutably
@@ -29,7 +30,8 @@ export const ROLES = [
     'light',
     'sound',
     'dj',
-    'director'
+    'director',
+    'photographer'
 ];
 
 function checkNested(obj, level, ...rest) {

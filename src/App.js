@@ -14,8 +14,9 @@ import ShowList from "./containers/Shows/ShowList/ShowList";
 import ShowDetails from "./containers/Shows/ShowDetails/ShowDetails";
 import MobileView from "./containers/MobileView/MobileView";
 
-
 function App() {
+
+
 
     let routes = (
         <Switch>

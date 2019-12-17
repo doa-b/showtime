@@ -1,4 +1,4 @@
-import {withStyles} from "@material-ui/core";
+import {Tooltip, withStyles} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -9,6 +9,8 @@ import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
 import {NavLink} from "react-router-dom";
 import trinityLogo from '../../../assets/images/trinity-haircare-circles.png'
+import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
+import UnfoldLessIcon from '@material-ui/icons/UnfoldLess';
 
 
 const styles = theme => ({
@@ -34,7 +36,7 @@ const styles = theme => ({
 });
 
 const MyToolbar = withStyles(styles)(
-    ({classes, title, onMenuClick, isLive, showName}) => (
+    ({classes, title, onMenuClick, isLive, showName, showAllScenes, setShowAllScenes}) => (
         <>
             <AppBar className={classes.aboveDrawer}>
                 <Toolbar className={classes.toolBar}>
@@ -57,6 +59,15 @@ const MyToolbar = withStyles(styles)(
                     >
                         {(isLive) ? 'LIVE ' + showName : title}
                     </Typography>
+                    <IconButton
+                        className={classes.fold}
+                        color="inherit"
+                        aria-label="Fold"
+                        onClick={() => setShowAllScenes(!showAllScenes)}
+                    > <Tooltip title='show/hide scenes' placement='left-end'>
+                        {(showAllScenes) ? <UnfoldLessIcon/>: <UnfoldMoreIcon/>}
+                    </Tooltip>
+                    </IconButton>
                     <Avatar
                         className={classes.avatar}
                         alt='logged in user'

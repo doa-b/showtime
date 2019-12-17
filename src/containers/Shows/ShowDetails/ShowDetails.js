@@ -95,6 +95,7 @@ class ShowDetails extends Component {
 
     onSubmitHandler = (event) => {
         event.preventDefault();
+        // convert moment back to miliseconds
         const show = updateObject(this.state,
             {
                 dateTimeMs: this.state.dateTimeMs.valueOf()

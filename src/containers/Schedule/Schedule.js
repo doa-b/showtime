@@ -52,6 +52,7 @@ class Schedule extends Component {
     };
 
     componentDidMount() {
+        this.props.onFetchLiveData();
         this.props.onSetPageTitle('Schedule');
         this.props.onFetch(this.props.currentShow);
         if (this.props.currentTime === 0) {
@@ -108,6 +109,7 @@ class Schedule extends Component {
         }
         if (nextBlock < this.props.blocks.length) {
             this.props.onSetNextPart(nextPart, nextBlock)
+            this.props.onSaveLiveData();
         } else this.props.onEndOfShow();
     };
 
@@ -129,7 +131,7 @@ class Schedule extends Component {
             </Fab>
         );
 
-        if (this.props.shows.length > 0 && !this.props.showHasFinished) {
+        if (this.props.shows.length > 0 && !this.props.showHasFinished && !this.props.loading) {
             const show = this.props.shows.filter((show) => show.id === this.props.currentShow)[0];
 
             let head = (
@@ -238,7 +240,9 @@ const mapDispatchToProps = (dispatch) => {
         onEndOfShow: () => dispatch(actions.showHasEnded()),
         onSetPageTitle: (title) => dispatch(actions.setPageTitle(title)),
         onSavePreviousState: (previousState) => dispatch(actions.savePreviousState(previousState)),
-        onResetRunningPartDuration: (value) => dispatch(actions.resetRunningPartDuration(value))
+        onResetRunningPartDuration: (value) => dispatch(actions.resetRunningPartDuration(value)),
+        onFetchLiveData: () => dispatch(actions.fetchLiveData()),
+        onSaveLiveData: () => dispatch(actions.saveLiveData())
     }
 };
 

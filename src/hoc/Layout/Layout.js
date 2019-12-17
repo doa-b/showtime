@@ -4,6 +4,7 @@ import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import {SnackbarProvider} from 'notistack';
 
+import classes from './Layout.module.css'
 
 import Button from "@material-ui/core/Button";
 
@@ -66,7 +67,9 @@ class Layout extends Component {
                     title={this.props.pageTitle}
                     onMenuClick={this.toggleDrawer}
                     isLive={this.props.isLive}
-                    showName={this.props.showName}/>
+                    showName={this.props.showName}
+                    showAllScenes={this.props.showAllScenes}
+                    setShowAllScenes={this.props.onSetFoldAll}/>
                 <MySideDrawer
                     variant={this.props.variant}
                     open={this.state.drawer}
@@ -79,7 +82,9 @@ class Layout extends Component {
                     isEditable={this.props.isEditable}
                     toggleIsEditable={this.props.onToggleIsEditable}
                 />
+                <div className={classes.Main}>
                 {this.props.children}
+                </div>
             </SnackbarProvider>
         )
     }
@@ -93,6 +98,7 @@ const mapStateToProps = (state) => {
         isEditable: state.show.isEditable,
         displayUser: state.show.displayUser,
         pageTitle: state.show.pageTitle,
+        showAllScenes: state.show.showAllScenes,
         isLive: state.live.isLive,
 
     }
@@ -104,7 +110,8 @@ const mapDispatchToProps = (dispatch) => {
         onToggleRealTime: () => dispatch(actions.toggleDisplayRealTime()),
         onSetPageTitle: (title) => dispatch(actions.setPageTitle(title)),
         onSetDisplayUser: (user) => dispatch(actions.setDisplayUser(user)),
-        onToggleIsEditable: () => dispatch(actions.toggleIsEditable())
+        onToggleIsEditable: () => dispatch(actions.toggleIsEditable()),
+        onSetFoldAll: (value) => dispatch(actions.setShowAllScenes(value))
     }
 };
 
