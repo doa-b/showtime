@@ -1,9 +1,12 @@
 import React from 'react';
+import {compose} from "redux";
 import {Route, Switch, withRouter, Redirect} from 'react-router-dom'
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
-
 import './App.css';
+
+import * as ROUTES from './shared/routes'
+
 import Schedule from './containers/Schedule/Schedule';
 import BlockDetails from './containers/Blocks/BlockDetails/BlockDetails'
 import PartDetails from './containers/Parts/PartDetails/PartDetails'
@@ -13,31 +16,47 @@ import SceneDetails from "./containers/Scenes/SceneDetails/SceneDetails";
 import ShowList from "./containers/Shows/ShowList/ShowList";
 import ShowDetails from "./containers/Shows/ShowDetails/ShowDetails";
 import MobileView from "./containers/MobileView/MobileView";
+import SignUpPage from "./containers/SignUp";
+import SignInPage from "./containers/SignIn";
+import SignOutPage from './containers/SignOut';
+import PasswordForgetPage from "./containers/PasswordForget";
+import AccountPage from "./containers/Account";
 
-function App() {
+import {withFirebase} from "./firebase";
+import { withAuthentication } from './hoc/Session'
 
-
+const App = () => {
 
     let routes = (
         <Switch>
-            <Route path="/" exact component={Schedule}/>
-            <Route path="/show/details" exact component={ShowDetails}/>
-            <Route path="/block/details" exact component={BlockDetails}/>
-            <Route path="/part/details" exact component={PartDetails}/>
-            <Route path="/scene/details" exact component={SceneDetails}/>
-            <Route path="/monitor" exact component={Monitor}/>
-            <Route path="/shows" exact component={ShowList}/>
-            <Route path="/mobile" exact component={MobileView}/>
-            <Redirect to="/"/>
+            <Route path={ROUTES.LANDING} exact component={Schedule}/>
+            <Route path={ROUTES.SIGN_UP} exact component={SignUpPage}/>
+            <Route path={ROUTES.SIGN_IN} exact component={SignInPage}/>
+            <Route path={ROUTES.SIGN_OUT} exact component={SignOutPage}/>
+            <Route path={ROUTES.PASSWORD_FORGET} exact component={PasswordForgetPage}/>
+            <Route path={ROUTES.ACCOUNT} exact component={AccountPage}/>
+            <Route path={ROUTES.HOME} exact component={Schedule}/>
+            <Route path={ROUTES.SHOW_DETAILS} exact component={ShowDetails}/>
+            <Route path={ROUTES.BLOCK_DETAILS} exact component={BlockDetails}/>
+            <Route path={ROUTES.PART_DETAILS} exact component={PartDetails}/>
+            <Route path={ROUTES.SCENE_DETAILS} exact component={SceneDetails}/>
+            <Route path={ROUTES.MONITOR} exact component={Monitor}/>
+            <Route path={ROUTES.SHOWS} exact component={ShowList}/>
+            <Route path={ROUTES.MOBILE} exact component={MobileView}/>
+            <Redirect to={ROUTES.LANDING}/>
         </Switch>
     );
     return (
         <MuiPickersUtilsProvider utils={MomentUtils}>
-        <Layout variant='temporary'>
-            {routes}
-        </Layout>
+            <Layout variant='temporary'>
+                {routes}
+            </Layout>
         </MuiPickersUtilsProvider>
     );
-}
+};
 
-export default withRouter(App);
+export default compose(
+    withAuthentication,
+    withRouter,
+    withFirebase
+)(App);

@@ -50,7 +50,7 @@ class Schedule extends Component {
     };
 
     componentDidMount() {
-        this.props.onFetchLiveData();
+      //  this.props.onFetchLiveData();
         this.props.onSetPageTitle('Schedule');
         this.props.onFetch(this.props.currentShow);
         if (this.props.currentTime === 0) {
@@ -244,8 +244,8 @@ const mapDispatchToProps = (dispatch) => {
         onSetPageTitle: (title) => dispatch(actions.setPageTitle(title)),
         onSavePreviousState: (previousState) => dispatch(actions.savePreviousState(previousState)),
         onResetRunningPartDuration: (value) => dispatch(actions.resetRunningPartDuration(value)),
-        onFetchLiveData: () => dispatch(actions.fetchLiveData()),
-        onSaveLiveData: () => dispatch(actions.saveLiveData())
+        // onFetchLiveData: () => dispatch(actions.fetchLiveData()),
+        // onSaveLiveData: () => dispatch(actions.saveLiveData())
     }
 };
 

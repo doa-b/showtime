@@ -1,6 +1,8 @@
 import React from "react";
 import {Route, NavLink, Switch} from "react-router-dom";
 import clsx from "clsx";
+import * as ROUTES from '../../../shared/routes';
+import { AuthUserContext } from '../../../hoc/Session'
 
 import {Checkbox, withStyles} from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
@@ -11,9 +13,12 @@ import WebIcon from '@material-ui/icons/Web';
 import TuneIcon from '@material-ui/icons/Tune';
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
     root: {
@@ -40,21 +45,46 @@ const styles = theme => ({
         margin: 10,
         width: 150,
     },
+    nonAuth: {
+        textAlign: 'center',
+        maxWidth: 150
+    }
 });
 
 const MySideDrawer = withStyles(styles)(
     ({
          classes, variant, open, onClose, onItemClick,
          showSeconds, toggleShowSeconds, displayRealTime, toggleDisplayRealTime,
-         isEditable, toggleIsEditable
-     }) => (
-        <Drawer variant={variant} open={open} onClose={onClose}>
-            {/*div to offset the drawer with the heighth of the Toolbar, when the variant is persistent*/}
-            <div
-                className={clsx({
-                    [classes.toolbarMargin]: variant === 'persistent'
-                })}
-            />
+         isEditable, toggleIsEditable, isAuth
+     }) => {
+
+        const SideDrawerNonAuth = () => (
+            <List>
+                <Typography className={classes.nonAuth} variant='subtitle1' >
+                   This App needs authentication
+                </Typography>
+                <NavItem
+                    to={ROUTES.SIGN_IN}
+                    text='Sign in'
+                    Icon={LockOpenIcon}
+                    onClick={onItemClick('Sign in')}
+                />
+                <NavItem
+                    to={ROUTES.SIGN_UP}
+                    text='Sign up'
+                    Icon={PersonOutlineIcon}
+                    onClick={onItemClick('Sign up')}
+                />
+                <NavItem
+                    to={ROUTES.MONITOR}
+                    text='Monitor'
+                    Icon={DesktopWindowsIcon}
+                    onClick={onItemClick('Monitor')}
+                />
+            </List>
+        );
+
+        const SideDrawerAuth = () => (
             <List>
                 <ListItem alignItems='center'>
                     <img
@@ -66,13 +96,13 @@ const MySideDrawer = withStyles(styles)(
                     Doa Bonifacio
                 </ListSubheader>
                 <NavItem
-                    to='/account'
+                    to={ROUTES.ACCOUNT}
                     text='Account'
                     Icon={TuneIcon}
                     onClick={onItemClick('Account')}
                 />
                 <NavItem
-                    to='/logout'
+                    to={ROUTES.SIGN_OUT}
                     text='Logout'
                     Icon={ExitToAppIcon}
                     onClick={onItemClick('Logout')}
@@ -112,32 +142,45 @@ const MySideDrawer = withStyles(styles)(
                     Navigation
                 </ListSubheader>
                 <NavItem
-                    to='/'
+                    to={ROUTES.LANDING}
                     text='Schedule'
                     Icon={HomeIcon}
                     onClick={onItemClick('Schedule')}
                 />
                 <NavItem
-                    to='/monitor'
+                    to={ROUTES.MONITOR}
                     text='Monitor'
                     Icon={DesktopWindowsIcon}
                     onClick={onItemClick('Monitor')}
                 />
                 <NavItem
-                    to='/shows'
+                    to={ROUTES.SHOWS}
                     text='Other Shows'
                     Icon={WebIcon}
                     onClick={onItemClick('Compact View')}
                 />
                 <NavItem
-                    to='/mobile'
+                    to={ROUTES.MOBILE}
                     text='Mobile view'
                     Icon={WebIcon}
                     onClick={onItemClick('Mobile view')}
                 />
-            </List>
-        </Drawer>
-    )
+            </List>);
+
+        return (
+            <Drawer variant={variant} open={open} onClose={onClose}>
+                {/*div to offset the drawer with the heighth of the Toolbar, when the variant is persistent*/}
+                <div
+                    className={clsx({
+                        [classes.toolbarMargin]: variant === 'persistent'
+                    })}
+                />
+                <AuthUserContext.Consumer>
+                {authUser => authUser ? <SideDrawerAuth/> : <SideDrawerNonAuth/>}
+                </AuthUserContext.Consumer>
+            </Drawer>
+        )
+    }
 );
 
 const NavListItem = withStyles(styles)(
