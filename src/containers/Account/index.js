@@ -1,15 +1,22 @@
 import React from 'react';
+import { withAuthorization, AuthUserContext } from '../../hoc/Session'
 
 import { PasswordForgetForm } from "../PasswordForget";
 import PasswordChangeForm from '../PasswordChange';
 
 // TODO use expansion Panels for these 2 forms
 const AccountPage = () => (
-    <>
-        <h1>Account Page</h1>
-        <PasswordForgetForm />
-        <PasswordChangeForm />
-    </>
+    <AuthUserContext.Consumer>
+        {authUser => (
+            <>
+                <h1>Account: {authUser.email}</h1>
+                <PasswordForgetForm />
+                <PasswordChangeForm />
+            </>
+        )}
+    </AuthUserContext.Consumer>
 );
 
-export default AccountPage;
+const condition = authUser => !!authUser;
+
+export default withAuthorization(condition)(AccountPage);

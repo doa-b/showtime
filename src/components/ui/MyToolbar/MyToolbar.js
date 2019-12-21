@@ -1,13 +1,17 @@
+import React from "react";
+import { NavLink } from "react-router-dom";
+import * as ROUTES from '../../../shared/routes'
+
 import {Tooltip, withStyles} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from "@material-ui/core/Typography";
-import React from "react";
+
 import Avatar from "@material-ui/core/Avatar";
-import List from "@material-ui/core/List";
-import {NavLink} from "react-router-dom";
+
+
 import trinityLogo from '../../../assets/images/trinity-haircare-circles.png'
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import UnfoldLessIcon from '@material-ui/icons/UnfoldLess';
@@ -49,7 +53,7 @@ const MyToolbar = withStyles(styles)(
                         <MenuIcon/>
                     </IconButton>
 
-                    <NavLink to='/'>
+                    <NavLink to={ROUTES.LANDING}>
                         <img className={classes.logo} src={trinityLogo} alt='trinity logo'/>
                     </NavLink>
                     <Typography

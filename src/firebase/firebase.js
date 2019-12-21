@@ -3,11 +3,15 @@ import {firebaseConfig} from '../kluisje';
 import "firebase/auth";
 import "firebase/database";
 
+/**
+ * Interface for firebase
+ */
 class Firebase {
     constructor() {
-        app.initializeApp(firebaseConfig)
+        app.initializeApp(firebaseConfig);
 
         this.auth = app.auth();
+        this.db = app.database();
     }
 
     // *** Auth API ***
@@ -24,6 +28,12 @@ class Firebase {
 
     doPasswordUpdate = password =>
         this.auth.currentUser.updatePassword(password);
+
+    // *** User API ***
+
+    user = uid => this.db.ref(`users/${uid}`);
+
+    users = () => this.db.ref(`users`);
 }
 
 

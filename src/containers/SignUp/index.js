@@ -24,6 +24,10 @@ const INITIAL_STATE = {
     error: null,
 };
 
+/**
+ * creates a user in Firebase's internal authentication database
+ * If succesfull, creates a user in Firebase's realtime database
+ */
 export class SignUpFormBase extends Component {
     constructor(props) {
         super(props);
@@ -36,6 +40,15 @@ export class SignUpFormBase extends Component {
         const {username, email, passwordOne} = this.state;
         this.props.firebase
             .doCreateUserWithEmailAndPassword(email, passwordOne)
+            .then(authUser => {
+                // Create a user in firebase realtime database
+                return this.props.firebase
+                    .user(authUser.user.uid)
+                    .set({
+                        username,
+                        email,
+                    });
+            })
             .then(authUser => {
                 this.setState({...INITIAL_STATE});
                 this.props.history.push(ROUTES.HOME)

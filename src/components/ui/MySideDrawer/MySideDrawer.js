@@ -15,6 +15,7 @@ import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -164,6 +165,12 @@ const MySideDrawer = withStyles(styles)(
                     text='Mobile view'
                     Icon={WebIcon}
                     onClick={onItemClick('Mobile view')}
+                />
+                <NavItem
+                    to={ROUTES.ADMIN}
+                    text='Manage Users'
+                    Icon={SupervisorAccountIcon}
+                    onClick={onItemClick('Manage Users')}
                 />
             </List>);
 

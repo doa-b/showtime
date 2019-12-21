@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {compose} from "redux";
 import {withRouter} from 'react-router-dom'
+import { withAuthorization } from '../../hoc/Session';
 
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
@@ -249,8 +250,11 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
+const condition = authUser => !!authUser;
+
 /* @component */
 export default compose(
+    withAuthorization(condition),
     withRouter,
     withStyles(styles),
     connect(mapStateToProps, mapDispatchToProps))(Schedule)
