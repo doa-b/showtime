@@ -2,6 +2,7 @@ import React from "react";
 import {Route, NavLink, Switch} from "react-router-dom";
 import clsx from "clsx";
 import * as ROUTES from '../../../shared/routes';
+import * as ROLES from '../../../shared/roles';
 import { AuthUserContext } from '../../../hoc/Session'
 
 import {Checkbox, withStyles} from "@material-ui/core";
@@ -85,7 +86,7 @@ const MySideDrawer = withStyles(styles)(
             </List>
         );
 
-        const SideDrawerAuth = () => (
+        const SideDrawerAuth = ({ authUser }) => (
             <List>
                 <ListItem alignItems='center'>
                     <img
@@ -94,7 +95,7 @@ const MySideDrawer = withStyles(styles)(
                         src='http://djdoa.nl/DJDoa_WebPages/__Old_Website/doa_avatar_small.jpg'/>
                 </ListItem>
                 <ListSubheader>
-                    Doa Bonifacio
+                    {authUser.username}
                 </ListSubheader>
                 <NavItem
                     to={ROUTES.ACCOUNT}
@@ -166,12 +167,14 @@ const MySideDrawer = withStyles(styles)(
                     Icon={WebIcon}
                     onClick={onItemClick('Mobile view')}
                 />
+                {authUser.roles[ROLES.ADMIN] && (
                 <NavItem
                     to={ROUTES.ADMIN}
                     text='Manage Users'
                     Icon={SupervisorAccountIcon}
                     onClick={onItemClick('Manage Users')}
                 />
+                )}
             </List>);
 
         return (
@@ -183,7 +186,7 @@ const MySideDrawer = withStyles(styles)(
                     })}
                 />
                 <AuthUserContext.Consumer>
-                {authUser => authUser ? <SideDrawerAuth/> : <SideDrawerNonAuth/>}
+                {authUser => authUser ? <SideDrawerAuth authUser={authUser}/> : <SideDrawerNonAuth/>}
                 </AuthUserContext.Consumer>
             </Drawer>
         )
