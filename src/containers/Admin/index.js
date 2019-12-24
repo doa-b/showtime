@@ -3,7 +3,7 @@ import {compose} from "redux";
 
 import {withFirebase} from "../../firebase";
 import {withAuthorization} from '../../hoc/Session'
-import * as ROLES from '../../shared/roles'
+import * as ROLES from '../../shared/accessLevel'
 
 class AdminPage extends Component {
     constructor(props) {
@@ -69,7 +69,7 @@ const UserList = ({users}) => (
 );
 
 const condition = authUser =>
-    authUser && !!authUser.roles[ROLES.ADMIN];
+    authUser && !!authUser.roles>ROLES.ADMINISTRATOR;
 
 export default compose(
     withAuthorization(condition),

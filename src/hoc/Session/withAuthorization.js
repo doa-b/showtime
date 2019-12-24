@@ -7,7 +7,7 @@ import * as ROUTES from '../../shared/routes';
 
 // takes a component as input and return it as output. Also recieves a condition function passes as parameter.
 // This can be a broad or fine-grained (role-based or permission-based) authorization rule.
-// It decides based on the condition whetther it should redirect to a public route when user is not allowed to view current
+// It decides based on the condition whether it should redirect to a public route when user is not allowed to view current
 // protected page
 const withAuthorization = (condition) => Component => {
         class WithAuthorization extends React.Component {
