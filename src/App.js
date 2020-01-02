@@ -22,6 +22,7 @@ import SignOutPage from './containers/SignOut';
 import PasswordForgetPage from "./containers/PasswordForget";
 import AccountPage from "./containers/Account";
 import AdminPage from './containers/Admin'
+import TestPage from "./components/TestPage/TestPage";
 
 import {withFirebase} from "./firebase";
 import { withAuthentication } from './hoc/Session'
@@ -45,6 +46,7 @@ const App = () => {
             <Route path={ROUTES.MONITOR} exact component={Monitor}/>
             <Route path={ROUTES.SHOWS} exact component={ShowList}/>
             <Route path={ROUTES.MOBILE} exact component={MobileView}/>
+            <Route path={ROUTES.TEST} exact component={TestPage}/>
             <Redirect to={ROUTES.HOME}/>
         </Switch>
     );

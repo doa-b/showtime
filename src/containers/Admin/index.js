@@ -3,7 +3,7 @@ import {compose} from "redux";
 
 import {withFirebase} from "../../firebase";
 import {withAuthorization} from '../../hoc/Session'
-import * as ROLES from '../../shared/accessLevel'
+import * as ACCESSLEVEL from '../../shared/accessLevel'
 
 class AdminPage extends Component {
     constructor(props) {
@@ -17,6 +17,7 @@ class AdminPage extends Component {
 
     componentDidMount() {
         this.setState({loading: true});
+        // set listener on users node in realtime dB
         this.props.firebase.users().on('value', snapshot => {
             const usersObject = snapshot.val();
             const usersList = Object.keys(usersObject).map(key => ({
@@ -69,7 +70,7 @@ const UserList = ({users}) => (
 );
 
 const condition = authUser =>
-    authUser && !!authUser.roles>ROLES.ADMINISTRATOR;
+    authUser && authUser.accessLevel >= ACCESSLEVEL.ADMINISTRATOR;
 
 export default compose(
     withAuthorization(condition),

@@ -1,5 +1,6 @@
 import axios from 'axios'
 // import {firebaseDb, firebase} from '../../firebase/firebase'
+import {WithFirebase} from "../../firebase";
 import * as actionTypes from './actionTypes';
 
 export const setIsLiveAndPlay = () => {
@@ -77,17 +78,20 @@ export const setLiveState = (data) => {
 
 // Asynchronous ActionCreators
 
-// fetchLiveData once
-// export const fetchLiveData = () => {
-//     const ref = firebaseDb.ref('live/');
-//     return dispatch => {
-//         const liveData = '';
-//         ref.once('value',)
-//             .then((snapshot)=> {
-//                 console.log(snapshot.val());
-//             })
-//     }
-// };
+//fetchLiveData once
+export const fetchLiveData = (firebase) => {
+
+    return dispatch => {
+        firebase.live().once('value',)
+            .then((snapshot) => {
+                // TODO save live data in store
+                console.log('fetchLiveData is called');
+                console.log(snapshot.val());
+            })
+    };
+};
+
+
 
 // export const saveLiveData = () => {
 //     const ref = firebaseDb.ref('/live/');

@@ -30,6 +30,6 @@ export {
     showHasEnded,
     updateScheduledEndTime,
     savePreviousState,
-    // fetchLiveData,
+    fetchLiveData,
    // saveLiveData
 } from './live'

@@ -1,7 +1,7 @@
 export const LANDING = '/';
 export const SIGN_UP = '/signup';
 export const SIGN_IN = '/signin';
-export const SIGN_OUT = '/signout'
+export const SIGN_OUT = '/signout';
 export const HOME = '/';
 export const ACCOUNT = '/account';
 export const ADMIN = '/admin';
@@ -15,3 +15,5 @@ export const SCENE_DETAILS = '/scene/details';
 export const MONITOR = '/monitor';
 export const SHOWS = '/shows';
 export const MOBILE = '/mobile';
+
+export const TEST = '/test';

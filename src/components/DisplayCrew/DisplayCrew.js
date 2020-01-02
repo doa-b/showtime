@@ -1,7 +1,8 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {compose} from "redux";
-import {ROLES, convertObjectstoArray} from '../../shared/utility'
+import { ROLES } from '../../shared/roles'
+import {convertObjectstoArray} from '../../shared/utility'
 import Chip from '@material-ui/core/Chip';
 import Avatar from "@material-ui/core/Avatar";
 import withStyles from "@material-ui/core/styles/withStyles";

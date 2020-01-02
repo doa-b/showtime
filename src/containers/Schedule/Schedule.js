@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {compose} from "redux";
 import {withRouter} from 'react-router-dom'
-import { withAuthorization } from '../../hoc/Session';
+import {withAuthorization} from '../../hoc/Session';
+import {withFirebase} from "../../firebase";
 
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
@@ -51,7 +52,7 @@ class Schedule extends Component {
     };
 
     componentDidMount() {
-      //  this.props.onFetchLiveData();
+        this.props.onFetchLiveData(this.props.firebase);
         this.props.onSetPageTitle('Schedule');
         this.props.onFetch(this.props.currentShow);
         if (this.props.currentTime === 0) {
@@ -245,15 +246,17 @@ const mapDispatchToProps = (dispatch) => {
         onSetPageTitle: (title) => dispatch(actions.setPageTitle(title)),
         onSavePreviousState: (previousState) => dispatch(actions.savePreviousState(previousState)),
         onResetRunningPartDuration: (value) => dispatch(actions.resetRunningPartDuration(value)),
-        // onFetchLiveData: () => dispatch(actions.fetchLiveData()),
+        onFetchLiveData: (firebase) => dispatch(actions.fetchLiveData(firebase)),
         // onSaveLiveData: () => dispatch(actions.saveLiveData())
     }
 };
 
+// checks if user is authenticated to access this page (broad-grained authorization)
 const condition = authUser => !!authUser;
 
 /* @component */
 export default compose(
+    withFirebase,
     withAuthorization(condition),
     withRouter,
     withStyles(styles),

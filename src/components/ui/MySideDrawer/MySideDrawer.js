@@ -2,7 +2,7 @@ import React from "react";
 import {Route, NavLink, Switch} from "react-router-dom";
 import clsx from "clsx";
 import * as ROUTES from '../../../shared/routes';
-import * as ROLES from '../../../shared/accessLevel';
+import * as ACCESSLEVEL from '../../../shared/accessLevel';
 import { AuthUserContext } from '../../../hoc/Session'
 
 import {Checkbox, withStyles} from "@material-ui/core";
@@ -167,7 +167,7 @@ const MySideDrawer = withStyles(styles)(
                     Icon={WebIcon}
                     onClick={onItemClick('Mobile view')}
                 />
-                {authUser.roles[ROLES.ADMINISTRATOR] && (
+                {(authUser.accessLevel >= ACCESSLEVEL.EXECUTIVE) && (
                 <NavItem
                     to={ROUTES.ADMIN}
                     text='Manage Users'
@@ -175,6 +175,12 @@ const MySideDrawer = withStyles(styles)(
                     onClick={onItemClick('Manage Users')}
                 />
                 )}
+                <NavItem
+                    to={ROUTES.TEST}
+                    text='TESTS'
+                    Icon={SupervisorAccountIcon}
+                    onClick={onItemClick('TestPage')}
+                />
             </List>);
 
         return (

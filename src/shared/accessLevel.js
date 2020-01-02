@@ -5,3 +5,13 @@ export const SUPPORT = 30;
 export const TRINITY = 40;
 export const EXECUTIVE = 50;
 export const ADMINISTRATOR = 60;
+
+// TODO convert this
+export const ALL = [
+    {title: 'Guest', value: GUEST},
+    {title: 'Member', value: MEMBER},
+    {title: 'Support', value: SUPPORT},
+    {title: 'Trinity', value: TRINITY},
+    {title: 'Executive', value: EXECUTIVE},
+    {title: 'Administrator', value: ADMINISTRATOR},
+];

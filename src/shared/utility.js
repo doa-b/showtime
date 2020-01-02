@@ -21,18 +21,6 @@ export const updateObject = (oldObject, updatedProperties) => {
  * @param object the object of objects that needs to be converted to array of objects
  * @param orderKey the orderKey by which the new array needs to be sorted
  */
-export const ROLES = [
-    'model',
-    'artist',
-    'dancer',
-    'singer',
-    'presenter',
-    'light',
-    'sound',
-    'dj',
-    'director',
-    'photographer'
-];
 
 function checkNested(obj, level, ...rest) {
     if (obj === undefined) return false
@@ -79,19 +67,12 @@ export const convertObjectstoArray = (object) => {
 };
 
 export const convertArrayToObject = (elementsArray, idField) => {
-    console.log(elementsArray)
     let newObject = {};
     elementsArray.map((element) => {
-        console.log(element)
         const newElement = {...element};
         delete newElement[idField]; // delete idField in object
-
-        console.log('newElement')
-        console.log(newElement);
         return newObject[element[idField]] = newElement;
     });
-    console.log('below is the newOject')
-    console.log(newObject)
     return newObject;
 };
 

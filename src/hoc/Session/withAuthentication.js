@@ -17,6 +17,9 @@ const withAuthentication = (Component) => {
             };
         }
 
+        /**
+         * if user is authenticated it puts the userData in authUser state, else Null
+         */
         componentDidMount() {
             this.listener = this.props.firebase.onAuthUserListener(
                 authUser => {
@@ -32,6 +35,10 @@ const withAuthentication = (Component) => {
             this.listener();
         }
 
+        /**
+         *
+         * @returns {A wrapped component with authUser object as its props taken from context}
+         */
         render() {
             return (
                 <AuthUserContext.Provider value={this.state.authUser}>
