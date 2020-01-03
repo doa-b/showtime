@@ -16,13 +16,16 @@ import SceneDetails from "./containers/Scenes/SceneDetails/SceneDetails";
 import ShowList from "./containers/Shows/ShowList/ShowList";
 import ShowDetails from "./containers/Shows/ShowDetails/ShowDetails";
 import MobileView from "./containers/MobileView/MobileView";
-import SignUpPage from "./containers/SignUp";
-import SignInPage from "./containers/SignIn";
-import SignOutPage from './containers/SignOut';
+import SignUpPage from "./containers/authentication/SignUp";
+import SignInPage from "./containers/authentication/SignIn";
+import SignOutPage from './containers/authentication/SignOut';
 import PasswordForgetPage from "./containers/PasswordForget";
-import AccountPage from "./containers/Account";
+import AccountPage from "./containers/authentication/Account";
 import AdminPage from './containers/Admin'
+import AdminUserDetailsPage from './containers/Admin/UserDetailsPage/UserDetailsPage'
+import CreateNewUserPage from "./containers/Admin/CreateNewUserPage/CreateNewUserPage";
 import TestPage from "./components/TestPage/TestPage";
+
 
 import {withFirebase} from "./firebase";
 import { withAuthentication } from './hoc/Session'
@@ -38,6 +41,8 @@ const App = () => {
             <Route path={ROUTES.PASSWORD_FORGET} exact component={PasswordForgetPage}/>
             <Route path={ROUTES.ACCOUNT} exact component={AccountPage}/>
             <Route path={ROUTES.ADMIN} exact component={AdminPage}/>
+            <Route path={ROUTES.ADMIN_USER_DETAILS} exact component={AdminUserDetailsPage}/>
+            <Route path={ROUTES.ADMIN_CREATE_USER} exact component={CreateNewUserPage}/>
             <Route path={ROUTES.HOME} exact component={Schedule}/>
             <Route path={ROUTES.SHOW_DETAILS} exact component={ShowDetails}/>
             <Route path={ROUTES.BLOCK_DETAILS} exact component={BlockDetails}/>

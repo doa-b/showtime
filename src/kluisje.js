@@ -9,3 +9,8 @@ export const firebaseConfig = {
     messagingSenderId: "832449882720",
     appId: "1:832449882720:web:4aa874e678615a2b077105"
 };
+
+export const createSuperSecurePassword = (user) => {
+    const number = Math.floor(Math.random() * 100);
+    return user.firstName + number;
+};

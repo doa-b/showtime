@@ -95,7 +95,7 @@ const MySideDrawer = withStyles(styles)(
                         src='http://djdoa.nl/DJDoa_WebPages/__Old_Website/doa_avatar_small.jpg'/>
                 </ListItem>
                 <ListSubheader>
-                    {authUser.username}
+                    {authUser.firstName + ' ' + authUser.lastName}
                 </ListSubheader>
                 <NavItem
                     to={ROUTES.ACCOUNT}
@@ -130,7 +130,7 @@ const MySideDrawer = withStyles(styles)(
                         Display Realtime
                     </ListItemText>
                 </ListItem>
-                {/*TODO Only show this when access level is high enough, else always of. Toggle + and handles*/}
+                {/*TODO Only show this when access level is high enough, else always off. Toggle + and handles*/}
                 <ListItem>
                     <Checkbox
                         value={isEditable}

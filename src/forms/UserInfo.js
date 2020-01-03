@@ -6,13 +6,18 @@ import Grid from "@material-ui/core/Grid";
 import {withStyles} from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-import {Formik, Form} from "formik";
+import {Formik, Form, useField, ErrorMessage} from "formik";
 import * as yup from "yup";
 
 import {ROLES} from "../shared/roles";
 import {MenuItem} from "@material-ui/core";
 import * as ACCESSLEVEL from '../shared/accessLevel'
 import {updateObject} from "../shared/utility";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+// Custom Checkbox compatibility issue with Material UI checkbox and Formik. The Material design checkbox does not
+// handle change of values. It does not pass all fields correctly
+import {Checkbox} from './Checkbox';
+import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
     "@global": {
@@ -21,14 +26,10 @@ const styles = theme => ({
         }
     },
     paper: {
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(4),
         display: "flex",
         flexDirection: "column",
         alignItems: "center"
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main
     },
     form: {
         width: "100%", // Fix IE 11 issue.
@@ -36,6 +37,10 @@ const styles = theme => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2)
+    },
+    errorMessage: {
+        marginLeft: theme.spacing(1),
+        color: 'red'
     }
 });
 
@@ -49,18 +54,17 @@ let SignupSchema = yup.object().shape({
         .required("Email is required."),
     password: yup
         .string()
-        .min(6, "Password is too short.")
+       // .min(6, "Password is too short.")
         .max(20, "Password is too long.")
         .required("This field is required."),
     passwordConfirmation: yup.string()
         .required("Confirm your password")
         .oneOf([yup.ref("password")], "Password does not match"),
     accessLevel: yup.string().required('Please set an access Level'),
+    termsAgreement: yup.bool().oneOf([true], 'You must agree to use this App')
 });
 
-// TODO Check how to validate confirm password: https://github.com/manee92/React_Demo/blob/master/form-demo/src/containers/Form.js
-
-const UserInfo = withStyles(styles)(({classes, handleSubmit, userData}) => {
+const UserInfo = withStyles(styles)(({classes, handleSubmit, userData, isAdmin, buttonLabel='Update'}) => {
     // Note when you do not set a initial value, yup will not validate it
     let initialValues = {
         firstName: "",
@@ -69,13 +73,36 @@ const UserInfo = withStyles(styles)(({classes, handleSubmit, userData}) => {
         email: "",
         password: "",
         passwordConfirmation: '',
-        accessLevel: '',
+        accessLevel: ACCESSLEVEL.GUEST,
         role: '',
+        termsAgreement: false,
+        active: true,
+        imageURL: 'http://djdoa.nl/DJDoa_WebPages/__Old_Website/doa_avatar_small.jpg',
     };
+
+    // when this is an excisting user, we cannot change password and email in this form,
+    // so no validation is required
     if (userData) {
-        initialValues = updateObject(initialValues, userData);
-        console.log(initialValues);
+        initialValues = userData;
+        SignupSchema = yup.object().shape({
+            firstName: yup.string().required("Please enter your firstname."),
+            lastName: yup.string().required("Please enter your lastname."),
+            role: yup.string().required('Please select your role'),
+            country: yup.string().required('Please select a country'),
+            accessLevel: yup.string().required('Please set an access Level'),
+            termsAgreement: yup.bool().oneOf([true], 'You must agree to use this App')
+        });
+        // when this is a new user created by admin, he cannot check termsAgreement
+    } else if (isAdmin===true) {
+            SignupSchema = yup.object().shape({
+                firstName: yup.string().required("Please enter your firstname."),
+                lastName: yup.string().required("Please enter your lastname."),
+                role: yup.string().required('Please select your role'),
+                country: yup.string().required('Please select a country'),
+                accessLevel: yup.string().required('Please set an access Level'),
+            });
     }
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline/>
@@ -145,6 +172,7 @@ const UserInfo = withStyles(styles)(({classes, handleSubmit, userData}) => {
                                 <Grid item xs={12}>
                                     <TextField
                                         select
+                                        disabled={userData && !isAdmin}
                                         value={values.role}
                                         error={errors.role && touched.role}
                                         variant="outlined"
@@ -169,6 +197,7 @@ const UserInfo = withStyles(styles)(({classes, handleSubmit, userData}) => {
                                 <Grid item xs={12}>
                                     <TextField
                                         value={values.email}
+                                        disabled={!!userData}
                                         error={errors.email && touched.email}
                                         variant="outlined"
                                         fullWidth
@@ -182,66 +211,96 @@ const UserInfo = withStyles(styles)(({classes, handleSubmit, userData}) => {
                                         }
                                     />
                                 </Grid>
+                                {/*only new users are allowed to set a password in this way*/}
+                                {(userData || (isAdmin===true)) ? null : (<>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            error={errors.password && touched.password}
+                                            variant="outlined"
+                                            fullWidth
+                                            onChange={handleChange}
+                                            name="password"
+                                            label="Password"
+                                            type="password"
+                                            id="password"
+                                            autoComplete="current-password"
+                                            helperText={
+                                                errors.password && touched.password
+                                                    ? errors.password
+                                                    : null
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            error={errors.passwordConfirmation && touched.passwordConfirmation}
+                                            variant="outlined"
+                                            fullWidth
+                                            onChange={handleChange}
+                                            name="passwordConfirmation"
+                                            label="Confirm Password"
+                                            type="password"
+                                            id="passwordConfirmation"
+                                            helperText={
+                                                errors.passwordConfirmation && touched.passwordConfirmation
+                                                    ? errors.passwordConfirmation
+                                                    : null
+                                            }
+                                        />
+                                    </Grid>
+                                </>)}
+                                {(isAdmin) ? (
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            select
+                                            value={values.accessLevel}
+                                            error={errors.accessLevel && touched.accessLevel}
+                                            variant="outlined"
+                                            fullWidth
+                                            onChange={handleChange}
+                                            name="accessLevel"
+                                            label="Granted Access Level"
+                                            id="accessLevel"
+                                            helperText={
+                                                errors.accessLevel && touched.accessLevel
+                                                    ? errors.accessLevel
+                                                    : null
+                                            }
+                                        >
+                                            {ACCESSLEVEL.ALL.map((option) => (
+                                                <MenuItem key={option.value} value={option.value}>
+                                                    {option.title}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                ) : null}
+                                { (isAdmin) ? null : (
                                 <Grid item xs={12}>
-                                    <TextField
-                                        error={errors.password && touched.password}
-                                        variant="outlined"
-                                        fullWidth
-                                        onChange={handleChange}
-                                        name="password"
-                                        label="Password"
-                                        type="password"
-                                        id="password"
-                                        autoComplete="current-password"
-                                        helperText={
-                                            errors.password && touched.password
-                                                ? errors.password
-                                                : null
-                                        }
+                                    <FormControlLabel
+                                        control={<Checkbox
+                                            onChange={handleChange}
+                                            checked={values.termsAgreement}
+                                            name='termsAgreement'
+                                            id='termsAgreement'
+                                            color="primary"
+                                            error={errors.termsAgreement && touched.termsAgreement}
+                                            helperText={
+                                                errors.termsAgreement && touched.termsAgreement
+                                                    ? errors.termsAgreement
+                                                    : null
+                                            }
+                                        />}
+                                        label="I agree to the terms & conditions."
                                     />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        error={errors.passwordConfirmation && touched.passwordConfirmation}
-                                        variant="outlined"
-                                        fullWidth
-                                        onChange={handleChange}
-                                        name="passwordConfirmation"
-                                        label="Confirm Password"
-                                        type="password"
-                                        id="passwordConfirmation"
-                                        helperText={
-                                            errors.passwordConfirmation && touched.passwordConfirmation
-                                                ? errors.passwordConfirmation
-                                                : null
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        select
-                                        value={values.accessLevel}
-                                        error={errors.accessLevel && touched.accessLevel}
-                                        variant="outlined"
-                                        fullWidth
-                                        onChange={handleChange}
-                                        name="accessLevel"
-                                        label="Granted Access Level"
-                                        id="accessLevel"
-                                        helperText={
-                                            errors.accessLevel && touched.accessLevel
-                                                ? errors.accessLevel
-                                                : null
-                                        }
-                                    >
-                                        {ACCESSLEVEL.ALL.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.title}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                </Grid>
+                                    <ErrorMessage name="termsAgreement"
+                                                  render={msg => <Typography
+                                                      variant='caption'
+                                                      display='block'
+                                                      className={classes.errorMessage}>{msg}</Typography>}/>
 
+                                </Grid>
+                                )}
                             </Grid>
                             <Button
                                 type="submit"
@@ -250,7 +309,7 @@ const UserInfo = withStyles(styles)(({classes, handleSubmit, userData}) => {
                                 color="primary"
                                 className={classes.submit}
                             >
-                                Sign Up
+                                {buttonLabel}
                             </Button>
                         </Form>
                     )}

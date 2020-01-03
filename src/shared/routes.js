@@ -5,6 +5,8 @@ export const SIGN_OUT = '/signout';
 export const HOME = '/';
 export const ACCOUNT = '/account';
 export const ADMIN = '/admin';
+export const ADMIN_USER_DETAILS = '/admin/userdetails';
+export const ADMIN_CREATE_USER = '/admin/create-user';
 export const PASSWORD_FORGET = '/pw-forget';
 
 export const SHOW_DETAILS = '/show/details';

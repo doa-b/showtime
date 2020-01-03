@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import {withStyles} from '@material-ui/core/styles';
 
-import * as ROUTES from '../../shared/routes';
-import * as ROLES from '../../shared/accessLevel';
-import {withFirebase} from '../../firebase';
+import * as ROUTES from '../../../shared/routes';
+import * as ROLES from '../../../shared/accessLevel';
+import {withFirebase} from '../../../firebase';
 import {compose} from "redux";
-import {GUEST} from "../../shared/accessLevel";
+import {GUEST} from "../../../shared/accessLevel";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Avatar from "@material-ui/core/Avatar";
