@@ -53,7 +53,6 @@ class Schedule extends Component {
 
     componentDidMount() {
         this.props.onFetchLiveData(this.props.firebase);
-        this.props.onSetPageTitle('Schedule');
         this.props.onFetch(this.props.currentShow);
         if (this.props.currentTime === 0) {
             this.props.onStartClock();
@@ -243,7 +242,6 @@ const mapDispatchToProps = (dispatch) => {
         onTogglePause: () => dispatch(actions.toggleIsPaused()),
         onSetNextPart: (nextPart, nextBlock) => dispatch(actions.setNextPart(nextPart, nextBlock)),
         onEndOfShow: () => dispatch(actions.showHasEnded()),
-        onSetPageTitle: (title) => dispatch(actions.setPageTitle(title)),
         onSavePreviousState: (previousState) => dispatch(actions.savePreviousState(previousState)),
         onResetRunningPartDuration: (value) => dispatch(actions.resetRunningPartDuration(value)),
         onFetchLiveData: (firebase) => dispatch(actions.fetchLiveData(firebase)),

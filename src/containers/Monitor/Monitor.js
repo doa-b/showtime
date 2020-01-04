@@ -46,10 +46,6 @@ const styles = theme => ({
  */
 class Monitor extends Component {
 
-    componentDidMount() {
-        this.props.onSetPageTitle('Monitor')
-    }
-
     render() {
         const {classes} = this.props;
         let nextPart = null;
@@ -131,8 +127,7 @@ const mapDispatchToProps = (dispatch) => {
         onStartTheShow: () => dispatch(actions.startTheShow()),
         onTogglePause: () => dispatch(actions.toggleIsPaused()),
         onSetNextPart: (nextPart, nextBlock) => dispatch(actions.setNextPart(nextPart, nextBlock)),
-        onEndOfShow: () => dispatch(actions.showHasEnded()),
-        onSetPageTitle: (title) => dispatch(actions.setPageTitle(title))
+        onEndOfShow: () => dispatch(actions.showHasEnded())
     }
 };
 

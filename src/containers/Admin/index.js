@@ -5,16 +5,18 @@ import {withFirebase} from "../../firebase";
 import {withAuthorization} from '../../hoc/Session'
 import * as ACCESSLEVEL from '../../shared/accessLevel'
 import * as ROUTES from '../../shared/routes'
-
 import UserTable from './UserTable'
-import firebase from "firebase";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from '@material-ui/icons/Add';
 import withStyles from "@material-ui/core/styles/withStyles";
 
-// Create advanced Table: https://material-ui.com/components/tables/
-
 const styles = theme => ({
+    paper: {
+        marginTop: theme.spacing(2),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+    },
     extendedIcon: {
         marginRight: theme.spacing(1)
     }
@@ -72,53 +74,25 @@ class AdminPage extends Component {
         const {classes} = this.props;
 
         return (
-            <div>
-                <h1>Admin</h1>
-                <p>
-                    The Admin Page is accessible by every signed in admin user.
-                </p>
+            <div className={classes.paper}>
                 {loading && <div>Loading ...</div>}
-                <UserList users={users}/>
+                <UserTable rows={users}
+                           onDetailsClicked={(user) => this.onDetailsClicked(user)}
+                           onActiveClicked={(user) => this.onActiveClicked(user)}
+                />
                 <Fab variant="extended"
                      color='primary'
                      onClick={this.onAddNewUserClicked}>
                     <AddIcon className={classes.extendedIcon}/>
                     Create new User
                 </Fab>
-                <UserTable rows={users}
-                           onDetailsClicked={(user) => this.onDetailsClicked(user)}
-                           onActiveClicked={(user) => this.onActiveClicked(user)}
-                />
-
             </div>
         )
     }
 }
 
-const UserList = ({users}) => (
-    <ul>
-        {users.map(user => (
-            <li key={user.uid}>
-        <span>
-          <strong>ID:</strong> {user.uid}
-        </span>
-
-                <span>
-          <strong>Name:</strong> {user.firstName + ' ' + user.lastName}
-        </span>
-                <span>
-          <strong>E-Mail:</strong> {user.email}
-        </span>
-                <span>
-          <strong>Username:</strong> {user.username}
-        </span>
-            </li>
-        ))}
-    </ul>
-);
-
 const condition = authUser =>
-    authUser && authUser.accessLevel >= ACCESSLEVEL.ADMINISTRATOR;
+    authUser && authUser.accessLevel >= ACCESSLEVEL.EXECUTIVE;
 
 export default compose(
     withAuthorization(condition),

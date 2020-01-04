@@ -76,7 +76,6 @@ class mobileView extends Component {
         if (this.props.shows.length === 0) {
             this.props.onFetch(this.props.currentShow);
         }
-        this.props.onSetPageTitle('Mobile');
     }
 
 
@@ -171,8 +170,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onFetch: (showId) => dispatch(actions.fetch(showId)),
-        onSetPageTitle: (title) => dispatch(actions.setPageTitle(title))
+        onFetch: (showId) => dispatch(actions.fetch(showId))
     }
 };
 

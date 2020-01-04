@@ -57,7 +57,7 @@ const MySideDrawer = withStyles(styles)(
     ({
          classes, variant, open, onClose, onItemClick,
          showSeconds, toggleShowSeconds, displayRealTime, toggleDisplayRealTime,
-         isEditable, toggleIsEditable, isAuth
+         isEditable, toggleIsEditable
      }) => {
 
         const SideDrawerNonAuth = () => (
@@ -69,19 +69,19 @@ const MySideDrawer = withStyles(styles)(
                     to={ROUTES.SIGN_IN}
                     text='Sign in'
                     Icon={LockOpenIcon}
-                    onClick={onItemClick('Sign in')}
+                    onClick={onItemClick()}
                 />
                 <NavItem
                     to={ROUTES.SIGN_UP}
                     text='Sign up'
                     Icon={PersonOutlineIcon}
-                    onClick={onItemClick('Sign up')}
+                    onClick={onItemClick()}
                 />
                 <NavItem
                     to={ROUTES.MONITOR}
                     text='Monitor'
                     Icon={DesktopWindowsIcon}
-                    onClick={onItemClick('Monitor')}
+                    onClick={onItemClick()}
                 />
             </List>
         );
@@ -101,13 +101,13 @@ const MySideDrawer = withStyles(styles)(
                     to={ROUTES.ACCOUNT}
                     text='Account'
                     Icon={TuneIcon}
-                    onClick={onItemClick('Account')}
+                    onClick={onItemClick()}
                 />
                 <NavItem
                     to={ROUTES.SIGN_OUT}
                     text='Logout'
                     Icon={ExitToAppIcon}
-                    onClick={onItemClick('Logout')}
+                    onClick={onItemClick()}
                 />
                 <ListSubheader>
                     Controls
@@ -147,39 +147,39 @@ const MySideDrawer = withStyles(styles)(
                     to={ROUTES.LANDING}
                     text='Schedule'
                     Icon={HomeIcon}
-                    onClick={onItemClick('Schedule')}
+                    onClick={onItemClick()}
                 />
                 <NavItem
                     to={ROUTES.MONITOR}
                     text='Monitor'
                     Icon={DesktopWindowsIcon}
-                    onClick={onItemClick('Monitor')}
+                    onClick={onItemClick()}
                 />
                 <NavItem
                     to={ROUTES.SHOWS}
                     text='Other Shows'
                     Icon={WebIcon}
-                    onClick={onItemClick('Compact View')}
+                    onClick={onItemClick()}
                 />
                 <NavItem
                     to={ROUTES.MOBILE}
                     text='Mobile view'
                     Icon={WebIcon}
-                    onClick={onItemClick('Mobile view')}
+                    onClick={onItemClick()}
                 />
                 {(authUser.accessLevel >= ACCESSLEVEL.EXECUTIVE) && (
                 <NavItem
                     to={ROUTES.ADMIN}
-                    text='Manage Users'
+                    text='ADMIN'
                     Icon={SupervisorAccountIcon}
-                    onClick={onItemClick('Manage Users')}
+                    onClick={onItemClick()}
                 />
                 )}
                 <NavItem
                     to={ROUTES.TEST}
                     text='TESTS'
                     Icon={SupervisorAccountIcon}
-                    onClick={onItemClick('TestPage')}
+                    onClick={onItemClick()}
                 />
             </List>);
 

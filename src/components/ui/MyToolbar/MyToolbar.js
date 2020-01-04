@@ -1,6 +1,7 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import * as ROUTES from '../../../shared/routes'
+import { AuthUserContext } from '../../../hoc/Session'
 
 import {Tooltip, withStyles} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar/AppBar";
@@ -11,10 +12,10 @@ import Typography from "@material-ui/core/Typography";
 
 import Avatar from "@material-ui/core/Avatar";
 
-
 import trinityLogo from '../../../assets/images/trinity-haircare-circles.png'
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import UnfoldLessIcon from '@material-ui/icons/UnfoldLess';
+
 
 
 const styles = theme => ({
@@ -23,7 +24,7 @@ const styles = theme => ({
         marginRight: 20
     },
     toolBar: {
-       alignItems: 'center'
+        alignItems: 'center'
     },
     avatar: {
         marginLeft: 'auto'
@@ -63,20 +64,28 @@ const MyToolbar = withStyles(styles)(
                     >
                         {(isLive) ? 'LIVE ' + showName : title}
                     </Typography>
-                    <IconButton
-                        className={classes.fold}
-                        color="inherit"
-                        aria-label="Fold"
-                        onClick={() => setShowAllScenes(!showAllScenes)}
-                    > <Tooltip title='show/hide scenes' placement='left-end'>
-                        {(showAllScenes) ? <UnfoldLessIcon/>: <UnfoldMoreIcon/>}
-                    </Tooltip>
-                    </IconButton>
-                    <Avatar
-                        className={classes.avatar}
-                        alt='logged in user'
-                        src='http://djdoa.nl/DJDoa_WebPages/__Old_Website/doa_avatar_small.jpg'/>
-                </Toolbar>
+                    {(title==='Schedule') ? (
+                        <IconButton
+                            className={classes.fold}
+                            color="inherit"
+                            aria-label="Fold"
+                            onClick={() => setShowAllScenes(!showAllScenes)}
+                        >
+                            <Tooltip title='show/hide scenes' placement='left-end'>
+                                {(showAllScenes) ? <UnfoldLessIcon/> : <UnfoldMoreIcon/>}
+                            </Tooltip>
+                        </IconButton>
+                    ) : null}
+                    <AuthUserContext.Consumer>
+                        {authUser => authUser ? (
+                            <Avatar
+                                className={classes.avatar}
+                                alt='logged in user'
+                                src={authUser.imageUrl}/>
+                        ) : null}
+
+                    </AuthUserContext.Consumer>
+                    </Toolbar>
             </AppBar>
             <div className={classes.toolbarMargin}/>
         </>

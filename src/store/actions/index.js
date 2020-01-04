@@ -13,7 +13,6 @@ export {
 export {
     startClock,
     toggleShowSeconds,
-    setPageTitle,
     toggleDisplayRealTime,
     setDisplayUser,
     toggleIsEditable,

@@ -37,13 +37,6 @@ export const setDisplayUser = (user) => {
     }
 };
 
-export const setPageTitle = (title) => {
-    return {
-        type: actionTypes.SET_PAGE_TITLE,
-        pageTitle: title
-    }
-};
-
 export const clearData = () => {
     return {
         type: actionTypes.SHOW_CLEAR_DATA

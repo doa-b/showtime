@@ -58,7 +58,6 @@ const styles = theme => ({
 class ShowList extends Component {
 
     componentDidMount() {
-        this.props.onSetPageTitle('Shows');
         if (this.props.shows.length === 0) {
             this.props.onFetch(this.props.currentShow);
         }
@@ -150,7 +149,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onFetch: (showId) => dispatch(actions.fetch(showId)),
-        onSetPageTitle: (title) => dispatch(actions.setPageTitle(title)),
         onSetCurrentShow: (showId) => dispatch(actions.setCurrentShow(showId))
     }
 };

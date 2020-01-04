@@ -69,7 +69,6 @@ class ShowDetails extends Component {
     };
 
     componentDidMount() {
-        this.props.onSetPageTitle('Show Details');
         if (this.props.location.state) {
             if (this.props.location.state.elementId) {
                 let currentShow = this.props.shows.filter((aShow) => aShow.id === this.props.location.state.elementId)[0];
@@ -166,8 +165,7 @@ class ShowDetails extends Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         onSave: (element, data) => dispatch(actions.save(element, data)),
-        onUpdate: (showId, data, elementName) => dispatch(actions.update(showId, data, elementName)),
-        onSetPageTitle: (title) => dispatch(actions.setPageTitle(title)),
+        onUpdate: (showId, data, elementName) => dispatch(actions.update(showId, data, elementName))
     }
 };
 

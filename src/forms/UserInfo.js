@@ -54,7 +54,7 @@ let SignupSchema = yup.object().shape({
         .required("Email is required."),
     password: yup
         .string()
-       // .min(6, "Password is too short.")
+        // .min(6, "Password is too short.")
         .max(20, "Password is too long.")
         .required("This field is required."),
     passwordConfirmation: yup.string()
@@ -64,7 +64,7 @@ let SignupSchema = yup.object().shape({
     termsAgreement: yup.bool().oneOf([true], 'You must agree to use this App')
 });
 
-const UserInfo = withStyles(styles)(({classes, handleSubmit, userData, isAdmin, buttonLabel='Update'}) => {
+const UserInfo = withStyles(styles)(({classes, handleSubmit, userData, isAdmin, buttonLabel = 'Update'}) => {
     // Note when you do not set a initial value, yup will not validate it
     let initialValues = {
         firstName: "",
@@ -77,30 +77,31 @@ const UserInfo = withStyles(styles)(({classes, handleSubmit, userData, isAdmin, 
         role: '',
         termsAgreement: false,
         active: true,
-        imageURL: 'http://djdoa.nl/DJDoa_WebPages/__Old_Website/doa_avatar_small.jpg',
+        imageUrl: 'http://djdoa.nl/DJDoa_WebPages/__Old_Website/doa_avatar_small.jpg',
     };
 
-    // when this is an excisting user, we cannot change password and email in this form,
+    // when this is an existing user, we cannot change password and email in this form,
     // so no validation is required
     if (userData) {
         initialValues = userData;
         SignupSchema = yup.object().shape({
             firstName: yup.string().required("Please enter your firstname."),
             lastName: yup.string().required("Please enter your lastname."),
-            role: yup.string().required('Please select your role'),
+            role: yup.string().required('Please select a role'),
             country: yup.string().required('Please select a country'),
             accessLevel: yup.string().required('Please set an access Level'),
             termsAgreement: yup.bool().oneOf([true], 'You must agree to use this App')
         });
         // when this is a new user created by admin, he cannot check termsAgreement
-    } else if (isAdmin===true) {
-            SignupSchema = yup.object().shape({
-                firstName: yup.string().required("Please enter your firstname."),
-                lastName: yup.string().required("Please enter your lastname."),
-                role: yup.string().required('Please select your role'),
-                country: yup.string().required('Please select a country'),
-                accessLevel: yup.string().required('Please set an access Level'),
-            });
+    }
+    if (isAdmin === true) {
+        SignupSchema = yup.object().shape({
+            firstName: yup.string().required("Please enter your firstname."),
+            lastName: yup.string().required("Please enter your lastname."),
+            role: yup.string().required('Please select your role'),
+            country: yup.string().required('Please select a country'),
+            accessLevel: yup.string().required('Please set an access Level'),
+        });
     }
 
     return (
@@ -179,7 +180,7 @@ const UserInfo = withStyles(styles)(({classes, handleSubmit, userData, isAdmin, 
                                         fullWidth
                                         onChange={handleChange}
                                         name="role"
-                                        label="Your Role"
+                                        label="Role"
                                         id="role"
                                         helperText={
                                             errors.role && touched.role
@@ -212,7 +213,7 @@ const UserInfo = withStyles(styles)(({classes, handleSubmit, userData, isAdmin, 
                                     />
                                 </Grid>
                                 {/*only new users are allowed to set a password in this way*/}
-                                {(userData || (isAdmin===true)) ? null : (<>
+                                {(userData || (isAdmin === true)) ? null : (<>
                                     <Grid item xs={12}>
                                         <TextField
                                             error={errors.password && touched.password}
@@ -275,31 +276,31 @@ const UserInfo = withStyles(styles)(({classes, handleSubmit, userData, isAdmin, 
                                         </TextField>
                                     </Grid>
                                 ) : null}
-                                { (isAdmin) ? null : (
-                                <Grid item xs={12}>
-                                    <FormControlLabel
-                                        control={<Checkbox
-                                            onChange={handleChange}
-                                            checked={values.termsAgreement}
-                                            name='termsAgreement'
-                                            id='termsAgreement'
-                                            color="primary"
-                                            error={errors.termsAgreement && touched.termsAgreement}
-                                            helperText={
-                                                errors.termsAgreement && touched.termsAgreement
-                                                    ? errors.termsAgreement
-                                                    : null
-                                            }
-                                        />}
-                                        label="I agree to the terms & conditions."
-                                    />
-                                    <ErrorMessage name="termsAgreement"
-                                                  render={msg => <Typography
-                                                      variant='caption'
-                                                      display='block'
-                                                      className={classes.errorMessage}>{msg}</Typography>}/>
+                                {(isAdmin) ? null : (
+                                    <Grid item xs={12}>
+                                        <FormControlLabel
+                                            control={<Checkbox
+                                                onChange={handleChange}
+                                                checked={values.termsAgreement}
+                                                name='termsAgreement'
+                                                id='termsAgreement'
+                                                color="primary"
+                                                error={errors.termsAgreement && touched.termsAgreement}
+                                                helperText={
+                                                    errors.termsAgreement && touched.termsAgreement
+                                                        ? errors.termsAgreement
+                                                        : null
+                                                }
+                                            />}
+                                            label="I agree to the terms & conditions."
+                                        />
+                                        <ErrorMessage name="termsAgreement"
+                                                      render={msg => <Typography
+                                                          variant='caption'
+                                                          display='block'
+                                                          className={classes.errorMessage}>{msg}</Typography>}/>
 
-                                </Grid>
+                                    </Grid>
                                 )}
                             </Grid>
                             <Button

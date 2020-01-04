@@ -19,3 +19,26 @@ export const SHOWS = '/shows';
 export const MOBILE = '/mobile';
 
 export const TEST = '/test';
+
+export const pageTitle = (route) => {
+  switch (route) {
+      case LANDING: return 'Schedule';
+      case SIGN_UP: return 'Sign Up';
+      case SIGN_OUT: return 'Logged Out';
+      case HOME: return 'Home';
+      case ACCOUNT: return 'My Account';
+      case ADMIN: return 'Admin';
+      case ADMIN_USER_DETAILS: return 'User Details (admin)';
+      case ADMIN_CREATE_USER: return 'Create new User (admin)';
+      case PASSWORD_FORGET: return 'Forgot Password';
+      case SHOW_DETAILS: return 'Show Details';
+      case BLOCK_DETAILS: return 'Block Details';
+      case PART_DETAILS: return 'Part Details';
+      case SCENE_DETAILS: return 'Scene Details';
+      case MONITOR: return 'Monitor';
+      case SHOWS: return 'Shows';
+      case MOBILE: return 'Mobile view';
+      case TEST: return 'Test';
+      default: return 'home'
+  }
+};

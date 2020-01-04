@@ -5,7 +5,6 @@ const initialState = {
     currentTime: 0,
     displaySeconds: true,
     displayRealTime: true,
-    pageTitle: 'Schedule',
     displayUser: null,
     isEditable: true,
     optionsMenu: null,
@@ -23,9 +22,6 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.SHOW_SECONDS:
             return updateObject(state, {displaySeconds: !state.displaySeconds});
-
-        case actionTypes.SET_PAGE_TITLE:
-            return updateObject(state, {pageTitle: action.pageTitle});
 
             case actionTypes.TOGGLE_DISPLAY_REALTIME:
             return updateObject(state, {displayRealTime: !state.displayRealTime});
