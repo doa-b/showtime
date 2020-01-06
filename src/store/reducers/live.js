@@ -12,7 +12,7 @@ const initialState = {
     runningPartDuration: 0,
     showHasFinished: false,
     scheduledEndTime: 0,
-    previousState: null,
+    previousShowState: null,
     pause: 0
 };
 

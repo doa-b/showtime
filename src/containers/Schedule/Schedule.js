@@ -68,6 +68,12 @@ class Schedule extends Component {
         this.setState({showUser: true, user: user})
     };
 
+    /**
+     * pushes to a new route
+     * @param elementId
+     * @param pathName
+     * @param parentId
+     */
     showDetailsHandler = (elementId, pathName, parentId) => {
         this.props.onSetPageTitle(pathName.split('/')[0] + ' details');
         if (elementId) {
@@ -92,11 +98,15 @@ class Schedule extends Component {
         let nextBlock = this.props.runningBlock;
         // save the previous state when user clicks on Next, so he can return to it
         const previousState = {
+            paused: true,
             runningPartNumber: nextPart,
             runningBlockNumber: nextBlock,
-            runningPartDuration: this.props.runningPartDuration
+            runningPartDuration: this.props.runningPartDuration,
+            runningPartStartTime: this.props.runningPartStartTime,
+            pause: this.props.pause + this.props.runningPartDuration
         };
-        this.props.onSavePreviousState(previousState);
+        //this.props.onSavePreviousState(previousState);
+
         const runningBlockId = this.props.blocks[this.props.runningBlock].id;
         const runningBlockPartsAmount =
             this.props.parts.filter(aPart => aPart.blockId === runningBlockId).length;
@@ -112,16 +122,35 @@ class Schedule extends Component {
             console.log('NextBlock: ' + nextBlock);
         }
         if (nextBlock < this.props.blocks.length) {
-            this.props.onSetNextPart(nextPart, nextBlock)
-            this.props.onSaveLiveData();
-        } else this.props.onEndOfShow();
+           // save nextUp
+            this.props.onSaveLiveData(this.props.firebase,
+                {
+                    isPaused: false,
+                    pause: 0,
+                    runningBlockNumber: nextBlock,
+                    runningPartNumber: nextPart,
+                    runningPartDuration: 0,
+                    runningPartStartTime: -1, // sets current server Time
+                    previousShowState: previousState
+                });
+            // this.props.onSetNextPart(nextPart, nextBlock)
+            // this.props.onSaveLiveData();
+        } else {
+            // set end of show
+            this.props.onSaveLiveData(this.props.firebase,
+                {
+                    showHasFinished: true
+                });
+            //this.props.onEndOfShow();
+        }
     };
 
     returnToPreviousHandler = () => {
-        const p = this.props.previousState;
-        this.props.onSetNextPart(p.runningPartNumber, p.runningBlockNumber);
-        this.props.onResetRunningPartDuration(p.runningPartDuration)
-        this.props.onSavePreviousState(null)
+        const p = this.props.previousShowState;
+        this.props.onSaveLiveData(this.props.firebase, p);
+        // this.props.onSetNextPart(p.runningPartNumber, p.runningBlockNumber);
+        // this.props.onResetRunningPartDuration(p.runningPartDuration);
+        // this.props.onSavePreviousState(null)
     };
 
     togglePauseHandler = () => {
@@ -148,7 +177,10 @@ class Schedule extends Component {
                 isLive: false,
                 isPaused: true,
                 pause: 0,
-                runningPartStartTime: -1
+                previousShowState: null,
+                runningBlockNumber: 0,
+                runningPartNumber: 0,
+                runningPartStartTime: -1,
             });
     };
 
@@ -158,7 +190,8 @@ class Schedule extends Component {
                 isLive: true,
                 isPaused: false,
                 pause: 0,
-                runningPartStartTime: -1
+                runningPartStartTime: -1,
+                scheduledEndTime: this.props.scheduledEndTime
             });
     };
 
@@ -203,7 +236,7 @@ class Schedule extends Component {
                     <PlayArrowIcon fontSize='large' color='secondary'/> : <PauseIcon fontSize='large'/>
 
                 let previous = null;
-                if (this.props.previousState) {
+                if (this.props.previousShowState) {
                     previous = (
                         <Fab className={classes.actionButton}
                              color='primary' aria-label='back'
@@ -271,9 +304,10 @@ const mapStateToProps = (state) => {
         runningPartDuration: state.live.runningPartDuration,
         runningBlock: state.live.runningBlockNumber,
         showHasFinished: state.live.showHasFinished,
-        previousState: state.live.previousState,
+        previousShowState: state.live.previousShowState,
         pause: state.live.pause,
-        runningPartStartTime: state.live.runningPartStartTime
+        runningPartStartTime: state.live.runningPartStartTime,
+        scheduledEndTime: state.live.scheduledEndTime
     }
 };
 

@@ -58,8 +58,8 @@ class Firebase {
     };
 
     setLiveData = (data) => {
-        if (data.runningPartStartTime) {
-            delete data.runningPartStartTime
+        if (data.runningPartStartTime === -1) {
+            delete data.runningPartStartTime;
             this.resetRunningPartDuration()
         }
         this.live().update(data);
@@ -69,6 +69,7 @@ class Firebase {
     resetRunningPartDuration = () => {
         this.db.ref(`live/runningPartStartTime`).set(app.database.ServerValue.TIMESTAMP)
     };
+// can be removed
 
     addToRunningPartStartTime = () => {
         this.db.ref(`live/runningPartStartTime`).set(app.database.ServerValue.TIMESTAMP)
