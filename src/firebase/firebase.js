@@ -2,8 +2,9 @@ import app from "firebase/app";
 import {firebaseConfig} from '../kluisje';
 import "firebase/auth";
 import "firebase/database";
+import {createUUID} from "../shared/utility";
 
-//TODO ACCESS RULES Terugzetten
+
 /**
  * Interface for firebase
  */
@@ -14,6 +15,65 @@ class Firebase {
         this.auth = app.auth();
         this.db = app.database();
     }
+
+    /**
+     * create a new log record in firebase database
+     * @param userName
+     * @param showId
+     * @param showTitle
+     * @param action
+     * @param data
+     * @param targetId
+     * @param targetTitle
+     */
+    createLog = (
+        userName = '',
+        showId = '',
+        showTitle = '',
+        action = '',
+        data = {},
+        targetId = '',
+        targetTitle = ''
+    ) => {
+        const uid = createUUID();
+        const userId = this.auth.currentUser.uid;
+        //console.log(this.db.ServerValue.TIMESTAMP);
+
+        this.db.ref(`logs/${uid}`).set(
+            {uid, userId, userName, showId, showTitle, action, targetId, targetTitle});
+        // setServertime!!!!
+        this.db.ref(`logs/${uid}/date`).set(app.database.ServerValue.TIMESTAMP)
+    };
+
+    getServerTimeMs = () => {
+        this.db.ref('/.info/serverTimeOffset')
+            .once('value')
+            .then(function stv(data) {
+                console.log('the current ServerDateTime is: ')
+                console.log(data.val() + Date.now());
+                return data.val() + Date.now();
+            }, function (err) {
+                return err;
+            });
+    };
+
+    setLiveData = (data) => {
+        if (data.runningPartStartTime) {
+            delete data.runningPartStartTime
+            this.resetRunningPartDuration()
+        }
+        this.live().update(data);
+
+    };
+
+    resetRunningPartDuration = () => {
+        this.db.ref(`live/runningPartStartTime`).set(app.database.ServerValue.TIMESTAMP)
+    };
+
+    addToRunningPartStartTime = () => {
+        this.db.ref(`live/runningPartStartTime`).set(app.database.ServerValue.TIMESTAMP)
+    };
+
 
     /**
      * Creates a new user in FireBase Authentication
@@ -53,6 +113,8 @@ class Firebase {
      */
     doPasswordUpdate = password =>
         this.auth.currentUser.updatePassword(password);
+
+    // *** Set Listeners *** //
 
     /**
      * Merge Auth and DB User Data
@@ -98,6 +160,10 @@ class Firebase {
     users = () => this.db.ref(`users`);
 
     live = () => this.db.ref(`live`);
+
+    log = uid => this.db.ref(`logs/${uid}`);
+
+    logs = () => this.db.ref(`logs`);
 }
 
 
@@ -105,11 +171,4 @@ export default Firebase;
 
 // export const firebaseDb = firebase.database();
 //
-// firebase.database().ref('/.info/serverTimeOffset')
-//     .once('value')
-//     .then(function stv(data) {
-//         console.log('the current ServerDateTime is: ')
-//         console.log(data.val() + Date.now());
-//     }, function (err) {
-//         return err;
-//     });
+//

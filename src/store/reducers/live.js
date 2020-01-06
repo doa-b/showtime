@@ -13,6 +13,7 @@ const initialState = {
     showHasFinished: false,
     scheduledEndTime: 0,
     previousState: null,
+    pause: 0
 };
 
 const skipToNextPart = (state, action) => {
@@ -25,6 +26,12 @@ const skipToNextPart = (state, action) => {
         });
 };
 
+const incrementDuration = (state, action) => {
+    let newState = {runningPartDuration: state.runningPartDuration + 1000};
+    if (action.isPaused) newState = {pause: state.pause + 1000};
+    return updateObject(state, newState);
+};
+
 const endOfShow = (state) => {
     return updateObject(state, {
             isLive: false,
@@ -34,12 +41,14 @@ const endOfShow = (state) => {
             runningPartDuration: 0,
             showHasFinished: true
         }
-        )
+    )
 };
 
 const reducer = (state = initialState, action) => {
 
     switch (action.type) {
+        case actionTypes.LIVE_SET_STATE:
+            return updateObject(state, action.data);
         case actionTypes.LIVE_SET_IS_LIVE:
             return updateObject(state, {isLive: true, isPaused: false});
         case actionTypes.LIVE_CHANGE_CURRENT_PART_NUMBER:
@@ -49,7 +58,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.LIVE_RESET_RUNNING_PART_DURATION:
             return updateObject(state, {runningPartDuration: action.value});
         case actionTypes.LIVE_INCREMENT_RUNNING_PART_DURATION:
-            return updateObject(state, {runningPartDuration: state.runningPartDuration + 1000});
+            return incrementDuration(state, action);
         case actionTypes.LIVE_END_PART:
             return updateObject(state, {isPaused: true});
         case actionTypes.LIVE_END_OF_SHOW:

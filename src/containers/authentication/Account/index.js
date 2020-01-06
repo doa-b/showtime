@@ -43,7 +43,6 @@ const styles = theme => ({
     }
 });
 
-// TODO use expansion Panels for these 2 forms
 const AccountPage = ({classes, ...props}) => (
     <AuthUserContext.Consumer>
         {authUser => {

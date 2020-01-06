@@ -29,6 +29,7 @@ export {
     showHasEnded,
     updateScheduledEndTime,
     savePreviousState,
-    fetchLiveData,
-   // saveLiveData
+    setLiveDataListener,
+    saveLiveData,
+    increaseRunningPartStartTime
 } from './live'

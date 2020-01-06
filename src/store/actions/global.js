@@ -56,10 +56,11 @@ export const startClock = () => {
     return (dispatch, getState) => {
         dispatch(initiateClock());
         setInterval(() => {
-            const isPlaying = !getState().live.isPaused;
+            const isPaused = getState().live.isPaused;
+            const isLive = getState().live.isLive;
             dispatch(addSecondToClock());
-            if (isPlaying) {
-                dispatch(incrementRunningPartDuration());
+            if (isLive) {
+                dispatch(incrementRunningPartDuration(isPaused));
             }
         }, 1000)
     }

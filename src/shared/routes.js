@@ -7,6 +7,7 @@ export const ACCOUNT = '/account';
 export const ADMIN = '/admin';
 export const ADMIN_USER_DETAILS = '/admin/userdetails';
 export const ADMIN_CREATE_USER = '/admin/create-user';
+export const ADMIN_LOGS = '/admin/logs';
 export const PASSWORD_FORGET = '/pw-forget';
 
 export const SHOW_DETAILS = '/show/details';
@@ -30,6 +31,7 @@ export const pageTitle = (route) => {
       case ADMIN: return 'Admin';
       case ADMIN_USER_DETAILS: return 'User Details (admin)';
       case ADMIN_CREATE_USER: return 'Create new User (admin)';
+      case ADMIN_LOGS: return 'Logs (admin)';
       case PASSWORD_FORGET: return 'Forgot Password';
       case SHOW_DETAILS: return 'Show Details';
       case BLOCK_DETAILS: return 'Block Details';

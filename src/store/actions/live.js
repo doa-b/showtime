@@ -2,6 +2,7 @@ import axios from 'axios'
 // import {firebaseDb, firebase} from '../../firebase/firebase'
 import {WithFirebase} from "../../firebase";
 import * as actionTypes from './actionTypes';
+import {updateObject} from "../../shared/utility";
 
 export const setIsLiveAndPlay = () => {
     return {
@@ -23,16 +24,11 @@ export const changeCurrentPartNumber = (nextPart, nextBlock) => {
     }
 };
 
-export const resetRunningPartDuration = (value = 0) => {
-    return {
-        type: actionTypes.LIVE_RESET_RUNNING_PART_DURATION,
-        value: value
-    }
-};
 
-export const incrementRunningPartDuration = () => {
+export const incrementRunningPartDuration = (isPaused) => {
     return {
-        type: actionTypes.LIVE_INCREMENT_RUNNING_PART_DURATION
+        type: actionTypes.LIVE_INCREMENT_RUNNING_PART_DURATION,
+        isPaused: isPaused
     }
 };
 
@@ -63,34 +59,110 @@ export const savePreviousState = (previousState) => {
 };
 
 export const setLiveState = (data) => {
-    const runningPartDuration = 0;
-
     return {
         type: actionTypes.LIVE_SET_STATE,
-        data: {
-            isLive: false,
-            isPaused: true,
-            runningPartNumber: 0,
-            runningBlockNumber: 0,
+        data: data
+    }
+};
+
+// export const setLiveState = (data) => {
+//     const runningPartDuration = 0;
+//
+//     return {
+//         type: actionTypes.LIVE_SET_STATE,
+//         data: {
+//             isLive: false,
+//             isPaused: true,
+//             runningPartNumber: 0,
+//             runningBlockNumber: 0,
+//         }
+//     }
+// };
+
+// Asynchronous ActionCreators
+
+//setLiveDataListener
+export const setLiveDataListener = (firebase) => {
+    console.log('listener is dispatched');
+    return dispatch => {
+        firebase.live().on('value', (snapshot) => {
+            console.log('setLiveDataListener is called');
+            console.log(snapshot.val());
+
+            dispatch(calculateLiveState(firebase, snapshot.val()))
+        })
+    };
+};
+
+/**
+ * Gets the server time to calculate how long current part is running
+ * @param firebase
+ * @param show
+ * @returns {Function}
+ */
+export const calculateLiveState = (firebase, show) => {
+    return dispatch => {
+        let runningPartDuration = 0;
+        // when show is paused, set currentpartDuration as provided from db
+        if (show.isPaused) {
+            dispatch(setLiveState(show))
+        } else {
+            if (show.isLive) {
+                firebase.db.ref('/.info/serverTimeOffset')
+                    .once('value')
+                    .then(function stv(data) {
+                        console.log('the current ServerDateTime is: ');
+                        console.log(data.val() + Date.now());
+                        //                      current serverTime
+                        runningPartDuration = (data.val() + Date.now() - show.runningPartStartTime - show.pause);
+                        console.log(runningPartDuration);
+                        const newLiveState = updateObject(show,
+                            {runningPartDuration: runningPartDuration});
+                        console.log('nowdispatchingLiveState')
+                        console.log(newLiveState)
+                        dispatch(setLiveState(newLiveState))
+                    }, function (err) {
+                        return err;
+                    });
+            } else dispatch(setLiveState(updateObject(show,
+                {runningPartDuration: runningPartDuration})))
         }
     }
 };
 
-// Asynchronous ActionCreators
 
-//fetchLiveData once
-export const fetchLiveData = (firebase) => {
+export const startTheShow = (firebase) => {
+    console.log('starting The show');
+    console.log(firebase.db);
 
+    // firebase.setLiveData(newData);
     return dispatch => {
-        firebase.live().once('value',)
-            .then((snapshot) => {
-                // TODO save live data in store
-                console.log('fetchLiveData is called');
-                console.log(snapshot.val());
-            })
+        const newData = {isLive: true, isPaused: false};
+        firebase.live().update(newData)
+        //     //dispatch(setIsLiveAndPlay());
     };
 };
 
+export const saveLiveData = (firebase, data) => {
+    return dispatch => {
+        firebase.setLiveData(data)
+    }
+};
+
+export const resetRunningPartDuration = (firebase) => {
+    return dispatch => {
+        firebase.resetRunningPartDuration()
+        // type: actionTypes.LIVE_RESET_RUNNING_PART_DURATION,
+        // value: value
+    }
+};
+
+export const increaseRunningPartStartTime = (firebase) => {
+    return dispatch => {
+        firebase.addToRunningPartStartTime()
+    };
+
+    };
 
 
 // export const saveLiveData = () => {
@@ -111,7 +183,7 @@ export const fetchLiveData = (firebase) => {
 // };
 //
 // // setListener on LiveData
-// export const fetchLiveData = () => {
+// export const setLiveDataListener = () => {
 //     const ref = firebaseDb.ref('live/');
 //     return dispatch => {
 //         const liveData = '';
@@ -134,12 +206,6 @@ export const fetchLiveData = (firebase) => {
 //     }
 // };
 
-export const startTheShow = () => {
-    console.log('starting The show');
-    return dispatch => {
-        dispatch(setIsLiveAndPlay());
-    };
-};
 
 export const setNextPart = (nextPart, nextBlock) => {
     return dispatch => {

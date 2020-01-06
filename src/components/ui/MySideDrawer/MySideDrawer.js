@@ -176,8 +176,8 @@ const MySideDrawer = withStyles(styles)(
                 />
                 )}
                 <NavItem
-                    to={ROUTES.TEST}
-                    text='TESTS'
+                    to={ROUTES.ADMIN_LOGS}
+                    text='LOGS'
                     Icon={SupervisorAccountIcon}
                     onClick={onItemClick()}
                 />

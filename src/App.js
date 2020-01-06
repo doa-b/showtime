@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {compose} from "redux";
 import {Route, Switch, withRouter, Redirect} from 'react-router-dom'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
@@ -6,6 +6,7 @@ import MomentUtils from '@date-io/moment';
 import './App.css';
 
 import * as ROUTES from './shared/routes'
+import * as actions from './store/actions'
 
 import Schedule from './containers/Schedule/Schedule';
 import BlockDetails from './containers/Blocks/BlockDetails/BlockDetails'
@@ -24,15 +25,21 @@ import AccountPage from "./containers/authentication/Account";
 import AdminPage from './containers/Admin'
 import AdminUserDetailsPage from './containers/Admin/UserDetailsPage/UserDetailsPage'
 import CreateNewUserPage from "./containers/Admin/CreateNewUserPage/CreateNewUserPage";
+import LogsPage from "./containers/Admin/LogsPage/LogsPage";
 import TestPage from "./components/TestPage/TestPage";
 
 
 import {withFirebase} from "./firebase";
 import { withAuthentication } from './hoc/Session'
+import {connect} from "react-redux";
 
-const App = () => {
+class App extends Component {
 
-    let routes = (
+    componentDidMount() {
+     this.props.onSetLiveDataListener(this.props.firebase);
+    }
+
+    routes = (
         <Switch>
             <Route path={ROUTES.LANDING} exact component={Schedule}/>
             <Route path={ROUTES.SIGN_UP} exact component={SignUpPage}/>
@@ -43,6 +50,7 @@ const App = () => {
             <Route path={ROUTES.ADMIN} exact component={AdminPage}/>
             <Route path={ROUTES.ADMIN_USER_DETAILS} exact component={AdminUserDetailsPage}/>
             <Route path={ROUTES.ADMIN_CREATE_USER} exact component={CreateNewUserPage}/>
+            <Route path={ROUTES.ADMIN_LOGS} exact component={LogsPage}/>
             <Route path={ROUTES.HOME} exact component={Schedule}/>
             <Route path={ROUTES.SHOW_DETAILS} exact component={ShowDetails}/>
             <Route path={ROUTES.BLOCK_DETAILS} exact component={BlockDetails}/>
@@ -55,17 +63,27 @@ const App = () => {
             <Redirect to={ROUTES.HOME}/>
         </Switch>
     );
-    return (
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-            <Layout variant='temporary'>
-                {routes}
-            </Layout>
-        </MuiPickersUtilsProvider>
-    );
+
+    render() {
+        return (
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+                <Layout variant='temporary'>
+                    {this.routes}
+                </Layout>
+            </MuiPickersUtilsProvider>
+        );
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSetLiveDataListener: (firebase) => dispatch(actions.setLiveDataListener(firebase))
+    };
 };
 
 export default compose(
     withAuthentication,
     withRouter,
-    withFirebase
+    withFirebase,
+    connect (null, mapDispatchToProps)
 )(App);

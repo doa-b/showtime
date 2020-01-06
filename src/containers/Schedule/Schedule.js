@@ -52,10 +52,10 @@ class Schedule extends Component {
     };
 
     componentDidMount() {
-        this.props.onFetchLiveData(this.props.firebase);
+        //this.props.onFetchLiveData(this.props.firebase);
         this.props.onFetch(this.props.currentShow);
         if (this.props.currentTime === 0) {
-            this.props.onStartClock();
+            this.props.onStartClock(this.props.firebase, true);
         }
     }
 
@@ -124,16 +124,55 @@ class Schedule extends Component {
         this.props.onSavePreviousState(null)
     };
 
+    togglePauseHandler = () => {
+        if (this.props.isPaused) {
+            // resume
+            this.props.onSaveLiveData(this.props.firebase,
+                {
+                    isPaused: false,
+                    pause: this.props.pause
+                });
+        } else {
+            // pause
+            this.props.onSaveLiveData(this.props.firebase,
+                {
+                    isPaused: true,
+                    runningPartDuration: this.props.runningPartDuration
+                })
+        }
+    };
+
+    resetTheShow = () => {
+        this.props.onSaveLiveData(this.props.firebase,
+            {
+                isLive: false,
+                isPaused: true,
+                pause: 0,
+                runningPartStartTime: -1
+            });
+    };
+
+    startTheShow = () => {
+        this.props.onSaveLiveData(this.props.firebase,
+            {
+                isLive: true,
+                isPaused: false,
+                pause: 0,
+                runningPartStartTime: -1
+            });
+    };
+
+
     render() {
         const {classes} = this.props;
         let page = <Spinner/>
 
-        let liveControls = (
-            <Fab variant="extended" aria-label="start"
-                 onClick={this.props.onStartTheShow} className={classes.fab}>
-                Start The Show!
-            </Fab>
-        );
+        // let liveControls = (
+        //     <Fab variant="extended" aria-label="start"
+        //          onClick={this.props.onStartTheShow} className={classes.fab}>
+        //         Start The Show!
+        //     </Fab>
+        // );
 
         if (this.props.shows.length > 0 && !this.props.showHasFinished && !this.props.loading) {
             const show = this.props.shows.filter((show) => show.id === this.props.currentShow)[0];
@@ -151,7 +190,7 @@ class Schedule extends Component {
                             {msToTime(this.props.showStartDateTime)}
                         </Typography>
                         <Fab variant="extended" aria-label="start"
-                             onClick={this.props.onStartTheShow} className={classes.fab}>
+                             onClick={this.startTheShow} className={classes.fab}>
                             Start The Show!
                         </Fab>
 
@@ -181,7 +220,7 @@ class Schedule extends Component {
                         </Typography>
                         <Fab className={classes.actionButton}
                              color='primary' aria-label='play'
-                             onClick={this.props.onTogglePause}>
+                             onClick={this.togglePauseHandler}>
                             {playPause}
                         </Fab>
                         <Fab className={classes.actionButton}
@@ -196,6 +235,9 @@ class Schedule extends Component {
             page =
                 <div>
                     <div className={classes.paper}>
+                        <button onClick={this.resetTheShow}>
+                            Reset the show
+                        </button>
                         {head}</div>
                     <BlocksList
                         parentId={this.props.currentShow}
@@ -229,7 +271,9 @@ const mapStateToProps = (state) => {
         runningPartDuration: state.live.runningPartDuration,
         runningBlock: state.live.runningBlockNumber,
         showHasFinished: state.live.showHasFinished,
-        previousState: state.live.previousState
+        previousState: state.live.previousState,
+        pause: state.live.pause,
+        runningPartStartTime: state.live.runningPartStartTime
     }
 };
 
@@ -237,15 +281,15 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onSave: (element, data) => dispatch(actions.save(element, data)),
         onFetch: (showId) => dispatch(actions.fetch(showId)),
-        onStartClock: () => dispatch(actions.startClock()),
+        onStartClock: (firebase, isAdmin) => dispatch(actions.startClock(firebase, isAdmin)),
         onStartTheShow: () => dispatch(actions.startTheShow()),
         onTogglePause: () => dispatch(actions.toggleIsPaused()),
         onSetNextPart: (nextPart, nextBlock) => dispatch(actions.setNextPart(nextPart, nextBlock)),
         onEndOfShow: () => dispatch(actions.showHasEnded()),
         onSavePreviousState: (previousState) => dispatch(actions.savePreviousState(previousState)),
-        onResetRunningPartDuration: (value) => dispatch(actions.resetRunningPartDuration(value)),
-        onFetchLiveData: (firebase) => dispatch(actions.fetchLiveData(firebase)),
-        // onSaveLiveData: () => dispatch(actions.saveLiveData())
+        onResetRunningPartDuration: (firebase) => dispatch(actions.resetRunningPartDuration(firebase)),
+        onFetchLiveData: (firebase) => dispatch(actions.setLiveDataListener(firebase)),
+        onSaveLiveData: (firebase, data) => dispatch(actions.saveLiveData(firebase, data))
     }
 };
 
