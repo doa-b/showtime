@@ -130,7 +130,6 @@ export const calculateLiveState = (firebase, show) => {
     }
 };
 
-
 export const startTheShow = (firebase) => {
     console.log('starting The show');
     console.log(firebase.db);

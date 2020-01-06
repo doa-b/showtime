@@ -8,7 +8,7 @@ import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import BlocksList from "../Blocks/BlocksList/BlocksList";
 import Spinner from '../../components/ui/Spinner/Spinner'
-import {msToDate, msToTime} from "../../shared/utility";
+import {msToDate, msToTime, updateObject} from "../../shared/utility";
 import {withStyles} from '@material-ui/core/styles';
 import {Typography} from "@material-ui/core";
 
@@ -75,7 +75,6 @@ class Schedule extends Component {
      * @param parentId
      */
     showDetailsHandler = (elementId, pathName, parentId) => {
-        this.props.onSetPageTitle(pathName.split('/')[0] + ' details');
         if (elementId) {
             this.props.history.push({
                 pathname: pathName,
@@ -93,9 +92,80 @@ class Schedule extends Component {
         }
     };
 
+    getNextPart = (currentBlockNumber, currentPartNumber) => {
+        let nextPart = currentPartNumber;
+        let nextBlock = currentBlockNumber;
+        const runningBlockId = this.props.blocks[currentBlockNumber].id;
+        const runningBlockPartsAmount =
+            this.props.parts.filter(aPart => aPart.blockId === runningBlockId).length;
+        if (currentPartNumber + 1 < runningBlockPartsAmount) {
+            nextPart += 1
+        } else {
+            nextBlock += 1;
+            nextPart = 0;
+        }
+        if (nextBlock < this.props.blocks.length) {
+            const nextBlockId = this.props.blocks[nextBlock].id;
+            const partDetails = this.props.parts.filter(aPart => aPart.blockId === nextBlockId)[nextPart];
+            console.log('nextPartDetails');
+            console.log(partDetails);
+            const next = {
+                runningBlockNumber: nextBlock,
+                runningPartNumber: nextPart,
+                nextPartId: partDetails.id,
+                nextPartTitle: partDetails.title,
+                nextPartCue: partDetails.cue
+            };
+            return next;
+        }
+        return null
+    };
+
     skipToNextPartHandler = () => {
+        const previousShowState = {
+            isPaused: true,
+            runningPartNumber: this.props.runningPart,
+            runningBlockNumber: this.props.runningBlock,
+            runningPartDuration: this.props.runningPartDuration,
+            runningPartStartTime: this.props.runningPartStartTime,
+            pause: this.props.pause + this.props.runningPartDuration
+        };
+        let live = {
+            previousShowState: previousShowState,
+            isPaused: false,
+            pause: 0,
+            runningPartDuration: 0,
+            runningPartStartTime: -1, // sets current server Time};
+        };
+        let nextUpPart = this.getNextPart(this.props.runningBlock, this.props.runningPart);
+        if (nextUpPart) {
+            live = updateObject(live, nextUpPart);
+            console.log(nextUpPart);
+            const followingPart = this.getNextPart(nextUpPart.runningBlockNumber, nextUpPart.runningPartNumber);
+            if (followingPart) {
+                live = updateObject(live, {
+                    followingPartId: followingPart.nextPartId,
+                    followingPartTitel: followingPart.nextPartTitle,
+                    followingPartCue: followingPart.nextPartCue
+                })
+            }
+            console.log('The new live will be');
+            console.log(live)
+            //now set the new live
+            this.props.onSaveLiveData(this.props.firebase, live)
+        } else {
+            // set end of show
+            this.props.onSaveLiveData(this.props.firebase,
+                {
+                    showHasFinished: true
+                });
+        }
+    };
+
+    skipToNextPartHandler2 = () => {
         let nextPart = this.props.runningPart;
         let nextBlock = this.props.runningBlock;
+        this.getNextPart(nextBlock, nextPart);
         // save the previous state when user clicks on Next, so he can return to it
         const previousState = {
             paused: true,
@@ -122,7 +192,7 @@ class Schedule extends Component {
             console.log('NextBlock: ' + nextBlock);
         }
         if (nextBlock < this.props.blocks.length) {
-           // save nextUp
+            // save nextUp
             this.props.onSaveLiveData(this.props.firebase,
                 {
                     isPaused: false,
@@ -181,6 +251,13 @@ class Schedule extends Component {
                 runningBlockNumber: 0,
                 runningPartNumber: 0,
                 runningPartStartTime: -1,
+                showHasFinished: false,
+                nextPartId: null,
+                nextPartTitle: null,
+                nextPartCue:null,
+                followingPartId: null,
+                followingPartTitel: null,
+                followingPartCue: null
             });
     };
 
@@ -281,7 +358,13 @@ class Schedule extends Component {
         }
 
         if (this.props.showHasFinished) {
-            page = <h2>Show has ended</h2>
+            page =
+                <>
+                    <h2>Show has ended</h2>
+                    <button onClick={this.resetTheShow}>
+                        Reset the show
+                    </button>
+                </>
         }
         return page
     }

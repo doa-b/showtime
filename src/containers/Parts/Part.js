@@ -25,7 +25,6 @@ class Part extends Component {
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log('componentDidUpdate Part');
         if (prevProps.showAllScenes !== this.props.showAllScenes) {
             this.setState({showChildren: this.props.showAllScenes})
         }
