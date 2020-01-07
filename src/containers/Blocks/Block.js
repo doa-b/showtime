@@ -68,7 +68,7 @@ class Block extends Component {
                         {this.props.children}
                         <Time startTime={startTime}
                               duration={this.props.duration}
-                              live={this.props.running}/>
+                              isLive={!!this.props.running}/>
                         <div className={classes.Title}
                              onClick={() => this.props.clicked(this.props.blockData.id, 'block/details')}>
                             {this.props.blockData.title}

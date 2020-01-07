@@ -31,10 +31,10 @@ const styles = () => ({
  * React functional component that displays the startTime and Duration of show Element
  * <br />Created by Doa on 24-10-2019.
  */
-const startTime = withStyles(styles)(({classes, startTime, displaySeconds, duration, live, onClick}) => {
+const startTime = withStyles(styles)(({classes, startTime, displaySeconds, duration, isLive, onClick}) => {
 
     let startTimeDisplay = msToTime(startTime, displaySeconds);
-    if (live) startTimeDisplay = <PlayArrowIcon fontSize='small'/>;
+    if (isLive) startTimeDisplay = <PlayArrowIcon fontSize='small'/>;
     let durationDisplay = msToTime(duration, displaySeconds);
     if (duration <= 0) {
         startTimeDisplay = <span style={{color: "red"}}>Time is up!</span>;
@@ -64,7 +64,7 @@ startTime.propTypes = {
     /** duration of this showElement in ms */
     duration: number,
     /** true when show is running */
-    live: bool,
+    isLive: bool,
     /** true if this component needs to display seconds in time*/
     displaySeconds: bool,
     /** function tho handle click on startTimeDisplay element. Toggles between realtime and showtime */

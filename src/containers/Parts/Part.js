@@ -93,7 +93,7 @@ class Part extends Component {
                     {this.props.children}
                     <Time startTime={startTime}
                           duration={duration}
-                          live={this.props.runningTime}/>
+                          isLive={!!this.props.runningTime}/>
                     <div className={classes.Title}
                          onClick={() => this.props.clicked(this.props.partData.id, 'part/details')}>{this.props.partData.title}</div>
                     <div className={classes.vl}></div>
