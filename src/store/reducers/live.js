@@ -13,7 +13,8 @@ const initialState = {
     showHasFinished: false,
     scheduledEndTime: 0,
     previousShowState: null,
-    pause: 0
+    pause: 0,
+    serverOffset: null
 };
 
 const skipToNextPart = (state, action) => {

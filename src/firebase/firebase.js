@@ -70,7 +70,6 @@ class Firebase {
         this.db.ref(`live/runningPartStartTime`).set(app.database.ServerValue.TIMESTAMP)
     };
 // can be removed
-
     addToRunningPartStartTime = () => {
         this.db.ref(`live/runningPartStartTime`).set(app.database.ServerValue.TIMESTAMP)
     };

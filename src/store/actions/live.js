@@ -101,29 +101,39 @@ export const setLiveDataListener = (firebase) => {
  * @returns {Function}
  */
 export const calculateLiveState = (firebase, show) => {
-    return dispatch => {
+    return (dispatch, getState) => {
         let runningPartDuration = 0;
         // when show is paused, set currentpartDuration as provided from db
         if (show.isPaused) {
             dispatch(setLiveState(show))
         } else {
             if (show.isLive) {
-                firebase.db.ref('/.info/serverTimeOffset')
-                    .once('value')
-                    .then(function stv(data) {
-                        console.log('the current ServerDateTime is: ');
-                        console.log(data.val() + Date.now());
-                        //                      current serverTime
-                        runningPartDuration = (data.val() + Date.now() - show.runningPartStartTime - show.pause);
-                        console.log(runningPartDuration);
-                        const newLiveState = updateObject(show,
-                            {runningPartDuration: runningPartDuration});
-                        console.log('nowdispatchingLiveState')
-                        console.log(newLiveState)
-                        dispatch(setLiveState(newLiveState))
-                    }, function (err) {
-                        return err;
-                    });
+                if (getState().live.serverOffset) {
+                    console.log('taking known offset version')
+                    runningPartDuration = getState().live.serverOffset + Date.now() - show.runningPartStartTime - show.pause
+                    dispatch(setLiveState(updateObject(show, {runningPartDuration: runningPartDuration})))
+                } else {
+                    firebase.db.ref('/.info/serverTimeOffset')
+                        .once('value')
+                        .then(function stv(data) {
+                            console.log('the current ServerDateTime is: ');
+                            console.log(data.val() + Date.now());
+                            //                      current serverTime
+                            runningPartDuration = (data.val() + Date.now() - show.runningPartStartTime - show.pause);
+                            console.log(runningPartDuration);
+                            const newLiveState = updateObject(show,
+                                {
+                                    runningPartDuration: runningPartDuration,
+                                    serverOffset: data.val()
+                                });
+                            console.log('nowdispatchingLiveState');
+                            console.log(newLiveState);
+                            dispatch(setLiveState(newLiveState))
+                        }, function (err) {
+                            return err;
+                        });
+                }
+
             } else dispatch(setLiveState(updateObject(show,
                 {runningPartDuration: runningPartDuration})))
         }
@@ -141,7 +151,7 @@ export const startTheShow = (firebase) => {
         //     //dispatch(setIsLiveAndPlay());
     };
 };
-
+// Can be removed
 export const saveLiveData = (firebase, data) => {
     return dispatch => {
         firebase.setLiveData(data)
@@ -161,7 +171,7 @@ export const increaseRunningPartStartTime = (firebase) => {
         firebase.addToRunningPartStartTime()
     };
 
-    };
+};
 
 
 // export const saveLiveData = () => {
