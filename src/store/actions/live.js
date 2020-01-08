@@ -1,29 +1,5 @@
-import axios from 'axios'
-// import {firebaseDb, firebase} from '../../firebase/firebase'
-import {WithFirebase} from "../../firebase";
 import * as actionTypes from './actionTypes';
 import {updateObject} from "../../shared/utility";
-
-export const setIsLiveAndPlay = () => {
-    return {
-        type: actionTypes.LIVE_SET_IS_LIVE
-    }
-};
-
-export const togglePaused = () => {
-    return {
-        type: actionTypes.LIVE_TOGGLE_IS_PAUSED
-    }
-};
-
-export const changeCurrentPartNumber = (nextPart, nextBlock) => {
-    return {
-        type: actionTypes.LIVE_CHANGE_CURRENT_PART_NUMBER,
-        nextPart: nextPart,
-        nextBlock: nextBlock
-    }
-};
-
 
 export const incrementRunningPartDuration = (isPaused) => {
     return {
@@ -38,23 +14,10 @@ export const partEnd = () => {
     }
 };
 
-export const showEnd = () => {
-    return {
-        type: actionTypes.LIVE_END_OF_SHOW
-    }
-};
-
 export const updateScheduledEndTime = (time) => {
     return {
         type: actionTypes.LIVE_UPDATE_SCHEDULED_END_TIME,
         time: time
-    }
-};
-
-export const savePreviousState = (previousState) => {
-    return {
-        type: actionTypes.LIVE_SAVE_PREVIOUS_STATE,
-        previousState: previousState
     }
 };
 
@@ -65,21 +28,13 @@ export const setLiveState = (data) => {
     }
 };
 
-// export const setLiveState = (data) => {
-//     const runningPartDuration = 0;
-//
-//     return {
-//         type: actionTypes.LIVE_SET_STATE,
-//         data: {
-//             isLive: false,
-//             isPaused: true,
-//             runningPartNumber: 0,
-//             runningBlockNumber: 0,
-//         }
-//     }
-// };
+export const resetShow = () => {
+    return {
+        type: actionTypes.RESET_THE_SHOW
+    }
+};
 
-// Asynchronous ActionCreators
+// *** Asynchronous ActionCreators ***
 
 //setLiveDataListener
 export const setLiveDataListener = (firebase) => {
@@ -140,104 +95,36 @@ export const calculateLiveState = (firebase, show) => {
     }
 };
 
-export const startTheShow = (firebase) => {
-    console.log('starting The show');
-    console.log(firebase.db);
-
-    // firebase.setLiveData(newData);
+export const resetTheShow = (firebase) => {
+    console.log('RESETTING THE SHOW')
+    const newData = {
+        isLive: false,
+        isPaused: true,
+        pause: 0,
+        previousShowState: null,
+        runningBlockNumber: 0,
+        runningPartNumber: 0,
+        runningPartDuration: 0,
+        runningPartStartTime: -1,
+        showHasFinished: false,
+        nextPartId: null,
+        nextPartTitle: null,
+        nextPartCue: null,
+        followingPartId: null,
+        followingPartTitel: null,
+        followingPartCue: null,
+        scheduledEndTime: null
+    };
     return dispatch => {
-        const newData = {isLive: true, isPaused: false};
-        firebase.live().update(newData)
-        //     //dispatch(setIsLiveAndPlay());
+        firebase.live().update(newData);
+        dispatch(resetShow())
     };
 };
-// Can be removed
-export const saveLiveData = (firebase, data) => {
-    return dispatch => {
-        firebase.setLiveData(data)
-    }
-};
 
-export const resetRunningPartDuration = (firebase) => {
-    return dispatch => {
-        firebase.resetRunningPartDuration()
-        // type: actionTypes.LIVE_RESET_RUNNING_PART_DURATION,
-        // value: value
-    }
-};
-
-export const increaseRunningPartStartTime = (firebase) => {
-    return dispatch => {
-        firebase.addToRunningPartStartTime()
-    };
-
-};
-
-
-// export const saveLiveData = () => {
-//     const ref = firebaseDb.ref('/live/');
-//     const newData = {
-//         isLive: false,
-//         isPaused: true,
-//         runningPartNumber: 0,
-//         runningBlockNumber: 0,
-//         showHasFinished: false,
-//         scheduledEndTime: 0,
-//         previousState: null
-//     };
+// export const partHasEnded = (firebase) => {
+//     console.log('Part has ended');
 //     return dispatch => {
-//         const liveData = '';
-//         ref.update(newData);
+//         firebase.live().update({isPaused: true});
+//         dispatch(partEnd());
 //     }
 // };
-//
-// // setListener on LiveData
-// export const setLiveDataListener = () => {
-//     const ref = firebaseDb.ref('live/');
-//     return dispatch => {
-//         const liveData = '';
-//         ref.on('value', (snapshot) => {
-//             console.log(snapshot.val());
-//         })
-//     }
-// };
-//
-// export const setLiveData = (data) => {
-//     const ref = ('/.info/serverTimeOffset');
-//     return dispatch => {
-//         ref.once('value')
-//             .then(function stv(data) {
-//                 console.log('the current ServerDateTime is: ')
-//                 console.log(data.val() + Date.now());
-//             }, function (err) {
-//                 return err;
-//             });
-//     }
-// };
-
-
-export const setNextPart = (nextPart, nextBlock) => {
-    return dispatch => {
-        dispatch(changeCurrentPartNumber(nextPart, nextBlock));
-    }
-};
-
-export const toggleIsPaused = () => {
-    console.log('toggling pause');
-    return dispatch => {
-        dispatch(togglePaused());
-    }
-};
-
-export const partHasEnded = () => {
-    console.log('Part has ended');
-    return dispatch => {
-        dispatch(partEnd());
-    }
-};
-
-export const showHasEnded = () => {
-    return dispatch => {
-        dispatch(showEnd());
-    }
-};

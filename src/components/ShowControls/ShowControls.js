@@ -43,12 +43,12 @@ const styles = theme => ({
  */
 const ShowControls = withStyles(styles)(
     ({
-         classes, firebase, blocks, parts, onSaveLiveData, currentTime,
+         classes, firebase, blocks, parts, currentTime, onResetTheShow,
          live: {
              isLive, isPaused, pause, runningPartNumber, runningBlockNumber,
              runningPartDuration, runningPartStartTime,
              previousShowState, scheduledEndTime
-         }, ...props
+         }
      }) => {
 
         const getNextPart = (currentBlockNumber, currentPartNumber) => {
@@ -73,11 +73,32 @@ const ShowControls = withStyles(styles)(
                     runningPartNumber: nextPart,
                     nextPartId: partDetails.id,
                     nextPartTitle: partDetails.title,
+                    nextPartDuration: partDetails.duration,
                     nextPartCue: partDetails.cue
                 };
                 return next;
             }
             return null
+        };
+
+        const getNext2Up = (blockNumber, partNumber) => {
+            let live = {};
+            let nextUpPart = getNextPart(blockNumber, partNumber);
+            if (nextUpPart) {
+                live = updateObject(live, nextUpPart);
+                const followingPart = getNextPart(nextUpPart.runningBlockNumber, nextUpPart.runningPartNumber);
+                if (followingPart) {
+                    live = updateObject(live, {
+                        followingPartId: followingPart.nextPartId,
+                        followingPartTitle: followingPart.nextPartTitle,
+                        followingPartCue: followingPart.nextPartCue
+                    })
+                }
+            } else live = {showHasFinished: true};
+            console.log('the new live is')
+            console.log(live);
+            return live
+
         };
 
         const skipToNextPartHandler = () => {
@@ -90,91 +111,73 @@ const ShowControls = withStyles(styles)(
                 pause: pause + runningPartDuration
             };
             let live = {
+                isLive: true,
                 previousShowState: previousShowState,
                 isPaused: false,
                 pause: 0,
                 runningPartDuration: 0,
                 runningPartStartTime: -1, // sets current server Time};
             };
-            let nextUpPart = getNextPart(runningBlockNumber, runningPartNumber);
-            if (nextUpPart) {
-                live = updateObject(live, nextUpPart);
-                console.log(nextUpPart);
-                const followingPart = getNextPart(nextUpPart.runningBlockNumber, nextUpPart.runningPartNumber);
-                if (followingPart) {
-                    live = updateObject(live, {
-                        followingPartId: followingPart.nextPartId,
-                        followingPartTitel: followingPart.nextPartTitle,
-                        followingPartCue: followingPart.nextPartCue
-                    })
-                }
-                console.log('The new live will be');
-                console.log(live)
-                //now set the new live
-               firebase.setLiveData( live)
-            } else {
-                // set end of show
-                onSaveLiveData(firebase,
-                    {
-                        showHasFinished: true
-                    });
-            }
+           live = updateObject(live, getNext2Up(runningBlockNumber, runningPartNumber));
+            firebase.setLiveData(live);
+
+            // let nextUpPart = getNextPart(runningBlockNumber, runningPartNumber);
+            // if (nextUpPart) {
+            //     live = updateObject(live, nextUpPart);
+            //     console.log(nextUpPart);
+            //     const followingPart = getNextPart(nextUpPart.runningBlockNumber, nextUpPart.runningPartNumber);
+            //     if (followingPart) {
+            //         live = updateObject(live, {
+            //             followingPartId: followingPart.nextPartId,
+            //             followingPartTitel: followingPart.nextPartTitle,
+            //             followingPartCue: followingPart.nextPartCue
+            //         })
+            //     }
+            //     console.log('The new live will be');
+            //     console.log(live)
+            //     //now set the new live
+            //     firebase.setLiveData(live)
+            // } else {
+            //     // set end of show
+            //     firebase.setLiveData({showHasFinished: true})
+            // }
         };
 
         const returnToPreviousHandler = () => {
-           firebase.setLiveData(previousShowState);
+            firebase.setLiveData(previousShowState);
         };
 
-        const togglePauseHandler = () => {
-            if (isPaused) {
-                // resume
-                onSaveLiveData(this.props.firebase,
-                    {
-                        isPaused: false,
-                        pause: pause
-                    });
-            } else {
-                // pause
-               firebase.setLiveData(
-                    {
-                        isPaused: true,
-                        runningPartDuration: runningPartDuration
-                    })
-            }
-        };
-
-        const resetTheShow = () => {
-           firebase.setLiveData(
+        const pauseHandler = () => {
+            firebase.setLiveData(
                 {
-                    isLive: false,
                     isPaused: true,
-                    pause: 0,
-                    previousShowState: null,
-                    runningBlockNumber: 0,
-                    runningPartNumber: 0,
-                    runningPartDuration: 0,
-                    runningPartStartTime: -1,
-                    showHasFinished: false,
-                    nextPartId: null,
-                    nextPartTitle: null,
-                    nextPartCue: null,
-                    followingPartId: null,
-                    followingPartTitel: null,
-                    followingPartCue: null,
-                    scheduledEndTime: null,
+                    runningPartDuration: runningPartDuration
+                })
+        };
+
+        const resumeHandler = () => {
+            firebase.setLiveData(
+                {
+                    isPaused: false,
+                    pause: pause
                 });
         };
 
         const startTheShow = () => {
-           firebase.setLiveData(
-                {
-                    isLive: true,
-                    isPaused: false,
-                    pause: 0,
-                    runningPartStartTime: -1,
-                    scheduledEndTime: scheduledEndTime
-                });
+            let live = {
+                isLive: true,
+                isPaused: false,
+                pause: 0,
+                runningPartStartTime: -1,
+                scheduledEndTime: scheduledEndTime
+            };
+            // get the current 2 parts before the show starts
+            live = updateObject(live, getNext2Up(0, -1));
+            getNext2Up(0,-1);
+            firebase.setLiveData(live)
         };
+
+        // *** Rendering ***
 
         let controls = (
             <Fab variant="extended" aria-label="start"
@@ -184,8 +187,23 @@ const ShowControls = withStyles(styles)(
         );
 
         if (isLive) {
-            let playPause = (isPaused) ?
-                <PlayArrowIcon fontSize='large' color='secondary'/> : <PauseIcon fontSize='large'/>
+            let playPause = (
+                <Fab className={classes.actionButton}
+                                 color='primary' aria-label='play'
+                                 onClick={pauseHandler}>
+                    <PauseIcon fontSize='large'/>
+                </Fab>
+                );
+
+                if (isPaused) {
+                    playPause = (
+                        <Fab className={classes.actionButton}
+                             color='secondary' aria-label='play'
+                             onClick={resumeHandler}>
+                           <PlayArrowIcon fontSize='large'/>
+                        </Fab>
+                    )
+                }
 
             let previous = null;
             if (previousShowState) {
@@ -203,11 +221,7 @@ const ShowControls = withStyles(styles)(
                         <Typography variant='h2'>
                             {msToTime(currentTime, true)}
                         </Typography>
-                        <Fab className={classes.actionButton}
-                             color='primary' aria-label='play'
-                             onClick={togglePauseHandler}>
-                            {playPause}
-                        </Fab>
+                       {playPause}
                         <Fab className={classes.actionButton}
                              color='primary' aria-label='play'
                              onClick={skipToNextPartHandler}>
@@ -215,7 +229,7 @@ const ShowControls = withStyles(styles)(
                         </Fab>
                     </div>
                     <Button variant="contained" color="primary"
-                            onClick={resetTheShow}>
+                            onClick={() => onResetTheShow(firebase)}>
                         Reset the Show
                     </Button>
                 </>
@@ -224,29 +238,18 @@ const ShowControls = withStyles(styles)(
         return controls;
     });
 
-// classes, firebase, blocks, parts, onSaveLiveData, currentTime
 const mapStateToProps = (state) => {
     return {
         currentTime: state.global.currentTime,
         blocks: state.show.blocks,
         parts: state.show.parts,
-        live: state.live
+        live: state.live,
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSave: (element, data) => dispatch(actions.save(element, data)),
-        onFetch: (showId) => dispatch(actions.fetch(showId)),
-        onStartClock: (firebase, isAdmin) => dispatch(actions.startClock(firebase, isAdmin)),
-        onStartTheShow: () => dispatch(actions.startTheShow()),
-        onTogglePause: () => dispatch(actions.toggleIsPaused()),
-        onSetNextPart: (nextPart, nextBlock) => dispatch(actions.setNextPart(nextPart, nextBlock)),
-        onEndOfShow: () => dispatch(actions.showHasEnded()),
-        onSavePreviousState: (previousState) => dispatch(actions.savePreviousState(previousState)),
-        onResetRunningPartDuration: (firebase) => dispatch(actions.resetRunningPartDuration(firebase)),
-        onFetchLiveData: (firebase) => dispatch(actions.setLiveDataListener(firebase)),
-        onSaveLiveData: (firebase, data) => dispatch(actions.saveLiveData(firebase, data))
+        onResetTheShow: (firebase) => dispatch(actions.resetTheShow(firebase))
     }
 };
 

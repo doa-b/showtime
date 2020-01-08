@@ -16,6 +16,7 @@ import MyToolbar from "../../components/ui/MyToolbar/MyToolbar";
 import MySideDrawer from "../../components/ui/MySideDrawer/MySideDrawer";
 import Modal from '../../components/ui/Modal/Modal'
 import DisplayUser from "../../components/DisplayUser/DisplayUser";
+import {withFirebase} from "../../firebase";
 
 /**
  * Created by Doa on 23-10-2019.
@@ -111,7 +112,7 @@ const mapDispatchToProps = (dispatch) => {
         onToggleRealTime: () => dispatch(actions.toggleDisplayRealTime()),
         onSetDisplayUser: (user) => dispatch(actions.setDisplayUser(user)),
         onToggleIsEditable: () => dispatch(actions.toggleIsEditable()),
-        onSetFoldAll: (value) => dispatch(actions.setShowAllScenes(value))
+        onSetFoldAll: (value) => dispatch(actions.setShowAllScenes(value)),
     }
 };
 

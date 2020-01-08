@@ -1,7 +1,7 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 import * as ROUTES from '../../../shared/routes'
-import { AuthUserContext } from '../../../hoc/Session'
+import {AuthUserContext} from '../../../hoc/Session'
 
 import {Tooltip, withStyles} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar/AppBar";
@@ -11,6 +11,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Typography from "@material-ui/core/Typography";
 
 import Avatar from "@material-ui/core/Avatar";
+import LiveMessageButton from "../LiveMessage/LiveMessageButton";
 
 import trinityLogo from '../../../assets/images/trinity-haircare-circles.png'
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
@@ -26,7 +27,7 @@ const styles = theme => ({
     toolBar: {
         alignItems: 'center'
     },
-    avatar: {
+    corner: {
         marginLeft: 'auto'
     },
     toolbarMargin: theme.mixins.toolbar,
@@ -37,6 +38,9 @@ const styles = theme => ({
         height: 35,
         marginTop: 5,
         marginRight: 10
+    },
+    message: {
+        color: 'inherit'
     }
 });
 
@@ -64,7 +68,7 @@ const MyToolbar = withStyles(styles)(
                     >
                         {(isLive) ? 'LIVE ' + showName : title}
                     </Typography>
-                    {(title==='Schedule') ? (
+                    {(title === 'Schedule') ? (
                         <IconButton
                             className={classes.fold}
                             color="inherit"
@@ -76,16 +80,19 @@ const MyToolbar = withStyles(styles)(
                             </Tooltip>
                         </IconButton>
                     ) : null}
+                    <div className={classes.corner}>
+                    </div>
+                    {(title === 'Schedule') ?  <LiveMessageButton/> : null}
                     <AuthUserContext.Consumer>
                         {authUser => authUser ? (
                             <Avatar
-                                className={classes.avatar}
+
                                 alt='logged in user'
                                 src={authUser.imageUrl}/>
                         ) : null}
 
                     </AuthUserContext.Consumer>
-                    </Toolbar>
+                </Toolbar>
             </AppBar>
             <div className={classes.toolbarMargin}/>
         </>

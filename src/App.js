@@ -35,8 +35,17 @@ import {connect} from "react-redux";
 
 class App extends Component {
 
+    listener;
+    clock;
+
     componentDidMount() {
-     this.props.onSetLiveDataListener(this.props.firebase);
+     this.listener = this.props.onSetLiveDataListener(this.props.firebase);
+     this.clock = this.props.onStartClock()
+    }
+
+    componentWillUnmount() {
+       //TODO unregister Listeners!!!
+
     }
 
     routes = (
@@ -77,7 +86,8 @@ class App extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSetLiveDataListener: (firebase) => dispatch(actions.setLiveDataListener(firebase))
+        onSetLiveDataListener: (firebase) => dispatch(actions.setLiveDataListener(firebase)),
+        onStartClock: () => dispatch(actions.startClock())
     };
 };
 

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 
 import classes from './Part.module.css'
+import { compose } from "redux";
+import {connect} from "react-redux";
 
 import ScenesList from "../Scenes/ScenesList";
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
@@ -9,11 +11,12 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import Time from "../../components/Time/Time";
 import * as actions from "../../store/actions";
-import {connect} from "react-redux";
+
 import ProgressBar from '../../components/ui/ProgressBar/ProgressBar'
 import DisplayCrew from "../../components/DisplayCrew/DisplayCrew";
 import OptionsMenu from "../../components/ui/OptionsMenu/OptionsMenu";
 import {Tooltip} from "@material-ui/core";
+import {withFirebase} from "../../firebase";
 
 /**
  * Created by Doa on 23-10-2019.
@@ -52,8 +55,9 @@ class Part extends Component {
         let progressBar = null;
         if (this.props.runningTime) {
             duration -= this.props.runningTime;
-            if (duration === 0 && !this.props.isPaused) {
-                this.props.onPartEnd()
+            if (duration <= 0 && !this.props.isPaused) {
+                this.props.firebase.live().update(
+                    {isPaused: true, runningPartDuration: this.props.runningTime})
             }
             progressBar = (
                 <ProgressBar
@@ -123,10 +127,7 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onPartEnd: () => dispatch(actions.partHasEnded())
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Part);
+export default compose (
+    withFirebase,
+    connect(mapStateToProps)
+)(Part);

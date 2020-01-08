@@ -33,9 +33,9 @@ class Schedule extends Component {
 
     componentDidMount() {
         this.props.onFetch(this.props.currentShow);
-        if (this.props.currentTime === 0) {
-            this.props.onStartClock(this.props.firebase, true);
-        }
+        // if (this.props.currentTime === 0) {
+        //     this.props.onStartClock();
+        // }
     }
 
     /**
@@ -63,7 +63,8 @@ class Schedule extends Component {
     };
 
     render() {
-        const {classes, showHasFinished, shows, currentShow, showStartDateTime, isLive, loading} = this.props;
+        const {classes, showHasFinished, shows, currentShow, showStartDateTime, isLive,
+            onFetch, onStartCLock, firebase, loading, onResetTheShow} = this.props;
         let page = <Spinner/>
         let head = null;
 
@@ -71,7 +72,7 @@ class Schedule extends Component {
             page =
                 <>
                     <h2>Show has ended</h2>
-                    <button onClick={this.resetTheShow}>
+                    <button onClick={() => onResetTheShow(firebase)}>
                         Reset the show
                     </button>
                 </>
@@ -124,14 +125,15 @@ const mapStateToProps = (state) => {
         showStartDateTime: state.show.showStartDateTime,
         loading: state.show.loading,
         isLive: state.live.isLive,
-
+        currentTime: state.global.currentTime
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         onFetch: (showId) => dispatch(actions.fetch(showId)),
-        onStartClock: (firebase, isAdmin) => dispatch(actions.startClock(firebase, isAdmin))
+        onStartClock: () => dispatch(actions.startClock()),
+        onResetTheShow: (firebase) => dispatch(actions.resetTheShow(firebase))
     }
 };
 

@@ -20,16 +20,8 @@ export {
 } from './global'
 
 export {
-    startTheShow,
-    setNextPart,
-    toggleIsPaused,
     incrementRunningPartDuration,
-    resetRunningPartDuration,
-    partHasEnded,
-    showHasEnded,
     updateScheduledEndTime,
-    savePreviousState,
     setLiveDataListener,
-    saveLiveData,
-    increaseRunningPartStartTime
+    resetTheShow,
 } from './live'

@@ -144,7 +144,6 @@ export const ACCESS_LEVEL_EXECUTIVE = 50;
 export const ACCESS_LEVEL_ADMINISTRATOR = 60;
 
 // Scene Catagories. Value is index
-// todo if this does not work, just create an object for it
 export const sceneCategories = [
     {
         label: 'Task',

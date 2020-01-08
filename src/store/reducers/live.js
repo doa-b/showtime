@@ -14,7 +14,15 @@ const initialState = {
     scheduledEndTime: 0,
     previousShowState: null,
     pause: 0,
-    serverOffset: null
+    serverOffset: null,
+    monitorMessage: null,
+    nextPartId: null,
+    nextPartDuration: 0,
+    nextPartTitle: null,
+    nextPartCue: null,
+    followingPartId: null,
+    followingPartTitle: null,
+    followingPartCue: null
 };
 
 const skipToNextPart = (state, action) => {
@@ -28,8 +36,8 @@ const skipToNextPart = (state, action) => {
 };
 
 const incrementDuration = (state, action) => {
-    let newState = {runningPartDuration: state.runningPartDuration + 1000};
-    if (action.isPaused) newState = {pause: state.pause + 1000};
+    const newState = (action.isPaused) ? {pause: state.pause + 1000} :
+        {runningPartDuration: state.runningPartDuration + 1000};
     return updateObject(state, newState);
 };
 
@@ -68,6 +76,8 @@ const reducer = (state = initialState, action) => {
             return updateObject(state, {scheduledEndTime: action.time});
         case actionTypes.LIVE_SAVE_PREVIOUS_STATE:
             return updateObject(state, {previousState: action.previousState});
+        case actionTypes.RESET_THE_SHOW:
+            return updateObject(state, initialState);
         default:
             return state
     }
