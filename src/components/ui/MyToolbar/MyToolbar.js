@@ -9,9 +9,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from "@material-ui/core/Typography";
-
 import Avatar from "@material-ui/core/Avatar";
-import LiveMessageButton from "../LiveMessage/LiveMessageButton";
 
 import trinityLogo from '../../../assets/images/trinity-haircare-circles.png'
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
@@ -82,7 +80,6 @@ const MyToolbar = withStyles(styles)(
                     ) : null}
                     <div className={classes.corner}>
                     </div>
-                    {(title === 'Schedule') ?  <LiveMessageButton/> : null}
                     <AuthUserContext.Consumer>
                         {authUser => authUser ? (
                             <Avatar

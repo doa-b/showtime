@@ -107,13 +107,13 @@ export const resetTheShow = (firebase) => {
         runningPartDuration: 0,
         runningPartStartTime: -1,
         showHasFinished: false,
-        nextPartId: null,
-        nextPartTitle: null,
-        nextPartCue: null,
-        followingPartId: null,
-        followingPartTitel: null,
-        followingPartCue: null,
-        scheduledEndTime: null
+        nextPartId: '',
+        nextPartTitle: '',
+        nextPartCue: '',
+        followingPartId: '',
+        followingPartTitle: '',
+        followingPartCue: '',
+        scheduledEndTime: ''
     };
     return dispatch => {
         firebase.live().update(newData);

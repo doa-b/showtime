@@ -16,13 +16,12 @@ const initialState = {
     pause: 0,
     serverOffset: null,
     monitorMessage: null,
-    nextPartId: null,
-    nextPartDuration: 0,
-    nextPartTitle: null,
-    nextPartCue: null,
-    followingPartId: null,
-    followingPartTitle: null,
-    followingPartCue: null
+    nextPartId: '',
+    nextPartTitle: '',
+    nextPartCue: '',
+    followingPartId: '',
+    followingPartTitle: '',
+    followingPartCue: '',
 };
 
 const skipToNextPart = (state, action) => {

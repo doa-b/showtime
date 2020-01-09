@@ -2,6 +2,7 @@ import React from 'react';
 import {compose} from "redux";
 import {withAuthorization} from '../../hoc/Session';
 import {withFirebase} from "../../firebase";
+import LiveMessageButton from "../ui/LiveMessage/LiveMessageButton";
 
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
@@ -36,6 +37,9 @@ const styles = theme => ({
     },
     actionButton: {
         marginLeft: 10
+    },
+    resetButton: {
+        marginRight: 5
     }
 });
 /**
@@ -94,7 +98,16 @@ const ShowControls = withStyles(styles)(
                         followingPartCue: followingPart.nextPartCue
                     })
                 }
-            } else live = {showHasFinished: true};
+            } else live = {
+                showHasFinished: true,
+                nextPartId: '',
+                nextPartTitle: '',
+                nextPartCue: '',
+                followingPartId: '',
+                followingPartTitle: '',
+                followingPartCue: '',
+                scheduledEndTime: ''}
+            ;
             console.log('the new live is')
             console.log(live);
             return live
@@ -120,27 +133,6 @@ const ShowControls = withStyles(styles)(
             };
            live = updateObject(live, getNext2Up(runningBlockNumber, runningPartNumber));
             firebase.setLiveData(live);
-
-            // let nextUpPart = getNextPart(runningBlockNumber, runningPartNumber);
-            // if (nextUpPart) {
-            //     live = updateObject(live, nextUpPart);
-            //     console.log(nextUpPart);
-            //     const followingPart = getNextPart(nextUpPart.runningBlockNumber, nextUpPart.runningPartNumber);
-            //     if (followingPart) {
-            //         live = updateObject(live, {
-            //             followingPartId: followingPart.nextPartId,
-            //             followingPartTitel: followingPart.nextPartTitle,
-            //             followingPartCue: followingPart.nextPartCue
-            //         })
-            //     }
-            //     console.log('The new live will be');
-            //     console.log(live)
-            //     //now set the new live
-            //     firebase.setLiveData(live)
-            // } else {
-            //     // set end of show
-            //     firebase.setLiveData({showHasFinished: true})
-            // }
         };
 
         const returnToPreviousHandler = () => {
@@ -228,10 +220,12 @@ const ShowControls = withStyles(styles)(
                             <SkipNextIcon fontSize='large'/>
                         </Fab>
                     </div>
-                    <Button variant="contained" color="primary"
+                    <Button className={classes.resetButton}
+                        variant="contained" color="primary"
                             onClick={() => onResetTheShow(firebase)}>
                         Reset the Show
                     </Button>
+                    <LiveMessageButton/>
                 </>
             );
         }

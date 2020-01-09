@@ -4,10 +4,11 @@ import {Textfit} from 'react-textfit';
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import Time from "../../components/Time/Time";
-import {msToTime, updateObject} from "../../shared/utility";
+import {convertObjectstoArray, msToTime, updateObject} from "../../shared/utility";
 import {withStyles} from "@material-ui/core";
 
 import ScaleText from "react-scale-text";
+import clsx from "clsx";
 
 const styles = theme => ({
     fullWidthText: {
@@ -20,7 +21,6 @@ const styles = theme => ({
     fullWidthTime: {
         lineHeight: .9,
         width: '100%',
-        heigth: '10vw',
         fontSize: '25.5vw',
         padding: 0,
     },
@@ -74,7 +74,7 @@ const styles = theme => ({
     textMessage: {
         overflowX: 'hidden',
         lineHeight: .9,
-        height: '69vh',
+        height: '67vh',
         width: '100%'
     },
     alert: {
@@ -87,35 +87,35 @@ const styles = theme => ({
  */
 const Monitor = withStyles(styles)(
     ({
-         classes, nextPartTitle, nextPartDuration, followingPartCue = '', followingPartTitle,
-         isLive, isPaused, showHasFinished, name = 'doa', message, runningPartDuration,
+         classes, nextPartTitle, nextPartDuration, followingPartCue, followingPartTitle,
+         isLive, isPaused, showHasFinished, currentTime, name = 'doa', message, runningPartDuration,
      }) => {
-        //let message = 'afronden dfsdfsda asdfasd fas sdfdsa fdsf dsasdaf ads dsafdsf sdfsdaaf asdf asdf';
-        //message = null;
-        let time = ''
+
+       const isOdd = () => {
+           const test = Math.round(currentTime / 1000);
+           return test % 2;
+       };
+
+        let time = '';
 
         let timeLeft = nextPartDuration - runningPartDuration;
         time = (timeLeft >= 0) ? msToTime(timeLeft, true) :
-            <span className={classes.alert}>TIME UP</span>;
+            <span className={clsx({
+                [classes.alert]: isOdd()})}>TIME UP</span>;
 
-        let nextPart = null;
-        let head = null;
-        let next = null;
-        let cue = null;
         let body = (
             <div className={classes.currentPart}>
                 <Textfit className={classes.nextPart} mode='single'>
                     show will start soon
                 </Textfit>
             </div>
-        )
+        );
         // for multiline tekst use ScaleText
         //  <div className={classes.currentPartSC}>
         //                     <ScaleText >
         //                         {currentPartTitle}
         //                     </ScaleText>
         //                 </div>
-
         if (isLive) {
             body = (
                 <>
@@ -130,23 +130,38 @@ const Monitor = withStyles(styles)(
                     <Textfit className={classes.nextCue} mode='single'>
                         {followingPartCue}
                     </Textfit>
+                    {(followingPartTitle) ? (
                     <div className={classes.followingPartSC}>
                         <ScaleText>
                             {followingPartTitle}
                         </ScaleText>
                     </div>
+                ) : null}
+
                 </>)
+        } if(showHasFinished) {
+            body = (
+                <ScaleText>
+                    Show has finished
+                </ScaleText>
+            )
         }
 
         if (message) {
+            name = '';
+            convertObjectstoArray(message.team).map(member => {
+                name = name + ' ' + member.firstName
+            });
             body =
                 (<>
-                        <Textfit className={classes.name} mode='single'>
+                        <Textfit className={clsx({
+                            [classes.name]:true, [classes.alert]: isOdd()})} mode='single'>
                             {name}
                         </Textfit>
-                        <div className={classes.textMessage}>
+                        <div className={clsx({
+                            [classes.textMessage]:true, [classes.alert]: !isOdd()})} mode='single'>
                             <ScaleText>
-                                {message}
+                                {message.message}
                             </ScaleText>
                         </div>
                         <Textfit className={classes.fullWidthTime} mode={'single'}>
@@ -229,6 +244,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
+        currentTime: state.global.currentTime,
         isLive: state.live.isLive,
         isPaused: state.live.isPaused,
         nextPartTitle: state.live.nextPartTitle,
