@@ -77,7 +77,7 @@ const UserInfo = withStyles(styles)(({classes, handleSubmit, userData, isAdmin, 
         role: '',
         termsAgreement: false,
         active: true,
-        imageUrl: 'http://djdoa.nl/DJDoa_WebPages/__Old_Website/doa_avatar_small.jpg',
+        imageUrl: '',
     };
 
     // when this is an existing user, we cannot change password and email in this form,

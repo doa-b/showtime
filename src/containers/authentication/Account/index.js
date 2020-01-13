@@ -4,16 +4,18 @@ import {compose} from "redux";
 import {PasswordForgetForm} from "../../PasswordForget";
 import PasswordChangeForm from '../../PasswordChange';
 import UserInfo from "../../../forms/UserInfo";
-import TestPage from '../../../components/TestPage/TestPage'
+
 import {withFirebase} from "../../../firebase";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
+
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+
+import Uppload from "../../../components/FileUpload/Uppload";
+import {updateObject} from "../../../shared/utility";
 
 const styles = theme => ({
     "@global": {
@@ -47,8 +49,8 @@ const AccountPage = ({classes, ...props}) => (
     <AuthUserContext.Consumer>
         {authUser => {
             const onSubmit = (userData) => {
-                // delete userData.password;
-                // delete userData.passwordConfirmation;
+                // reset imageUrl. Form overwrites it
+                userData = updateObject(userData, {imageUrl: authUser.imageUrl});
                 props.firebase
                     .user(authUser.uid)
                     .update(userData)
@@ -58,6 +60,11 @@ const AccountPage = ({classes, ...props}) => (
             delete userData.uid;
             return (
                 <>
+                    <Uppload
+                        imageUrl={authUser.imageUrl}
+                        saveUrl={`users/${authUser.uid}/imageUrl`}
+                        fileName = {`${authUser.uid}_avatar`}
+                    />
                     <UserInfo
                         handleSubmit={(userData) => onSubmit(userData)}
                         userData={userData}

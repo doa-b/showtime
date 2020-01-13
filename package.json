@@ -8,12 +8,14 @@
     "@material-ui/icons": "^4.5.1",
     "@material-ui/lab": "^4.0.0-alpha.30",
     "@material-ui/pickers": "^3.2.8",
+    "@uppy/react": "^1.4.1",
     "array-move": "^2.2.0",
     "axios": "^0.19.0",
     "clsx": "^1.0.4",
     "date-fns": "^2.0.0-beta.5",
     "firebase": "^7.5.2",
     "formik": "^2.0.3",
+    "mime-types": "^2.1.26",
     "moment": "^2.24.0",
     "notistack": "^0.9.6",
     "prop-types": "^15.7.2",
@@ -29,6 +31,7 @@
     "react-textfit": "^1.1.0",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
+    "uppload": "^2.0.0",
     "yup": "^0.27.0"
   },
   "scripts": {

@@ -210,6 +210,6 @@ export const dummyUsers = [
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
         groups: 'dancer',
-        imageUrl: 'https://image.tmdb.org/t/p/original/5MgWM8pkUiYkj9MEaEpO0Ir1FD9.jpg'
+        imageUrl: ''
     }
 ];

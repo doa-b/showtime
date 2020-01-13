@@ -21,6 +21,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Typography from "@material-ui/core/Typography";
+import Avatar from "@material-ui/core/Avatar";
 
 const styles = theme => ({
     root: {
@@ -46,6 +47,7 @@ const styles = theme => ({
     avatar: {
         margin: 10,
         width: 150,
+        height: 150
     },
     nonAuth: {
         textAlign: 'center',
@@ -89,10 +91,10 @@ const MySideDrawer = withStyles(styles)(
         const SideDrawerAuth = ({ authUser }) => (
             <List>
                 <ListItem alignItems='center'>
-                    <img
+                    <Avatar variant="square"
                         className={classes.avatar}
                         alt='logged in user'
-                        src='http://djdoa.nl/DJDoa_WebPages/__Old_Website/doa_avatar_small.jpg'/>
+                        src={authUser.imageUrl}/>
                 </ListItem>
                 <ListSubheader>
                     {authUser.firstName + ' ' + authUser.lastName}

@@ -11,7 +11,8 @@ import Spinner from '../../components/ui/Spinner/Spinner'
 import {msToDate, msToTime, updateObject} from "../../shared/utility";
 import {withStyles} from '@material-ui/core/styles';
 import {Typography} from "@material-ui/core";
-import LiveMessageButton from "../../components/ui/LiveMessage/LiveMessageButton";
+import MusicUploadButton from "../../components/FileUpload/MusicUploadButton";
+import ImageUpload from "../../components/FileUpload/ImageUpload";
 
 import ShowControls from "../../components/ShowControls/ShowControls";
 
@@ -87,6 +88,7 @@ class Schedule extends Component {
                         <Typography variant='h2' component='h1'>
                             {show.title}
                         </Typography>
+
                         <div className={classes.dateTime}>
                             <Typography variant='h6'>
                                 {msToDate(showStartDateTime)}

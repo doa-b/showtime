@@ -10,9 +10,10 @@ import {connect} from 'react-redux'
 import {
     updateObject,
     convertArrayToObject,
-    convertObjectstoArray,   
+    convertObjectstoArray,
 } from '../../../shared/utility'
 import {HuePicker} from 'react-color'
+import {CompactPicker} from 'react-color'
 import Switch from '@material-ui/core/Switch';
 import Chip from '@material-ui/core/Chip'
 import * as actions from '../../../store/actions';
@@ -91,6 +92,7 @@ const styles = theme => ({
         margin: 10
     }
 });
+
 /**
  * Created by Doa on 30-10-2019.
  */
@@ -173,6 +175,9 @@ class PartDetails extends Component {
 
     render() {
         const {classes} = this.props;
+        const colors = ['#EEEEEE', '#DDDDDD', '#CCCCCC', '#BBBBBB',
+            '#AAAAAA', '#999999', '#888888', '#777777', '#666666',
+            '#555555', '#444444', '#333333']
 
         const textColor = (this.state.textColorBlack) ? '#000' : '#fff';
         const filterOptions = createFilterOptions({
@@ -188,8 +193,8 @@ class PartDetails extends Component {
                     color: textColor
                 }}>{this.state.title}</span>
                 <div className={classes.colorPicker}>
-                    <HuePicker
-                        width='60%'
+                    <CompactPicker
+                        colors={colors}
                         color={this.state.color}
                         onChangeComplete={this.colorChangedHandler}/>
                     <div className={classes.textColor}>

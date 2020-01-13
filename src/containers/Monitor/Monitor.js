@@ -1,16 +1,13 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Textfit} from 'react-textfit';
-
-import * as actions from "../../store/actions";
 import {connect} from "react-redux";
-import Time from "../../components/Time/Time";
-import {convertObjectstoArray, msToTime, updateObject} from "../../shared/utility";
+import {convertObjectstoArray, msToTime} from "../../shared/utility";
 import {withStyles} from "@material-ui/core";
 
 import ScaleText from "react-scale-text";
 import clsx from "clsx";
 
-const styles = theme => ({
+const styles = () => ({
     fullWidthText: {
         width: '100%',
         fontSize: '25.5vw',
@@ -88,7 +85,7 @@ const styles = theme => ({
 const Monitor = withStyles(styles)(
     ({
          classes, nextPartTitle, nextPartDuration, followingPartCue, followingPartTitle,
-         isLive, isPaused, showHasFinished, currentTime, name = 'doa', message, runningPartDuration,
+         isLive, showHasFinished, currentTime, message, runningPartDuration,
      }) => {
 
        const isOdd = () => {
@@ -96,10 +93,8 @@ const Monitor = withStyles(styles)(
            return test % 2;
        };
 
-        let time = '';
-
         let timeLeft = nextPartDuration - runningPartDuration;
-        time = (timeLeft >= 0) ? msToTime(timeLeft, true) :
+        let time = (timeLeft >= 0) ? msToTime(timeLeft, true) :
             <span className={clsx({
                 [classes.alert]: isOdd()})}>TIME UP</span>;
 
@@ -110,6 +105,7 @@ const Monitor = withStyles(styles)(
                 </Textfit>
             </div>
         );
+
         // for multiline tekst use ScaleText
         //  <div className={classes.currentPartSC}>
         //                     <ScaleText >
@@ -148,18 +144,21 @@ const Monitor = withStyles(styles)(
         }
 
         if (message) {
-            name = '';
-            convertObjectstoArray(message.team).map(member => {
+            let name = '';
+            convertObjectstoArray(message.team).map(member => (
                 name = name + ' ' + member.firstName
-            });
+            )
+            );
             body =
                 (<>
-                        <Textfit className={clsx({
-                            [classes.name]:true, [classes.alert]: isOdd()})} mode='single'>
+                        <Textfit
+                            mode='single'
+                            className={clsx({
+                            [classes.name]:true, [classes.alert]: isOdd()})} >
                             {name}
                         </Textfit>
                         <div className={clsx({
-                            [classes.textMessage]:true, [classes.alert]: !isOdd()})} mode='single'>
+                            [classes.textMessage]:true, [classes.alert]: !isOdd()})}>
                             <ScaleText>
                                 {message.message}
                             </ScaleText>
@@ -174,79 +173,12 @@ const Monitor = withStyles(styles)(
             <div className={classes.root}>
                 {body}
             </div>)
-
-
-
-            //<span className={classes.textMessage}>
-            //                     <ScaleText widthOnly maxFontSize={250} minFontSize={10}>
-            //                         {message}
-            //                     </ScaleText>
-            // body = (
-            //     <div className={classes.text}>
-            //         <Textfit className={classes.text}>
-            //             {message}
-            //         </Textfit>
-            //     </div>)
-            // <div className={classes.fullWidthText}>
-            //                                         {time}
-            //                                          </div>
-
-
-            // if (this.props.isLive2) {
-            //     const currentBlockId = this.props.blocks[this.props.runningBlock].id;
-            //     const currentParts = this.props.parts.filter(aPart => aPart.blockId === currentBlockId);
-            //     const currentPartSC = currentParts[this.props.runningPart];
-            //     const timeLeft = currentPartSC.duration - this.props.runningPartDuration;
-            //     time = (timeLeft >= 0) ? msToTime(timeLeft, true) : 'TIME IS UP';
-            //     head = (
-            //         <Textfit className={classes.CurrentPart} mode='single'>
-            //             {currentPartSC.title}
-            //         </Textfit>);
-            //     if (this.props.runningPart + 1 < currentParts.length) {
-            //         const nextPart = currentParts[this.props.runningPart + 1];
-            //         if (nextPart.cue)
-            //             cue = (
-            //                 <Textfit className={classes.Cue} mode='single'>
-            //                     {nextPart.cue}
-            //                 </Textfit>
-            //             );
-            //         next = (
-            //             <Textfit className={classes.NextPart} mode='single'>
-            //                 {nextPart.title}
-            //             </Textfit>
-            //         )
-            //     }
-            //
-            // }
-
-            ;
-
-
     });
-
-// <div className={classes.Wrapper}>
-//                 {body}
-//                 {head}
-//                 <div className={classes.fullWidthText}>
-//                     {time}
-//                 </div>
-//                 {/*flash red when time has passed*/}
-//                 {cue}
-//                 {next}
-//             </div>
-
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onResetTheShow: (firebase) => dispatch(actions.resetTheShow(firebase))
-    }
-};
 
 const mapStateToProps = (state) => {
     return {
         currentTime: state.global.currentTime,
         isLive: state.live.isLive,
-        isPaused: state.live.isPaused,
         nextPartTitle: state.live.nextPartTitle,
         nextPartDuration: state.live.nextPartDuration,
         followingPartCue: state.live.followingPartCue,
@@ -257,5 +189,5 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Monitor)
+export default connect(mapStateToProps, null)(Monitor)
 

@@ -113,7 +113,7 @@ export const resetTheShow = (firebase) => {
         followingPartId: '',
         followingPartTitle: '',
         followingPartCue: '',
-        scheduledEndTime: ''
+        scheduledEndTime: 0
     };
     return dispatch => {
         firebase.live().update(newData);
