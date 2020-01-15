@@ -8,6 +8,8 @@ import Time from "../Time/Time";
 import SimpleCrewList from "../SimpleCrewList/SimpleCrewList";
 import OptionsMenu from "../ui/OptionsMenu/OptionsMenu";
 import {connect} from "react-redux";
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFileOutlined';
+import {Tooltip} from "@material-ui/core";
 
 const styles = () => ({
     scene: {
@@ -16,13 +18,18 @@ const styles = () => ({
         justifyContent: 'flex-start',
         border: '1px solid #ccc',
         boxShadow: '2px 2px 2px #ccc',
-        padding: '1px 5px 1px 5px',
-        margin: '1px 5px 1px 5px',
+        padding: '1px 5px 0px 5px',
+        margin: '1px 5px 0px 5px',
         alignItems: 'center'
 
     },
     title: {
-        cursor: 'pointer'
+        paddingTop: 3,
+        cursor: 'pointer',
+        alignItems: 'center'
+    },
+    icon: {
+        verticalAlign: 'middle'
     }
 });
 
@@ -58,9 +65,16 @@ const scene = withStyles(styles)(({
              style={style}>
             {children}
             {time}
-            <div>{sceneCategories[sceneData.category].icon}</div>
             <div className={classes.title}
-                 onClick={() => detailClicked(sceneData.id, 'scene/details')}>{sceneData.title}</div>
+                 onClick={() => detailClicked(sceneData.id, 'scene/details')}>
+                <span className={classes.icon}>{sceneCategories[sceneData.category].icon}</span>
+                {sceneData.title}
+            </div>
+            {(sceneData.files) ? (
+                <Tooltip title={'scene has file attachements'}>
+                <InsertDriveFileIcon className={classes.icon} style={{ fontSize: '1em' }} />
+                </Tooltip>
+            ) :null}
             <SimpleCrewList team={sceneData.team}/>
             <OptionsMenu
                 elementType='scenes'

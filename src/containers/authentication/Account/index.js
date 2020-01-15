@@ -14,7 +14,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 
-import Uppload from "../../../components/FileUpload/Uppload";
+import Uppload from "../../../components/FileUpload/ImageUppload";
 import {updateObject} from "../../../shared/utility";
 
 const styles = theme => ({

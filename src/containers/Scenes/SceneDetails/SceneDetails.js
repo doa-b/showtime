@@ -27,6 +27,7 @@ import moment from 'moment';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import FileUpload from "../../../components/FileUpload/FileUpload";
 
 const styles = theme => ({
     paper: {
@@ -42,7 +43,6 @@ const styles = theme => ({
         border: '1px solid #ccc',
         boxShadow: '2px 2px 2px #ccc',
         padding: 5,
-        marginBottom: 1,
         alignItems: 'center'
     },
     colorPicker: {
@@ -110,6 +110,9 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
+    },
+    icon: {
+        verticalAlign: 'middle'
     }
 });
 
@@ -131,6 +134,7 @@ class SceneDetails extends Component {
         textColorBlack: true,
         team: [this.props.users[0]],
         category: 0,
+        files: []
     };
 
     componentDidMount() {
@@ -220,10 +224,13 @@ class SceneDetails extends Component {
 
         return (
             <Paper className={classes.paper}>
-                <span className={classes.title} style={{
+                <div className={classes.title} style={{
                     background: this.state.color,
                     color: textColor
-                }}> {sceneCategories[this.state.category].icon}{' '+ this.state.title}</span>
+                }}>
+                    <span className={classes.icon}>{sceneCategories[this.state.category].icon} </span>
+                    {' '+ this.state.title}
+                </div>
                 <div className={classes.colorPicker}>
                     <HuePicker
                         width='60%'
@@ -305,8 +312,8 @@ class SceneDetails extends Component {
                                     onChange={this.categoryChangedHandler}>
                                 {sceneCategories.map((category, index) => {
                                     return (
-                                        <MenuItem className={classes.categorySelection} key={[index]} value={index}>
-                                            {category.icon}
+                                        <MenuItem key={[index]} value={index}>
+                                            <span className={classes.icon}>{category.icon}</span>
                                             {category.label}
                                         </MenuItem>)
                                 })}
@@ -372,6 +379,12 @@ class SceneDetails extends Component {
                         Submit
                     </Button>
                 </form>
+                {this.state.id ?
+                    <FileUpload
+                        files={this.state.files}
+                        elementId={this.state.id}
+                        elementType='scenes'/>
+                    : null}
             </Paper>
         )
     }

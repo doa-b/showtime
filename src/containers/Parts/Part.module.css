@@ -44,3 +44,9 @@
     border-left: 1px solid darkgray;
     height: auto;
 }
+
+.fileIcon {
+    margin-left: 5px;
+    justify-content: center;
+   vertical-align: middle;
+}

@@ -17,6 +17,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
+import FileUpload from "../../../components/FileUpload/FileUpload";
 
 /**
  * Created by Doa on 30-10-2019.
@@ -74,7 +75,8 @@ class BlockDetails extends Component {
         cue: '',
         description: '',
         color: '#0017ff',
-        textColorBlack: false
+        textColorBlack: false,
+        files: []
     };
 
     componentDidMount() {
@@ -194,6 +196,12 @@ class BlockDetails extends Component {
                         Submit
                     </Button>
                 </form>
+                {this.state.id ?
+                    <FileUpload
+                        files={this.state.files}
+                        elementId={this.state.id}
+                        elementType='blocks'/>
+                    : null}
             </Paper>
         )
     }

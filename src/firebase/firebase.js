@@ -17,7 +17,6 @@ class Firebase {
         this.auth = app.auth();
         this.db = app.database();
         this.storage = app.storage();
-
     }
 
     /**
@@ -168,11 +167,53 @@ class Firebase {
 
     logs = () => this.db.ref(`logs`);
 
+
+
     // *** Storage API ***
 
     image = image => this.storage.ref(`images/${image.name}`);
 
-    images = () => this.storage.ref(`images`)
+    images = () => this.storage.ref(`images`);
+
+    part = partId => this.storage.ref (`test/${partId}`);
+
+    file = (fileName) => {
+        return this.storage.ref(`files/${fileName}`)
+    };
+
+    addFileDataToElement = (data, elementType, elementId) => {
+        this.db.ref(`${elementType}/${elementId}`)
+            .child('files')
+            .update(data)
+    };
+
+    files = () => this.storage.ref('files');
+
+    // addFileRefToElement = (file) => {
+    //     const uploadTask = file(file).put(file);
+    //     uploadTask.on(
+    //         "state_changed",
+    //         snapshot => {
+    //             // progress function ...
+    //             return Math.round(
+    //                 (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+    //             );
+    //         },
+    //         error => {
+    //             // Error function ...
+    //             console.log(error);
+    //         },
+    //         () => {
+    //             // complete function ...
+    //             uploadTask.snapshot.ref.getDownloadURL()
+    //                 .then(url => {
+    //                     this.setState({url});
+    //                 });
+    //         }
+    //     );
+    // };
+
+
 
     // *** Uppload uploader *** //
 
@@ -191,7 +232,7 @@ class Firebase {
             const fileExtension = extension(file.type);
 
             // append file extension to the fileName
-           fileName =  fileName.concat('.', fileExtension);
+            fileName = fileName.concat('.', fileExtension);
 
 
             // Upload the file to the storage reference. Automatically overwrites if file already exists
@@ -213,9 +254,9 @@ class Firebase {
                     uploadTask.snapshot.ref
                         .getDownloadURL()
                         .then(url => {
-                       // when you use update(value) value MUST be an object
-                           this.db.ref(saveUrl).set(url);
-                         //  this.db.ref(`users/3igMGPcFl1X7h5WbFgAYRxXGjJ63/imageUrl`).set(url);
+                            // when you use update(value) value MUST be an object
+                            this.db.ref(saveUrl).set(url);
+                            //  this.db.ref(`users/3igMGPcFl1X7h5WbFgAYRxXGjJ63/imageUrl`).set(url);
                             resolve(url)
                         }) // Return uploaded file's URL
 

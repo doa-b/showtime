@@ -17,6 +17,7 @@ import DisplayCrew from "../../components/DisplayCrew/DisplayCrew";
 import OptionsMenu from "../../components/ui/OptionsMenu/OptionsMenu";
 import {Tooltip} from "@material-ui/core";
 import {withFirebase} from "../../firebase";
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFileOutlined';
 
 /**
  * Created by Doa on 23-10-2019.
@@ -99,7 +100,13 @@ class Part extends Component {
                           duration={duration}
                           isLive={!!this.props.runningTime}/>
                     <div className={classes.Title}
-                         onClick={() => this.props.clicked(this.props.partData.id, 'part/details')}>{this.props.partData.title}</div>
+                         onClick={() => this.props.clicked(this.props.partData.id, 'part/details')}>{this.props.partData.title}
+                        {(this.props.partData.files) ? (
+                            <Tooltip title={'part has file attachements'}>
+                            <InsertDriveFileIcon className={classes.fileIcon} style={{ fontSize: '1em' }} />
+                            </Tooltip>
+                        ) :null}
+                    </div>
                     <div className={classes.vl}></div>
                     <DisplayCrew
                         team={this.props.partData.team}

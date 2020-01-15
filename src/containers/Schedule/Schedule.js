@@ -11,8 +11,8 @@ import Spinner from '../../components/ui/Spinner/Spinner'
 import {msToDate, msToTime, updateObject} from "../../shared/utility";
 import {withStyles} from '@material-ui/core/styles';
 import {Typography} from "@material-ui/core";
-import MusicUploadButton from "../../components/FileUpload/MusicUploadButton";
-import ImageUpload from "../../components/FileUpload/ImageUpload";
+import MusicUploadButton from "../../components/FileUpload/can_be_removed/MusicUploadButton";
+import ImageUpload from "../../components/FileUpload/FileUpload";
 
 import ShowControls from "../../components/ShowControls/ShowControls";
 

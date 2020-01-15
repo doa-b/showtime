@@ -8,12 +8,12 @@ import EmojiPeopleIcon from '@material-ui/icons/EmojiPeopleOutlined';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCameraOutlined';
 
 // function that creates a uuid
-export function createUUID(){
+export function createUUID() {
     var dt = new Date().getTime();
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = (dt + Math.random()*16)%16 | 0;
-        dt = Math.floor(dt/16);
-        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (dt + Math.random() * 16) % 16 | 0;
+        dt = Math.floor(dt / 16);
+        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
     return uuid;
 }
@@ -114,14 +114,14 @@ export const dateToMs = (date) => {
 export const msToTime = (miliseconds, withSeconds, withHours = true) => {
     // add leading zero for number <10
     const alz = (value) => {
-      return (value<10) ? '0'+value : value;
+        return (value < 10) ? '0' + value : value;
     };
 
     var milliseconds = parseInt((miliseconds % 1000) / 100),
         seconds = Math.floor((miliseconds / 1000) % 60),
         minutes = Math.floor((miliseconds / (1000 * 60)) % 60),
         hours = Math.floor((miliseconds / (1000 * 60 * 60)) % 24);
-     const showHours = (withHours) ? alz(hours) + ':' : '';
+    const showHours = (withHours) ? alz(hours) + ':' : '';
 
 
     if (withSeconds) {
@@ -170,6 +170,22 @@ export const sceneCategories = [
         icon: <ImageIcon/>
     }
 ];
+
+export const humanFileSize = (bytes, si = 1024) => {
+    let thresh = si ? 1000 : 1024;
+    if (Math.abs(bytes) < thresh) {
+        return bytes + ' B';
+    }
+    let units = si
+        ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+        : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+    let u = -1;
+    do {
+        bytes /= thresh;
+        ++u;
+    } while (Math.abs(bytes) >= thresh && u < units.length - 1);
+    return bytes.toFixed(1) + ' ' + units[u];
+};
 
 
 export const top100Films = [

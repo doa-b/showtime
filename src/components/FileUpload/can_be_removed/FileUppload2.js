@@ -5,7 +5,7 @@ import {
 } from 'uppload';
 import 'uppload/dist/uppload.css'
 import "uppload/dist/themes/light.css";
-import {withFirebase} from "../../firebase";
+import {withFirebase} from "../../../firebase";
 import { compose } from "redux";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {Button} from "@material-ui/core";
@@ -31,7 +31,7 @@ const styles = theme => ({
 let defaultImage =
     "https://images.unsplash.com/photo-1557137848-12de044c6f84?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=400&ixid=eyJhcHBfaWQiOjF9&ixlib=rb-1.2.1&q=80&w=400";
 
-class UpploadReact extends Component {
+class ImageUpload extends Component {
 
     constructor(props) {
         super(props);
@@ -46,38 +46,24 @@ class UpploadReact extends Component {
 
     componentDidMount() {
         this.uppload = new Uppload({
-            maxSize: [150, 150],
-            compression: 0.8, // between 1 (highest quality to 0 highest compression
             lang: en,
             defaultService: "local",
             uploader: (file, updateProgress) =>
                 this.props.firebase.firebaseUploader(file, updateProgress, this.props.fileName, this.props.saveUrl)
         });
-        // Camera plugin  is built for non-mobile devices (like laptops with webcams)
-        // since the native file picker (for Uppload, that is the Local service)
-        // allows users to click photos in all major mobile operating systems.
         this.uppload.use([
             // services order matters
             new Local(),
-            new Camera(),
-            new Instagram(),
-            new Facebook(),
-            new Twitter(),
-            new LinkedIn(),
-
+            // new Instagram(),
+            // new Facebook(),
+            // new Twitter(),
+            // new LinkedIn(),
             // effects order matters
-            new Crop({
-                aspectRatio: 1,
-            }),
-            new Blur(),
-            new Invert(),
-            new Saturate(),
-            new Sepia(),
         ]);
     }
 
-
     open() {
+       // const file = new Blob();
         // set listener for result
         this.uppload.on("upload", url => {
             this.setState({url});
@@ -87,6 +73,22 @@ class UpploadReact extends Component {
         // open uploader
         this.uppload.open();
     }
+
+    uploadFile() {
+
+        const file = new Blob();
+
+        this.uppload.upload(file)
+            .then(url => {
+                console.log("Uploaded URL", url);
+            }).catch(error => {
+            console.error("ERR", error);
+        });
+        console.log('done setting uploader');
+        // open uploader
+       // this.uppload.open();
+    }
+
 
     render() {
         const {classes} = this.props;
@@ -103,4 +105,4 @@ class UpploadReact extends Component {
 export default compose (
     withFirebase,
     withStyles(styles)
-)(UpploadReact)
+)(ImageUpload)

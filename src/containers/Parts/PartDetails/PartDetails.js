@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {compose} from 'redux';
-
 import {KeyboardTimePicker} from '@material-ui/pickers'
-import {sceneCategories} from '../../../shared/utility'
+
 
 import {withStyles} from '@material-ui/core/styles';
 import {TextField, Button} from '@material-ui/core';
@@ -26,6 +25,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import moment from 'moment';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import FileUpload from "../../../components/FileUpload/FileUpload";
 
 const styles = theme => ({
     paper: {
@@ -109,6 +109,7 @@ class PartDetails extends Component {
         color: '#0017ff',
         textColorBlack: false,
         team: [this.props.users[0]],
+        files: []
     };
 
     componentDidMount() {
@@ -302,6 +303,12 @@ class PartDetails extends Component {
                         Submit
                     </Button>
                 </form>
+                {this.state.id ?
+                    <FileUpload
+                        files={this.state.files}
+                        elementId={this.state.id}
+                        elementType='parts'/>
+                    : null}
             </Paper>
         )
     }
