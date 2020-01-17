@@ -11,7 +11,6 @@ import {
     convertArrayToObject,
     convertObjectstoArray,
 } from '../../../shared/utility'
-import {HuePicker} from 'react-color'
 import {CompactPicker} from 'react-color'
 import Switch from '@material-ui/core/Switch';
 import Chip from '@material-ui/core/Chip'
@@ -26,6 +25,9 @@ import FormControl from '@material-ui/core/FormControl';
 import moment from 'moment';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import FileUpload from "../../../components/FileUpload/FileUpload";
+import {withFirebase} from "../../../firebase";
+import PrivateNote from "../../../components/ui/PrivateNote/PrivateNote";
+import {AuthUserContext} from "../../../hoc/Session";
 
 const styles = theme => ({
     paper: {
@@ -97,20 +99,22 @@ const styles = theme => ({
  * Created by Doa on 30-10-2019.
  */
 class PartDetails extends Component {
-
-    state = {
-        showId: this.props.showId,
-        blockId: '',
-        order: 0,
-        title: 'your part title',
-        cue: '',
-        description: '',
-        duration: moment(120000),
-        color: '#0017ff',
-        textColorBlack: false,
-        team: [this.props.users[0]],
-        files: []
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            showId: this.props.showId,
+            blockId: '',
+            order: 0,
+            title: 'your part title',
+            cue: '',
+            description: '',
+            duration: moment(120000),
+            color: '#eee',
+            textColorBlack: true,
+            team: [this.props.users[0]],
+            files: []
+        }
+    }
 
     componentDidMount() {
         if (this.props.location.state) {
@@ -160,6 +164,9 @@ class PartDetails extends Component {
     };
     onSubmitHandler = (event) => {
         event.preventDefault();
+        if(this.state.note) {
+            this.props.firebase.savePersonalNote(this.props.location.state.elementId, this.state.note);
+        }
         const part = updateObject(this.state,
             {
                 team: convertArrayToObject(this.state.team, 'id'),
@@ -238,7 +245,7 @@ class PartDetails extends Component {
                         label='cue'
                         margin='normal'
                         variant='outlined'/>
-                    <TextField
+                        <TextField
                         onChange={this.inputChangedHandler}
                         value={this.state.description}
                         id='description'
@@ -304,10 +311,15 @@ class PartDetails extends Component {
                     </Button>
                 </form>
                 {this.state.id ?
+                    <>
+                    <AuthUserContext.Consumer>
+                        { authUser => <PrivateNote authUser={authUser} elementId={this.state.id}/>}
+                    </AuthUserContext.Consumer>
                     <FileUpload
                         files={this.state.files}
                         elementId={this.state.id}
                         elementType='parts'/>
+                        </>
                     : null}
             </Paper>
         )
@@ -333,4 +345,5 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
     withStyles(styles),
+    withFirebase,
     connect(mapStateToProps, mapDispatchToProps))(PartDetails)

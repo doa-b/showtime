@@ -10,6 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import OptionsMenu from "../../components/ui/OptionsMenu/OptionsMenu";
 import {Tooltip} from "@material-ui/core";
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFileOutlined';
+import Attachement from "../../components/ui/Attachements/Attachement";
 
 
 /**
@@ -74,12 +75,7 @@ class Block extends Component {
                              onClick={() => this.props.clicked(this.props.blockData.id, 'block/details')}>
                             {this.props.blockData.title}
                             {(this.props.running) ? '  running' : null}
-                            {(this.props.blockData.files) ? (
-                                <Tooltip title={'block has file attachements'}>
-                                <InsertDriveFileIcon
-                                    style={{ fontSize: '1em', marginLeft: 5, verticalAlign: 'middle' }} />
-                                </Tooltip>
-                            ) :null}
+                            <Attachement elementData={this.props.blockData}/>
                         </div>
                         <div className={classes.Controls}>
                             <OptionsMenu

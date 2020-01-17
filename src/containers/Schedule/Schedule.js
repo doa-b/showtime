@@ -15,6 +15,7 @@ import MusicUploadButton from "../../components/FileUpload/can_be_removed/MusicU
 import ImageUpload from "../../components/FileUpload/FileUpload";
 
 import ShowControls from "../../components/ShowControls/ShowControls";
+import PrivateNote from "../../components/ui/PrivateNote/PrivateNote";
 
 const styles = theme => ({
         root: {
@@ -106,6 +107,7 @@ class Schedule extends Component {
                     <div className={classes.root}>
                         {head}
                         <ShowControls/>
+
 
                     </div>
                     <BlocksList

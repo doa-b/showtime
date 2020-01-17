@@ -28,6 +28,8 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FileUpload from "../../../components/FileUpload/FileUpload";
+import {AuthUserContext} from "../../../hoc/Session";
+import PrivateNote from "../../../components/ui/PrivateNote/PrivateNote";
 
 const styles = theme => ({
     paper: {
@@ -229,7 +231,7 @@ class SceneDetails extends Component {
                     color: textColor
                 }}>
                     <span className={classes.icon}>{sceneCategories[this.state.category].icon} </span>
-                    {' '+ this.state.title}
+                    {' ' + this.state.title}
                 </div>
                 <div className={classes.colorPicker}>
                     <HuePicker
@@ -239,7 +241,7 @@ class SceneDetails extends Component {
                     <div className={classes.textColor}>
                         Text colour: white<Switch
                         color='primary'
-                        checked={this.state. textColorBlack}
+                        checked={this.state.textColorBlack}
                         onChange={this.textColorChangedHandler}/>black
                     </div>
                 </div>
@@ -380,10 +382,15 @@ class SceneDetails extends Component {
                     </Button>
                 </form>
                 {this.state.id ?
-                    <FileUpload
-                        files={this.state.files}
-                        elementId={this.state.id}
-                        elementType='scenes'/>
+                    <>
+                        <AuthUserContext.Consumer>
+                            {authUser => <PrivateNote authUser={authUser} elementId={this.state.id}/>}
+                        </AuthUserContext.Consumer>
+                        <FileUpload
+                            files={this.state.files}
+                            elementId={this.state.id}
+                            elementType='scenes'/>
+                    </>
                     : null}
             </Paper>
         )

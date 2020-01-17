@@ -18,6 +18,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FileUpload from "../../../components/FileUpload/FileUpload";
+import {AuthUserContext} from "../../../hoc/Session";
+import PrivateNote from "../../../components/ui/PrivateNote/PrivateNote";
 
 /**
  * Created by Doa on 30-10-2019.
@@ -197,10 +199,15 @@ class BlockDetails extends Component {
                     </Button>
                 </form>
                 {this.state.id ?
+                    <>
+                    <AuthUserContext.Consumer>
+                        { authUser => <PrivateNote authUser={authUser} elementId={this.state.id}/>}
+                    </AuthUserContext.Consumer>
                     <FileUpload
                         files={this.state.files}
                         elementId={this.state.id}
                         elementType='blocks'/>
+                        </>
                     : null}
             </Paper>
         )

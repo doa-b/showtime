@@ -10,6 +10,7 @@ import OptionsMenu from "../ui/OptionsMenu/OptionsMenu";
 import {connect} from "react-redux";
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import {Tooltip} from "@material-ui/core";
+import Attachement from "../ui/Attachements/Attachement";
 
 const styles = () => ({
     scene: {
@@ -70,11 +71,7 @@ const scene = withStyles(styles)(({
                 <span className={classes.icon}>{sceneCategories[sceneData.category].icon}</span>
                 {sceneData.title}
             </div>
-            {(sceneData.files) ? (
-                <Tooltip title={'scene has file attachements'}>
-                <InsertDriveFileIcon className={classes.icon} style={{ fontSize: '1em' }} />
-                </Tooltip>
-            ) :null}
+           <Attachement elementData={sceneData}/>
             <SimpleCrewList team={sceneData.team}/>
             <OptionsMenu
                 elementType='scenes'

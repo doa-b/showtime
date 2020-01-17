@@ -167,6 +167,20 @@ class Firebase {
 
     logs = () => this.db.ref(`logs`);
 
+    savePersonalNote = (elementId, note) => {
+        this.user(this.auth.currentUser.uid)
+            .child('/notes')
+            .update({[elementId]: note})
+    };
+
+    getPersonalNote = (elementId) => {
+
+        if (this.auth.currentUser.notes) {
+            return this.auth.currentUser.notes
+        }
+        else return null
+    };
+
 
 
     // *** Storage API ***
