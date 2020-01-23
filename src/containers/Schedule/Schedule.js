@@ -40,13 +40,6 @@ const styles = theme => ({
  */
 class Schedule extends Component {
 
-    componentDidMount() {
-      //  this.props.onFetch(this.props.currentShow);
-        // if (this.props.currentTime === 0) {
-        //     this.props.onStartClock();
-        // }
-    }
-
     /**
      * pushes to a new route
      * @param elementId
@@ -121,7 +114,6 @@ class Schedule extends Component {
                 </>
             )
         }
-
         return page
     }
 }
@@ -140,8 +132,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onFetch: (showId) => dispatch(actions.fetch(showId)),
-        onStartClock: () => dispatch(actions.startClock()),
         onResetTheShow: (firebase) => dispatch(actions.resetTheShow(firebase))
     }
 };
