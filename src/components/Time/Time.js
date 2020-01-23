@@ -12,7 +12,6 @@ const styles = () => ({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        padding: '0px 5px 0px 5px'
     },
     startTime: {
         padding: '0px 5px 0px 5px',
@@ -22,7 +21,7 @@ const styles = () => ({
     },
     duration: {
         padding: '0px 5px 0px 5px',
-        margin: '0px 5px 0px 5px',
+        margin: '0px 5px 0px 0px',
         border: '1px solid #ccc'
     }
 });

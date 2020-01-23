@@ -36,8 +36,7 @@
 
 .Controls {
     cursor: pointer;
-    position: absolute;
-    right: 0;
+   margin-left: auto;
 }
 
 .vl {

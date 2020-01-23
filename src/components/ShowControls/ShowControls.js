@@ -17,6 +17,7 @@ import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PauseIcon from '@material-ui/icons/Pause';
 import Button from "@material-ui/core/Button";
+import Monitor from "../../containers/Monitor/MonitorOld";
 
 const styles = theme => ({
     root: {
@@ -39,6 +40,10 @@ const styles = theme => ({
     },
     buttons: {
         marginTop: 5
+    },
+    monitor: {
+        height: 200,
+        width: 300
     }
 });
 /**
@@ -227,6 +232,9 @@ const ShowControls = withStyles(styles)(
                         </Button>
                         <LiveMessageButton/>
                     </div>
+                    {/*<div className={classes.monitor}>*/}
+                    {/*    <Monitor/>*/}
+                    {/*</div>*/}
                 </>
             );
         }

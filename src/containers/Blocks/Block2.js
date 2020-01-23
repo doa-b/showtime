@@ -13,17 +13,11 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 const styles = theme => ({
     blockWrapper: {
-        width: 'calc(100% - 8px)',
-        display: 'flex',
-        flexDirection: 'column',
         background: 'blue',
         border: '1px solid #ccc',
         boxShadow: '3px 3px 3px #ccc',
         color: 'white',
         padding: 1,
-        '@media (min-width:600px)': {
-           flexDirection: 'row'
-        },
     },
     block: {
         display: 'flex',
@@ -31,53 +25,32 @@ const styles = theme => ({
         justifyContent: 'flex-start',
         alignItems: 'center',
         flexWrap: 'wrap',
+        width: '100%'
     },
     spacer: {
-        '@media (min-width:600px)': {
-            marginLeft: '1%'
-        }
+        marginLeft: '1%'
     },
+
     below: {
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        '@media (min-width:600px)': {
-            flexDirection: 'row'
-        }
+    },
+
+    belowMobile: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     controls: {
-        display: 'none',
         cursor: 'pointer',
-        marginLeft: 'auto',
-        '@media (min-width:600px)': {
-            display: 'inline'
-        },
-    },
-    controlsMobile: {
-        display: 'inline',
-        cursor: 'pointer',
-        marginLeft: 'auto',
-        '@media (min-width:600px)': {
-            backgroundColor: 'yellow',
-            display: 'none'
-        }
+        marginLeft: 'auto'
     },
     title: {
         cursor: 'pointer',
         fontWeight: 'bold'
-    },
-    add: {
-        order: 3,
-        display: 'block',
-        '@media (min-width:600px)': {
-
-            order: 1
-        }
-    },
-    part: {
-        width: '100%',
-        order: 2
     }
 });
 
@@ -112,41 +85,35 @@ class Block extends Component {
 
         return (
             <>
-                <div className={classes.blockWrapper}
-                     style={{
-                         background: blockData.color,
-                         color: textColor,
-                     }}>
-                    <div className={classes.block}>
-                        {children}
-                        <Time startTime={beginTime}
-                              duration={duration}
-                              isLive={!!running}/>
-                        <Attachement elementData={blockData}/>
-                        <div className={classes.controlsMobile}>
-                            <OptionsMenu
-                                elementType='blocks'
-                                element={blockData}
-                                parent={blockData.showId}/>
-                            {arrow}
-                        </div>
-                        <div className={classes.title}
-                             onClick={() => clicked(blockData.id, 'block/details')}>
-                            {blockData.title}
+                <Responsive displayIn={['Laptop', 'Tablet']}>
+                    <div className={classes.blockWrapper}
+                         style={{
+                             background: blockData.color,
+                             color: textColor,
+                         }}>
+                        <div className={classes.block}>
+                            {children}
+                            <Time startTime={beginTime}
+                                  duration={duration}
+                                  isLive={!!running}/>
+                            <div className={classes.title}
+                                 onClick={() => clicked(blockData.id, 'block/details')}>
+                                {blockData.title}
+                                {(running) ? '  running' : null}
+                                <Attachement elementData={blockData}/>
+                            </div>
+                            <div className={classes.controls}>
+                                <OptionsMenu
+                                    elementType='blocks'
+                                    element={blockData}
+                                    parent={blockData.showId}/>
+                                {arrow}
+                            </div>
                         </div>
                     </div>
-                    <div className={classes.controls}>
-                        <OptionsMenu
-                            elementType='blocks'
-                            element={blockData}
-                            parent={blockData.showId}/>
-                        {arrow}
-                    </div>
-                </div>
-                {(this.state.showChildren) ? (
-                    <div className={classes.below}>
-                        <span className={classes.spacer}></span>
-                        <div className={classes.add}>
+                    {(this.state.showChildren) ? (
+                        <div className={classes.below}>
+                            <span className={classes.spacer}></span>
                             <Tooltip title='Add Part'>
                                 <IconButton size="small" color="primary"
                                             className={classes.button}
@@ -155,17 +122,14 @@ class Block extends Component {
                                     <AddIcon/>
                                 </IconButton>
                             </Tooltip>
-                        </div>
-                        <div className={classes.part}>
                             <PartsList startTime={beginTime}
                                        parentId={blockData.id}
                                        clicked={clicked}
                                        running={running}/>
                         </div>
-                    </div>
-                ) : null
-                }
-
+                    ) : null
+                    }
+                </Responsive>
 
                 <Responsive displayIn={['Mobile']}>
                     <div className={classes.blockWrapper}

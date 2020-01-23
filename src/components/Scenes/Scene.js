@@ -1,28 +1,42 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import { sceneCategories } from '../../shared/utility'
-
+import {sceneCategories} from '../../shared/utility'
 
 import Time from "../Time/Time";
 import SimpleCrewList from "../SimpleCrewList/SimpleCrewList";
 import OptionsMenu from "../ui/OptionsMenu/OptionsMenu";
 import {connect} from "react-redux";
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFileOutlined';
-import {Tooltip} from "@material-ui/core";
+
 import Attachement from "../ui/Attachements/Attachement";
 
 const styles = () => ({
-    scene: {
+    sceneWrapper: {
+        width: 'calc(100% - 8px)',
         display: 'flex',
-        fleDirection: 'row',
-        justifyContent: 'flex-start',
+        flexDirection: 'column',
         border: '1px solid #ccc',
         boxShadow: '2px 2px 2px #ccc',
-        padding: '1px 5px 0px 5px',
-        margin: '1px 5px 0px 5px',
-        alignItems: 'center'
-
+       // boxShadow: '3px 3px 3px #ccc',
+        '@media (min-width:600px)': {
+            flexDirection: 'row',
+            width: 'fit-content',
+            marginLeft: 'auto',
+            marginRight: 4
+        }
+    },
+    head: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+    },
+    body: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'center',
     },
     title: {
         paddingTop: 3,
@@ -31,7 +45,32 @@ const styles = () => ({
     },
     icon: {
         verticalAlign: 'middle'
-    }
+    },
+    controls: {
+        display: 'none',
+        cursor: 'pointer',
+        marginLeft: 'auto',
+        '@media (min-width:600px)': {
+            display: 'inline'
+        },
+    },
+    controlsMobile: {
+        display: 'inline',
+        cursor: 'pointer',
+        marginLeft: 'auto',
+        '@media (min-width:600px)': {
+            backgroundColor: 'yellow',
+            display: 'none'
+        }
+    },
+    add: {
+        display: 'block',
+        marginLeft: '50%',
+        '@media (min-width:600px)': {
+           marginLeft: 'auto'
+        }
+    },
+
 });
 
 /** React functional component that displays all the sceneDetails
@@ -62,22 +101,36 @@ const scene = withStyles(styles)(({
     }
 
     return (
-        <div className={classes.scene}
-             style={style}>
-            {children}
-            {time}
-            <div className={classes.title}
-                 onClick={() => detailClicked(sceneData.id, 'scene/details')}>
-                <span className={classes.icon}>{sceneCategories[sceneData.category].icon}</span>
-                {sceneData.title}
+        <>
+            <div className={classes.sceneWrapper} style={style}>
+                    <div className={classes.head}>
+                        {children}
+                        {time}
+                        <Attachement elementData={sceneData}/>
+                        <div className={classes.controlsMobile}>
+                            <OptionsMenu
+                                elementType='scenes'
+                                element={sceneData}
+                                parent={sceneData.partId}/>
+                        </div>
+                    </div>
+                    <div className={classes.body}>
+                        <div className={classes.title}
+                             onClick={() => detailClicked(sceneData.id, 'scene/details')}>
+                            <span className={classes.icon}>{sceneCategories[sceneData.category].icon}</span>
+                            {sceneData.title}
+                        </div>
+                        <SimpleCrewList team={sceneData.team}/>
+                        <div className={classes.controls}>
+                            <OptionsMenu
+                                elementType='scenes'
+                                element={sceneData}
+                                parent={sceneData.partId}/>
+                        </div>
+                    </div>
             </div>
-           <Attachement elementData={sceneData}/>
-            <SimpleCrewList team={sceneData.team}/>
-            <OptionsMenu
-                elementType='scenes'
-                element={sceneData}
-                parent={sceneData.partId}/>
-        </div>
+        </>
+
     )
 });
 

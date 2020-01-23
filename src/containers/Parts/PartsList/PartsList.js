@@ -1,19 +1,17 @@
 import React, {Component} from 'react';
-import {withRouter} from 'react-router-dom'
-
+import {connect} from "react-redux";
 import Part from '../Part'
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import * as actions from "../../../store/actions";
-import {connect} from "react-redux";
 
-import classes from './PartsList.module.css'
+
 
 const DragHandle = sortableHandle(() => <DragIndicatorIcon/>);
 
 const SortableContainer = sortableContainer(({children}) => {
-    return <div className={classes.Inner}>{children}</div>;
+    return <>{children}</>;
 });
 
 const SortableItem = sortableElement(({value, startTime, clicked, runningTime}) => {

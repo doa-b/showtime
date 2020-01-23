@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {compose} from "redux";
 import {connect} from "react-redux";
+import {Responsive} from 'responsive-react'
 
 import ScenesList from "../Scenes/ScenesList";
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
@@ -19,35 +20,22 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 const styles = theme => ({
     partWrapper: {
-        width: 'calc(100% - 8px)',
-        display: 'flex',
-        flexDirection: 'column',
+
         background: '#eee',
         border: '1px solid #ccc',
         boxShadow: '3px 3px 3px #ccc',
         padding: 1,
-        '@media (min-width:600px)': {
-            flexDirection: 'row'
-        }
     },
-    head: {
+    part: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
         flexWrap: 'wrap',
-    },
-    body: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        flexWrap: 'wrap',
+        width: '100%'
     },
     spacer: {
-        '@media (min-width:600px)': {
-            marginLeft: '1%'
-        }
+        marginLeft: '1%'
     },
     divider: {
         borderLeft: '1px solid darkgray',
@@ -55,46 +43,24 @@ const styles = theme => ({
     },
     below: {
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        '@media (min-width:600px)': {
-            flexDirection: 'row'
-        }
+    },
+
+    belowMobile: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     controls: {
-        display: 'none',
         cursor: 'pointer',
-        marginLeft: 'auto',
-        '@media (min-width:600px)': {
-            display: 'inline'
-        },
-    },
-    controlsMobile: {
-        display: 'inline',
-        cursor: 'pointer',
-        marginLeft: 'auto',
-        '@media (min-width:600px)': {
-            backgroundColor: 'yellow',
-            display: 'none'
-        }
+        marginLeft: 'auto'
     },
     title: {
         cursor: 'pointer',
         fontWeight: 'bold'
-    },
-    add: {
-        order: 3,
-        display: 'block',
-        marginLeft: '48%',
-        '@media (min-width:600px)': {
-            marginLeft: 0,
-            order: 1
-        }
-    },
-    scene: {
-        order: 2,
-        width: '100%'
     }
 });
 
@@ -159,45 +125,81 @@ class Part extends Component {
 
         return (
             <>
-                <div className={classes.partWrapper}>
-                    <div className={classes.head}>
-                        {children}
-                        <Time startTime={beginTime}
-                              duration={partDuration}
-                              isLive={!!runningTime}/>
-                        <Attachement elementData={partData}/>
-                        <div className={classes.controlsMobile}>
-                            <OptionsMenu
-                                elementType='parts'
-                                element={partData}
-                                parent={partData.blockId}/>
-                            {arrow}
+                <Responsive displayIn={['Laptop', 'Tablet']}>
+                    <div className={classes.partWrapper}>
+                        <div className={classes.part}>
+                            {children}
+                            <Time startTime={beginTime}
+                                  duration={partDuration}
+                                  isLive={!!runningTime}/>
+                            <div className={classes.title}
+                                 onClick={() => clicked(partData.id, 'part/details')}>{partData.title}
+                                <Attachement elementData={partData}/>
+                            </div>
+                            <div className={classes.divider}></div>
+                            <DisplayCrew
+                                team={partData.team}
+                                deadLine={beginTime - 58000}/>
+                            <div className={classes.controls}>
+                                <OptionsMenu
+                                    elementType='parts'
+                                    element={partData}
+                                    parent={partData.blockId}/>
+                                {arrow}
+                            </div>
                         </div>
                     </div>
-                    <div className={classes.body}>
-                        <div className={classes.title}
-                             onClick={() => clicked(partData.id, 'part/details')}>
-                            {partData.title}
+                    {progressBar}
+                    {(this.state.showChildren) ? (
+                        <div className={classes.below}>
+                            <span className={classes.spacer}></span>
+                            <Tooltip title='Add Scene'>
+                                <IconButton size="small" color="primary" className={classes.button} aria-label="add"
+                                            onClick={() => clicked(null, 'scene/details', partData.id)}>
+                                    <AddIcon/>
+                                </IconButton>
+                            </Tooltip>
+                            <ScenesList
+                                isRunning={runningTime}
+                                parentId={partData.id}
+                                startTime={beginTime}
+                                clicked={clicked}/>
                         </div>
-                        <div className={classes.divider}></div>
+                    ) : null}
+                </Responsive>
+
+                <Responsive displayIn={['Mobile']}>
+                    <div className={classes.partWrapper}>
+                        <div className={classes.part}>
+                            {children}
+                            <Time startTime={beginTime}
+                                  duration={partDuration}
+                                  isLive={!!runningTime}/>
+                            <Attachement elementData={partData}/>
+                            <div className={classes.controls}>
+                                <OptionsMenu
+                                    elementType='parts'
+                                    element={partData}
+                                    parent={partData.blockId}/>
+                                {arrow}
+                            </div>
+                        </div>
+                        <div className={classes.title}
+                             onClick={() => clicked(partData.id, 'part/details')}>{partData.title}
+                            <div className={classes.divider}></div>
+                        </div>
                         <DisplayCrew
                             team={partData.team}
                             deadLine={beginTime - 58000}/>
                     </div>
-                    <div className={classes.controls}>
-                        <OptionsMenu
-                            elementType='parts'
-                            element={partData}
-                            parent={partData.blockId}/>
-                        {arrow}
-                    </div>
-
-                </div>
-                {progressBar}
-                {(this.state.showChildren) ? (
-                    <div className={classes.below}>
-                        <span className={classes.spacer}></span>
-                        <div className={classes.add}>
+                    {progressBar}
+                    {(this.state.showChildren) ? (
+                        <div className={classes.belowMobile}>
+                            <ScenesList
+                                isRunning={runningTime}
+                                parentId={partData.id}
+                                startTime={beginTime}
+                                clicked={clicked}/>
                             <Tooltip title='Add Scene'>
                                 <IconButton size="small" color="primary" className={classes.button} aria-label="add"
                                             onClick={() => clicked(null, 'scene/details', partData.id)}>
@@ -205,15 +207,9 @@ class Part extends Component {
                                 </IconButton>
                             </Tooltip>
                         </div>
-                        <div className={classes.scene}>
-                            <ScenesList
-                                isRunning={runningTime}
-                                parentId={partData.id}
-                                startTime={beginTime}
-                                clicked={clicked}/>
-                        </div>
-                    </div>
-                ) : null}
+                    ) : null}
+
+                </Responsive>
             </>
         )
     }

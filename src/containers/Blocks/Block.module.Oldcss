@@ -16,9 +16,20 @@
     padding: 5px;
 }
 
-.Break {
-    flex-basis: 100%;
-    height: 2px;
+.BlockMobile {
+    background: blue;
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #ccc;
+    color: white;
+    padding: 5px;
+}
+
+.BlockFirst {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .Spacer {
@@ -33,6 +44,13 @@
     width: 100%;
 }
 
+.BelowMobile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .Arrow {
     position: absolute;
     right: 0;
@@ -40,11 +58,16 @@
 
 .Controls {
     cursor: pointer;
-    position: absolute;
-    right: 0;
+    margin-left: auto;
 }
 
 .Title {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.TitleMobile {
+    width: 100%;
     cursor: pointer;
     font-weight: bold;
 }

@@ -12,7 +12,7 @@ import {compose} from "redux";
 const DragHandle = sortableHandle(() => <DragIndicatorIcon/>);
 
 const SortableContainer = sortableContainer(({children}) => {
-    return <div>{children}</div>;
+    return <>{children}</>;
 });
 
 class ScenesList extends Component {
