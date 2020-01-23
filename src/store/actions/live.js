@@ -1,5 +1,4 @@
 import * as actionTypes from './actionTypes';
-import * as actions from '../actions'
 import {updateObject} from "../../shared/utility";
 import {initialState} from '../reducers/live'
 
@@ -7,12 +6,6 @@ export const incrementRunningPartDuration = (isPaused) => {
     return {
         type: actionTypes.LIVE_INCREMENT_RUNNING_PART_DURATION,
         isPaused: isPaused
-    }
-};
-
-export const partEnd = () => {
-    return {
-        type: actionTypes.LIVE_END_PART
     }
 };
 
@@ -109,22 +102,3 @@ export const resetTheShow = (firebase) => {
         dispatch(resetShow())
     };
 };
-
-export const setCurrentShow = (firebase, showId) => {
-    return dispatch => {
-        firebase.live().update({currentShow: showId})
-            .then(() => {
-                dispatch(actions.fetch(showId))
-
-            })
-
-    }
-};
-
-// export const partHasEnded = (firebase) => {
-//     console.log('Part has ended');
-//     return dispatch => {
-//         firebase.live().update({isPaused: true});
-//         dispatch(partEnd());
-//     }
-// };

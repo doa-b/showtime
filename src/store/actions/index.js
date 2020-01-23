@@ -1,6 +1,5 @@
 export {
     save,
-    fetch,
     update,
     updateOrder,
     deleteElement,

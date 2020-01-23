@@ -36,11 +36,7 @@ const styles = theme => ({
     },
     image: {
         height: 50,
-    },
-
-    inline: {
-        color: 'black',
-        margin: '0px 0px 0px 10px'
+        marginRight: 10
     },
     addNew: {
         color: 'light-grey',
@@ -57,21 +53,11 @@ const styles = theme => ({
  */
 class ShowList extends Component {
 
-    componentDidMount() {
-        if (this.props.shows.length === 0) {
-            this.props.onFetch(this.props.currentShow);
-        }
-    }
-
     showClickedHandler = (showId) => {
-
         this.props.onSetCurrentShow(this.props.firebase, showId);
         this.props.history.push('/');
     };
 
-    newShowClickedHandler = () => {
-
-    };
     render() {
         const {classes} = this.props;
         return (
@@ -92,8 +78,7 @@ class ShowList extends Component {
                             <ListItemText
                                 primary={
                                     <Typography
-                                        className={classes.inline}
-                                        variant='h4'>
+                                        variant='subtitle1'>
                                         {show.title}
                                     </Typography>}
                                 secondary={
@@ -101,18 +86,10 @@ class ShowList extends Component {
                                         <Typography
                                             component="span"
                                             variant="body2"
-                                            className={classes.inline}
                                             color="textPrimary"
                                         >
-                                            {show.location + ', '}
-                                        </Typography>
-                                        <Typography
-                                            component="span"
-                                            variant="body2"
-                                            className={classes.inline}
-                                            color="textPrimary"
-                                        >
-                                            {moment(show.dateTimeMs).format('dddd D MMMM YYYY, HH:mm')}
+                                            {show.location + ', ' +
+                                            moment(show.dateTimeMs).format('dddd D MMMM YYYY, HH:mm')}
                                         </Typography>
                                     </>
                                 }
@@ -129,7 +106,7 @@ class ShowList extends Component {
                             primary={
                                 <Typography
                                     className={classes.addNew}
-                                    variant='h4'>
+                                    variant='subtitle1'>
                                     Add new show
                                 </Typography>}/>
                         <AddCircleOutlineIcon/>
@@ -149,8 +126,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onFetch: (showId) => dispatch(actions.fetch(showId)),
-        // onSetCurrentShow: (showId) => dispatch(actions.setCurrentShow(showId))
         onSetCurrentShow: (firebase, showId) => dispatch(actions.setCurrentShow(firebase, showId))
     }
 };

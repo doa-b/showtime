@@ -70,13 +70,6 @@ class mobileView extends Component {
         showOnlyMe: true
     };
 
-    componentDidMount() {
-        if (this.props.shows.length === 0) {
-            this.props.onFetch(this.props.currentShow);
-        }
-    }
-
-
     render() {
         const {classes, blocks, parts, scenes, loading, showStartDateTime} = this.props;
 
@@ -166,12 +159,6 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onFetch: (showId) => dispatch(actions.fetch(showId))
-    }
-};
-
 export default compose(
     withStyles(styles),
-    connect(mapStateToProps, mapDispatchToProps))(mobileView);
+    connect(mapStateToProps))(mobileView);

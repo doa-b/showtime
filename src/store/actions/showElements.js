@@ -1,9 +1,6 @@
 import axios from 'axios'
-
 import * as actionTypes from './actionTypes';
-import {incrementRunningPartDuration} from "./live";
 import {updateObject} from "../../shared/utility";
-import * as actions from "./index";
 
 export const showStart = () => {
     return {
@@ -14,22 +11,6 @@ export const showStart = () => {
 export const showSuccess = () => {
     return {
         type: actionTypes.SHOW_SUCCESS
-    }
-};
-// TODO Remove
-export const elementSaveSucces = (elementName, data, elementId) => {
-    return {
-        type: actionTypes.SHOW_SAVE_SUCCESS,
-        elementName: elementName,
-        elementId,
-        data: data,
-
-    }
-};
-
-export const updateElement = () => {
-    return {
-        type: actionTypes.SHOW_UPDATE_ELEMENT
     }
 };
 
@@ -47,18 +28,8 @@ export const setCurrentShowState = (showId) => {
     }
 };
 
-// export const fetchShowDataSuccess = (shows, blocks, parts, scenes) => {
-//     return {
-//         type: actionTypes.SHOW_FETCH_ALL_DATA_SUCCESS,
-//         shows: shows,
-//         blocks: blocks,
-//         parts: parts,
-//         scenes: scenes,
-//     }
-// };
-
 export const fetchShowDataSuccess = (element, data) => {
-    if (!data) data ={};
+    if (!data) data = {};
     console.log(element);
     console.log(data);
     return {
@@ -79,28 +50,26 @@ export const clearData = (elementType) => {
     }
 };
 
-// Asynchronous actionCreators
+// *** Asynchronous actionCreators ***
 
 export const setCurrentShow = (firebase, showId) => {
     return (dispatch, getState) => {
+        dispatch(showStart());
         firebase.currentShow().set(showId)
             .then(() => {
-                //dispatch(actions.fetch(showId))
                 // remove old listeners
-              firebase.onRemoveElementListeners(getState().show.currentShow);
+                firebase.onRemoveElementListeners(getState().show.currentShow);
                 // remove previous show data
-              dispatch(clearData());
-              // set showId to currentShow store state
-              dispatch(setCurrentShowState(showId));
-              // set new listeners
-                dispatch(setElementListeners(firebase))
+                dispatch(clearData());
+                // set showId to currentShow store state
+                dispatch(setCurrentShowState(showId));
+                // set new listeners
+                dispatch(setElementListeners(firebase));
+                dispatch(showSuccess());
             })
     }
 };
 
-export const setCurrentShowListener = (firebase) => {
-
-};
 /**
  * we must toggle a top level node of show store, in order to update the mapped props
  * @param element
@@ -109,21 +78,21 @@ export const setCurrentShowListener = (firebase) => {
  */
 export const changedShowData = (element, data) => {
     return dispatch => {
-     dispatch(showStart());
+        dispatch(showStart());
         dispatch(fetchShowDataSuccess(element, data));
-    dispatch(showSuccess());
+        dispatch(showSuccess());
     }
 };
 
 export const setElementListeners = (firebase) => {
     return dispatch => {
         firebase.currentShow().once('value')
-            .then ((snapshot) => {
+            .then((snapshot) => {
                 const showId = snapshot.val();
                 dispatch(setCurrentShowState(showId));
                 firebase.blocksOfShow(showId).on('value',
-                (snapshot) =>
-                    dispatch(changedShowData('blocks', snapshot.val()))
+                    (snapshot) =>
+                        dispatch(changedShowData('blocks', snapshot.val()))
                 );
                 firebase.partsOfShow(showId).on('value',
                     (snapshot) =>
@@ -147,16 +116,16 @@ export const save = (elementName, data) => {
         axios.post(`${elementName}.json`, data)
             .then((response => {
                 console.log(response);
-               dispatch(showSuccess())
+                dispatch(showSuccess());
                 // dispatch(elementSaveSucces(elementName, data, response.data.name));
                 if (elementName === 'shows') {
                     dispatch(clearData());
                     dispatch(setCurrentShow(response.data.name))
                 }
-               // dispatch(fetch())
+                // dispatch(fetch())
             })).catch(error => {
-                dispatch(showFail(error));
-            });
+            dispatch(showFail(error));
+        });
     }
 };
 
@@ -201,7 +170,11 @@ export const copyPartAndScenes = (partData, partId) => {
                 const newSceneRequests = [];
                 if (scenes.length > 0) {
                     scenes.map((scene) => {
-                        const newScene = updateObject(scene, {partId: response.data.name, id: null, showId: partData.showId});
+                        const newScene = updateObject(scene, {
+                            partId: response.data.name,
+                            id: null,
+                            showId: partData.showId
+                        });
                         return newSceneRequests.push(axios.post(`scenes.json`, newScene))
                     });
                     axios.all(newSceneRequests)
@@ -218,7 +191,7 @@ export const copyPartAndScenes = (partData, partId) => {
 
 export const copyBlockPartsAndScenes = (blockData, blockId) => {
     return (dispatch, getState) => {
-       // dispatch(showStart());
+        // dispatch(showStart());
         console.log('blockID: ' + blockId);
         axios.post(`blocks.json`, blockData)
             .then((response => {
@@ -226,7 +199,11 @@ export const copyBlockPartsAndScenes = (blockData, blockId) => {
                 console.log(parts);
                 if (parts.length > 0) {
                     parts.map((part) => {
-                        const newPart = updateObject(part, {blockId: response.data.name, id: null, showId: blockData.showId});
+                        const newPart = updateObject(part, {
+                            blockId: response.data.name,
+                            id: null,
+                            showId: blockData.showId
+                        });
                         return dispatch(copyPartAndScenes(newPart, part.id))
                     })
                 } //else dispatch(fetch())
@@ -243,8 +220,7 @@ export const update = (id, data, elementName) => {
         axios.put(`${elementName}/${id}.json`, data)
             .then((response => {
                 console.log(response);
-              dispatch(showSuccess())
-                //  dispatch(fetch())
+                dispatch(showSuccess())
             }))
             .catch(error => {
                 dispatch(showFail(error));
@@ -252,35 +228,11 @@ export const update = (id, data, elementName) => {
     }
 };
 
-export const fetch = (showId) => {
-    return (dispatch, getState) => {
-        dispatch(showStart());
-        if (!showId) {
-            const showId = getState().live.currentShow;
-        }
-        axios.all([getAllShows(), getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then(
-            axios.spread((shows, blocks, parts, scenes) => {
-                dispatch(fetchShowDataSuccess(shows.data, blocks.data, parts.data, scenes.data));
-            })).catch(error => {
-            dispatch(showFail(error));
-        })
-    };
-};
-
 export const updateOrder = (showId, data, elementName) => {
     return dispatch => {
         axios.all(UpdateOrderFromElements(showId, data, elementName)).then(
             axios.spread((response) => {
-              console.log(response);
-                // dispatch(updateElement);
-                //
-                // // NOTE: Fetching is done here (duplicate code) to prevent page from 'reloading'.
-                // axios.all([getAllShows(), getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then(
-                //     axios.spread((shows, blocks, parts, scenes) => {
-                //         dispatch(fetchShowDataSuccess(shows.data, blocks.data, parts.data, scenes.data));
-                //     })).catch(error => {
-                //     dispatch(showFail(error));
-                // })
+                console.log(response);
             }))
             .catch(error => {
                 dispatch(showFail(error));
@@ -288,36 +240,6 @@ export const updateOrder = (showId, data, elementName) => {
     };
 };
 
-// Axios helper functions
-const getAllShows = () => {
-    return axios.get('shows/.json');
-};
-const getAllBlocks = (showId) => {
-    return axios.get('blocks/.json', {
-        params: {
-            orderBy: '"showId"',
-            equalTo: `"${showId}"`,
-        }
-    });
-};
-
-const getAllParts = (showId) => {
-    return axios.get('parts/.json', {
-        params: {
-            orderBy: '"showId"',
-            equalTo: `"${showId}"`,
-        }
-    });
-};
-
-const getAllScenes = (showId) => {
-    return axios.get('scenes/.json', {
-        params: {
-            orderBy: '"showId"',
-            equalTo: `"${showId}"`,
-        }
-    });
-};
 
 const UpdateOrderFromElements = (showId, data, elementName) => {
     const requestsArray = [];
