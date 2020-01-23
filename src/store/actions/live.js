@@ -1,5 +1,7 @@
 import * as actionTypes from './actionTypes';
+import * as actions from '../actions'
 import {updateObject} from "../../shared/utility";
+import {initialState} from '../reducers/live'
 
 export const incrementRunningPartDuration = (isPaused) => {
     return {
@@ -43,7 +45,6 @@ export const setLiveDataListener = (firebase) => {
         firebase.live().on('value', (snapshot) => {
             console.log('setLiveDataListener is called');
             console.log(snapshot.val());
-
             dispatch(calculateLiveState(firebase, snapshot.val()))
         })
     };
@@ -96,29 +97,28 @@ export const calculateLiveState = (firebase, show) => {
 };
 
 export const resetTheShow = (firebase) => {
-    console.log('RESETTING THE SHOW')
-    const newData = {
-        isLive: false,
-        isPaused: true,
-        pause: 0,
-        previousShowState: null,
-        runningBlockNumber: 0,
-        runningPartNumber: 0,
-        runningPartDuration: 0,
+    console.log('RESETTING THE SHOW');
+    const newData = updateObject(initialState, {
         runningPartStartTime: -1,
-        showHasFinished: false,
-        nextPartId: '',
-        nextPartTitle: '',
-        nextPartCue: '',
-        followingPartId: '',
-        followingPartTitle: '',
-        followingPartCue: '',
-        scheduledEndTime: 0
-    };
+    });
+    delete newData.currentShow;
+    delete newData.serverOffset;
+
     return dispatch => {
         firebase.live().update(newData);
         dispatch(resetShow())
     };
+};
+
+export const setCurrentShow = (firebase, showId) => {
+    return dispatch => {
+        firebase.live().update({currentShow: showId})
+            .then(() => {
+                dispatch(actions.fetch(showId))
+
+            })
+
+    }
 };
 
 // export const partHasEnded = (firebase) => {

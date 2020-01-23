@@ -7,7 +7,7 @@ export {
     copyPartAndScenes,
     copyBlockPartsAndScenes,
     setCurrentShow,
-
+    setElementListeners
 } from './showElements'
 
 export {

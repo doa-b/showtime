@@ -4,6 +4,8 @@ import {withRouter} from 'react-router-dom'
 import {withAuthorization} from '../../hoc/Session';
 import {withFirebase} from "../../firebase";
 
+import {Textfit} from 'react-textfit';
+
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import BlocksList from "../Blocks/BlocksList/BlocksList";
@@ -11,21 +13,25 @@ import Spinner from '../../components/ui/Spinner/Spinner'
 import {msToDate, msToTime, updateObject} from "../../shared/utility";
 import {withStyles} from '@material-ui/core/styles';
 import {Typography} from "@material-ui/core";
-import MusicUploadButton from "../../components/FileUpload/can_be_removed/MusicUploadButton";
-import ImageUpload from "../../components/FileUpload/FileUpload";
 
 import ShowControls from "../../components/ShowControls/ShowControls";
-import PrivateNote from "../../components/ui/PrivateNote/PrivateNote";
+
 
 const styles = theme => ({
         root: {
-            padding: theme.spacing(2),
+            padding: theme.spacing(1),
             textAlign: 'center',
             color: theme.palette.text.secondary,
         },
         dateTime: {
             width: '100%',
+            marginBottom: 5
+        },
+        title: {
+            width: '100%',
+
         }
+
     })
 ;
 
@@ -35,7 +41,7 @@ const styles = theme => ({
 class Schedule extends Component {
 
     componentDidMount() {
-        this.props.onFetch(this.props.currentShow);
+      //  this.props.onFetch(this.props.currentShow);
         // if (this.props.currentTime === 0) {
         //     this.props.onStartClock();
         // }
@@ -66,8 +72,10 @@ class Schedule extends Component {
     };
 
     render() {
-        const {classes, showHasFinished, shows, currentShow, showStartDateTime, isLive,
-            onFetch, onStartCLock, firebase, loading, onResetTheShow} = this.props;
+        const {
+            classes, showHasFinished, shows, currentShow, showStartDateTime, isLive,
+            onFetch, onStartCLock, firebase, loading, onResetTheShow
+        } = this.props;
         let page = <Spinner/>
         let head = null;
 
@@ -80,22 +88,20 @@ class Schedule extends Component {
                     </button>
                 </>
 
-        } else if (shows.length > 0 && !loading) {
+        } else if (shows.length > 0 && !loading && currentShow) {
             const show = shows.filter((show) => show.id === currentShow)[0];
 
             if (!isLive) {
                 head = (
                     <>
-                        <Typography variant='h2' component='h1'>
+
+                        <Textfit className={classes.title} mode='single'>
                             {show.title}
-                        </Typography>
+                        </Textfit>
 
                         <div className={classes.dateTime}>
-                            <Typography variant='h6'>
-                                {msToDate(showStartDateTime)}
-                            </Typography>
-                            <Typography variant='h6'>
-                                {msToTime(showStartDateTime)}
+                            <Typography variant='subtitle1'>
+                                {msToDate(showStartDateTime) + ', start ' + msToTime(showStartDateTime) }
                             </Typography>
                         </div>
                     </>
@@ -107,15 +113,13 @@ class Schedule extends Component {
                     <div className={classes.root}>
                         {head}
                         <ShowControls/>
-
-
                     </div>
                     <BlocksList
                         parentId={currentShow}
                         clicked={this.showDetailsHandler}
                     />
                 </>
-                )
+            )
         }
 
         return page

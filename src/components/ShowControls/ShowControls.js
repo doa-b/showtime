@@ -25,14 +25,10 @@ const styles = theme => ({
     dateTime: {
         width: '100%',
     },
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        color: theme.palette.text.secondary
-    },
     liveView: {
         display: 'flex',
         justifyContent: 'center',
+        alignItems: 'center',
         width: '100%',
     },
     actionButton: {
@@ -40,6 +36,9 @@ const styles = theme => ({
     },
     resetButton: {
         marginRight: 5
+    },
+    buttons: {
+        marginTop: 5
     }
 });
 /**
@@ -220,12 +219,14 @@ const ShowControls = withStyles(styles)(
                             <SkipNextIcon fontSize='large'/>
                         </Fab>
                     </div>
-                    <Button className={classes.resetButton}
-                        variant="contained" color="primary"
-                            onClick={() => onResetTheShow(firebase)}>
-                        Reset the Show
-                    </Button>
-                    <LiveMessageButton/>
+                    <div className = {classes.buttons}>
+                        <Button className={classes.resetButton}
+                                variant="contained" color="primary"
+                                onClick={() => onResetTheShow(firebase)}>
+                            Reset the Show
+                        </Button>
+                        <LiveMessageButton/>
+                    </div>
                 </>
             );
         }

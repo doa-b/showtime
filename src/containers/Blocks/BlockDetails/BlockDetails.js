@@ -188,7 +188,7 @@ class BlockDetails extends Component {
                                 value={this.state.showId}
                                 onChange={this.showChangedHandler}>
                             {this.props.shows.map(show => {
-                                return <MenuItem key={show.id} value={show.id}>{show.name}</MenuItem>
+                                return <MenuItem key={show.id} value={show.id}>{show.title}</MenuItem>
                             })}
                         </Select>
                     </FormControl>

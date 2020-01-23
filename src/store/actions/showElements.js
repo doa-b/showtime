@@ -3,6 +3,7 @@ import axios from 'axios'
 import * as actionTypes from './actionTypes';
 import {incrementRunningPartDuration} from "./live";
 import {updateObject} from "../../shared/utility";
+import * as actions from "./index";
 
 export const showStart = () => {
     return {
@@ -10,6 +11,12 @@ export const showStart = () => {
     }
 };
 
+export const showSuccess = () => {
+    return {
+        type: actionTypes.SHOW_SUCCESS
+    }
+};
+// TODO Remove
 export const elementSaveSucces = (elementName, data, elementId) => {
     return {
         type: actionTypes.SHOW_SAVE_SUCCESS,
@@ -33,30 +40,106 @@ export const showFail = (error) => {
     }
 };
 
-export const setCurrentShow = (showId) => {
+export const setCurrentShowState = (showId) => {
     return {
         type: actionTypes.SHOW_SET_CURRENT,
         showId: showId
     }
 };
 
-export const fetchShowDataSuccess = (shows, blocks, parts, scenes) => {
+// export const fetchShowDataSuccess = (shows, blocks, parts, scenes) => {
+//     return {
+//         type: actionTypes.SHOW_FETCH_ALL_DATA_SUCCESS,
+//         shows: shows,
+//         blocks: blocks,
+//         parts: parts,
+//         scenes: scenes,
+//     }
+// };
+
+export const fetchShowDataSuccess = (element, data) => {
+    if (!data) data ={};
+    console.log(element);
+    console.log(data);
     return {
-        type: actionTypes.SHOW_FETCH_ALL_DATA_SUCCESS,
-        shows: shows,
-        blocks: blocks,
-        parts: parts,
-        scenes: scenes,
+        type: actionTypes.SHOW_FETCH_DATA_SUCCESS,
+        element: element,
+        data: data
     }
 };
-
-export const clearData = () => {
+/**
+ *
+ * @param elementType: when omited it clears all
+ * @returns {{type: *, elementType: *}}
+ */
+export const clearData = (elementType) => {
     return {
-        type: actionTypes.SHOW_CLEAR_DATA
+        type: actionTypes.SHOW_CLEAR_DATA,
+        elementType: elementType
     }
 };
 
 // Asynchronous actionCreators
+
+export const setCurrentShow = (firebase, showId) => {
+    return (dispatch, getState) => {
+        firebase.currentShow().set(showId)
+            .then(() => {
+                //dispatch(actions.fetch(showId))
+                // remove old listeners
+              firebase.onRemoveElementListeners(getState().show.currentShow);
+                // remove previous show data
+              dispatch(clearData());
+              // set showId to currentShow store state
+              dispatch(setCurrentShowState(showId));
+              // set new listeners
+                dispatch(setElementListeners(firebase))
+            })
+    }
+};
+
+export const setCurrentShowListener = (firebase) => {
+
+};
+/**
+ * we must toggle a top level node of show store, in order to update the mapped props
+ * @param element
+ * @param data
+ * @returns {Function}
+ */
+export const changedShowData = (element, data) => {
+    return dispatch => {
+     dispatch(showStart());
+        dispatch(fetchShowDataSuccess(element, data));
+    dispatch(showSuccess());
+    }
+};
+
+export const setElementListeners = (firebase) => {
+    return dispatch => {
+        firebase.currentShow().once('value')
+            .then ((snapshot) => {
+                const showId = snapshot.val();
+                dispatch(setCurrentShowState(showId));
+                firebase.blocksOfShow(showId).on('value',
+                (snapshot) =>
+                    dispatch(changedShowData('blocks', snapshot.val()))
+                );
+                firebase.partsOfShow(showId).on('value',
+                    (snapshot) =>
+                        dispatch(changedShowData('parts', snapshot.val()))
+                );
+                firebase.scenesOfShow(showId).on('value',
+                    (snapshot) =>
+                        dispatch(changedShowData('scenes', snapshot.val()))
+                );
+                firebase.shows().on('value',
+                    (snapshot) =>
+                        dispatch(changedShowData('shows', snapshot.val()))
+                );
+            })
+    }
+};
 
 export const save = (elementName, data) => {
     return dispatch => {
@@ -64,12 +147,13 @@ export const save = (elementName, data) => {
         axios.post(`${elementName}.json`, data)
             .then((response => {
                 console.log(response);
-                dispatch(elementSaveSucces(elementName, data, response.data.name));
+               dispatch(showSuccess())
+                // dispatch(elementSaveSucces(elementName, data, response.data.name));
                 if (elementName === 'shows') {
                     dispatch(clearData());
                     dispatch(setCurrentShow(response.data.name))
                 }
-                dispatch(fetch())
+               // dispatch(fetch())
             })).catch(error => {
                 dispatch(showFail(error));
             });
@@ -78,6 +162,7 @@ export const save = (elementName, data) => {
 
 export const deleteElement = (id, elementType) => {
     return (dispatch, getState) => {
+        dispatch(showStart());
         let parts = [];
         // check if this element has children and add to  multiple request Array
         if (elementType === 'blocks') {
@@ -98,7 +183,9 @@ export const deleteElement = (id, elementType) => {
         }
         axios.delete(`${elementType}/${id}.json`).// delete element
         then((response => {
-            setTimeout(() => dispatch(fetch()), 1000) // set a 1 sec timeout to let the deletions finish before refresh
+            console.log('delete succesfull')
+            dispatch(showSuccess())
+            //setTimeout(() => dispatch(fetch()), 1000) // set a 1 sec timeout to let the deletions finish before refresh
         }))
             .catch(error => {
                 dispatch(showFail(error));
@@ -108,7 +195,6 @@ export const deleteElement = (id, elementType) => {
 
 export const copyPartAndScenes = (partData, partId) => {
     return (dispatch, getState) => {
-        dispatch(showStart());
         axios.post(`parts.json`, partData)
             .then((response => {
                 const scenes = getState().show.scenes.filter(aScene => aScene.partId === partId);
@@ -119,14 +205,10 @@ export const copyPartAndScenes = (partData, partId) => {
                         return newSceneRequests.push(axios.post(`scenes.json`, newScene))
                     });
                     axios.all(newSceneRequests)
-                        .then((response => {
-                            console.log(response);
-                            dispatch(fetch())
-                        }))
                         .catch(error => {
                             dispatch(showFail(error));
                         });
-                } else dispatch(fetch())
+                }
             }))
             .catch(error => {
                 dispatch(showFail(error));
@@ -136,7 +218,7 @@ export const copyPartAndScenes = (partData, partId) => {
 
 export const copyBlockPartsAndScenes = (blockData, blockId) => {
     return (dispatch, getState) => {
-        dispatch(showStart());
+       // dispatch(showStart());
         console.log('blockID: ' + blockId);
         axios.post(`blocks.json`, blockData)
             .then((response => {
@@ -147,7 +229,7 @@ export const copyBlockPartsAndScenes = (blockData, blockId) => {
                         const newPart = updateObject(part, {blockId: response.data.name, id: null, showId: blockData.showId});
                         return dispatch(copyPartAndScenes(newPart, part.id))
                     })
-                } else dispatch(fetch())
+                } //else dispatch(fetch())
             }))
             .catch(error => {
                 dispatch(showFail(error));
@@ -157,10 +239,12 @@ export const copyBlockPartsAndScenes = (blockData, blockId) => {
 
 export const update = (id, data, elementName) => {
     return dispatch => {
+        dispatch(showStart());
         axios.put(`${elementName}/${id}.json`, data)
             .then((response => {
                 console.log(response);
-                dispatch(fetch())
+              dispatch(showSuccess())
+                //  dispatch(fetch())
             }))
             .catch(error => {
                 dispatch(showFail(error));
@@ -168,10 +252,12 @@ export const update = (id, data, elementName) => {
     }
 };
 
-export const fetch = () => {
+export const fetch = (showId) => {
     return (dispatch, getState) => {
         dispatch(showStart());
-        const showId = getState().show.currentShow;
+        if (!showId) {
+            const showId = getState().live.currentShow;
+        }
         axios.all([getAllShows(), getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then(
             axios.spread((shows, blocks, parts, scenes) => {
                 dispatch(fetchShowDataSuccess(shows.data, blocks.data, parts.data, scenes.data));
@@ -185,15 +271,16 @@ export const updateOrder = (showId, data, elementName) => {
     return dispatch => {
         axios.all(UpdateOrderFromElements(showId, data, elementName)).then(
             axios.spread((response) => {
-                dispatch(updateElement);
-
-                // NOTE: Fetching is done here (duplicate code) to prevent page from 'reloading'.
-                axios.all([getAllShows(), getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then(
-                    axios.spread((shows, blocks, parts, scenes) => {
-                        dispatch(fetchShowDataSuccess(shows.data, blocks.data, parts.data, scenes.data));
-                    })).catch(error => {
-                    dispatch(showFail(error));
-                })
+              console.log(response);
+                // dispatch(updateElement);
+                //
+                // // NOTE: Fetching is done here (duplicate code) to prevent page from 'reloading'.
+                // axios.all([getAllShows(), getAllBlocks(showId), getAllParts(showId), getAllScenes(showId)]).then(
+                //     axios.spread((shows, blocks, parts, scenes) => {
+                //         dispatch(fetchShowDataSuccess(shows.data, blocks.data, parts.data, scenes.data));
+                //     })).catch(error => {
+                //     dispatch(showFail(error));
+                // })
             }))
             .catch(error => {
                 dispatch(showFail(error));

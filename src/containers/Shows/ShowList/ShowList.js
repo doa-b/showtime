@@ -14,7 +14,7 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import DesktopWindowsIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import {Link, NavLink} from "react-router-dom";
-
+import { withFirebase} from "../../../firebase";
 
 const styles = theme => ({
     paper: {
@@ -64,7 +64,8 @@ class ShowList extends Component {
     }
 
     showClickedHandler = (showId) => {
-        this.props.onSetCurrentShow(showId);
+
+        this.props.onSetCurrentShow(this.props.firebase, showId);
         this.props.history.push('/');
     };
 
@@ -149,10 +150,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onFetch: (showId) => dispatch(actions.fetch(showId)),
-        onSetCurrentShow: (showId) => dispatch(actions.setCurrentShow(showId))
+        // onSetCurrentShow: (showId) => dispatch(actions.setCurrentShow(showId))
+        onSetCurrentShow: (firebase, showId) => dispatch(actions.setCurrentShow(firebase, showId))
     }
 };
 
 export default compose(
     withStyles(styles),
+    withFirebase,
     connect(mapStateToProps, mapDispatchToProps))(ShowList)

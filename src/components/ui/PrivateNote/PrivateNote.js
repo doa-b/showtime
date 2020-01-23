@@ -10,7 +10,7 @@ class PrivateNote extends Component {
     constructor(props) {
         super(props);
         let note = '';
-        if (props.authUser) note = props.authUser.notes[props.elementId];
+        if (props.authUser && props.authUser.notes) note = props.authUser.notes[props.elementId];
         this.state = {
             note: note,
             button: false

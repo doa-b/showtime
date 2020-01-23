@@ -12,31 +12,31 @@ import Avatar from "@material-ui/core/Avatar";
 import Autocomplete, {createFilterOptions} from "@material-ui/lab/Autocomplete/Autocomplete";
 import {convertArrayToObject} from "../../../shared/utility";
 
-{/*<input aria-invalid="false" autoComplete="disabled" id="team" placeholder="name" type="text"*/
-}
-{/*       className="MuiInputBase-input MuiFilledInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-inputAdornedStart MuiFilledInput-inputAdornedStart MuiInputBase-inputAdornedEnd MuiFilledInput-inputAdornedEnd"*/
-}
-{/*       aria-autocomplete="list" aria-controls="team-listbox" autoCorrect="off" autoCapitalize="none" spellCheck="false"*/
-}
-{/*       value aria-activedescendant="team-option-0">*/
-}
 const styles = theme => ({
     root: {
-        left: '30%',
-        width: '40%',
         position: 'fixed',
         zIndex: 1,
+        top: 48,
+        left: '1%',
+        width: '95%',
+        padding: '5 5 0 5',
+        '@media (min-width:600px)': {
+            top: '20%',
+            left: '30%',
+            width: '40%',
+            minWidth: 400
+        },
     },
     header: {
+        paddingBottom: 0,
         textAlign: 'center',
-        texTransform: 'capitalize'
+        texTransform: 'capitalize',
     },
     content: {
+        paddingTop: 0,
         display: 'flex',
         flexDirection: 'column',
         textAlign: 'center',
-        position: 'relative',
-        zIndex: '15000',
     },
     message: {
         width: '100%'
@@ -45,11 +45,6 @@ const styles = theme => ({
         position: 'relative',
         zIndex: '15000',
         border: 5
-    },
-    test: {
-        position: 'relative',
-        backgroundColor: 'blue',
-        zIndex: '15000',
     }
     // TODO: https://stackoverflow.com/questions/33373113/dropdown-contents-below-modal
     // TODO: https://stackoverflow.com/questions/57946563/material-ui-facing-an-issue-that-drop-down-options-are-coming-below-the-modal
@@ -134,13 +129,14 @@ const Dialog = withStyles(styles)(
                                       )}
                         />
                         <TextField className={classes.message}
+                                   fullWidth
                                    onChange={inputChangedHandler}
                                    value={message}
                                    inputProps={{maxLength: 140}}
                                    id='message'
                                    label='message'
                                    multiline
-                                   rows={5}
+                                   rows={3}
                                    margin='normal'
                                    variant='outlined'/>
                         <Button

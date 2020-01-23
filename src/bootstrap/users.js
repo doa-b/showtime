@@ -109,7 +109,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Germany',
         type: accessLevels.ACCESS_LEVEL_TRINITY,
-        groups: 'artist',
+        groups: 'presenter',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
     {
@@ -211,5 +211,155 @@ export const dummyUsers = [
         type: accessLevels.ACCESS_LEVEL_MEMBER,
         groups: 'dancer',
         imageUrl: ''
+    },
+    {
+        id: 'id21',
+        firstName: 'Trend Model 1',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
+    },
+    {
+        id: 'id22',
+        firstName: 'Trend Model 2',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
+    },
+    {
+        id: 'id23',
+        firstName: 'Trend Model 3',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
+    },
+    {
+        id: 'id24',
+        firstName: 'Trend Model 4',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
+    },
+    {
+        id: 'id25',
+        firstName: 'Trend Model 5',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
+    },
+    {
+        id: 'id26',
+        firstName: 'Trend Model 6',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
+    },
+    {
+        id: 'id27',
+        firstName: 'Tailors Model 1',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
+    },
+    {
+        id: 'id28',
+        firstName: 'Tailors Model 2',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
+    },
+    {
+        id: 'id29',
+        firstName: 'Tailors Model 3',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
+    },
+    {
+        id: 'id30',
+        firstName: 'Tailors Model 4',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
+    },
+    {
+        id: 'id31',
+        firstName: 'Tailors Model 5',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
+    },
+    {
+        id: 'id32',
+        firstName: 'Tailors Model 6',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
+    },
+    {
+        id: 'id33',
+        firstName: 'Tailors Model 7',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
+    },
+    {
+        id: 'id34',
+        firstName: 'Tailors Model 8',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
+    },
+    {
+        id: 'id35',
+        firstName: 'Dreamotionz Models',
+        lastName: '',
+        Phone: '0612345678',
+        country: 'Netherlands',
+        type: accessLevels.ACCESS_LEVEL_MEMBER,
+        groups: 'model',
+        imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
     }
 ];

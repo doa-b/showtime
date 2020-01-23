@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {compose} from "redux";
 import {Route, Switch, withRouter, Redirect} from 'react-router-dom'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
+import {createMuiTheme, responsiveFontSizes, ThemeProvider} from '@material-ui/core/styles';
 import MomentUtils from '@date-io/moment';
 import './App.css';
 
@@ -28,24 +29,37 @@ import CreateNewUserPage from "./containers/Admin/CreateNewUserPage/CreateNewUse
 import LogsPage from "./containers/Admin/LogsPage/LogsPage";
 import TestPage from "./components/TestPage/TestPage";
 
+import {themeOptions} from "./shared/materialDesignOptions";
+
 
 import {withFirebase} from "./firebase";
-import { withAuthentication } from './hoc/Session'
+import {withAuthentication} from './hoc/Session'
 import {connect} from "react-redux";
+
+// responsiveFontSizes resizes the typography fonts depending on screen width
+// you can override global theme settings by putting theme here in options
+let theme = responsiveFontSizes(createMuiTheme(themeOptions));
 
 class App extends Component {
 
-    listener;
+    liveListener;
     clock;
+    showElements;
 
     componentDidMount() {
-     this.listener = this.props.onSetLiveDataListener(this.props.firebase);
-     this.clock = this.props.onStartClock()
+        this.liveListener = this.props.onSetLiveDataListener(this.props.firebase);
+        this.showElements = this.props.onSetElementsDataListener(this.props.firebase);
+        this.clock = this.props.onStartClock();
+
     }
 
     componentWillUnmount() {
-       //TODO unregister Listeners!!!
+        // remove listeners
+        this.props.firebase.live().off();
+        //this.props.firebase.onRemoveListener(this.liveListener)
+        //this.props.firebase.removeAllListeners();
 
+        //TODO stop the clock
     }
 
     routes = (
@@ -75,11 +89,13 @@ class App extends Component {
 
     render() {
         return (
-            <MuiPickersUtilsProvider utils={MomentUtils}>
-                <Layout variant='temporary'>
-                    {this.routes}
-                </Layout>
-            </MuiPickersUtilsProvider>
+            <ThemeProvider theme={theme}>
+                <MuiPickersUtilsProvider utils={MomentUtils}>
+                    <Layout variant='temporary'>
+                        {this.routes}
+                    </Layout>
+                </MuiPickersUtilsProvider>
+            </ThemeProvider>
         );
     }
 };
@@ -87,6 +103,7 @@ class App extends Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         onSetLiveDataListener: (firebase) => dispatch(actions.setLiveDataListener(firebase)),
+        onSetElementsDataListener: (firebase) => dispatch(actions.setElementListeners(firebase)),
         onStartClock: () => dispatch(actions.startClock())
     };
 };
@@ -95,5 +112,5 @@ export default compose(
     withAuthentication,
     withRouter,
     withFirebase,
-    connect (null, mapDispatchToProps)
+    connect(null, mapDispatchToProps)
 )(App);

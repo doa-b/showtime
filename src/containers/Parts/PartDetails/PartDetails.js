@@ -28,6 +28,7 @@ import FileUpload from "../../../components/FileUpload/FileUpload";
 import {withFirebase} from "../../../firebase";
 import PrivateNote from "../../../components/ui/PrivateNote/PrivateNote";
 import {AuthUserContext} from "../../../hoc/Session";
+import {fetch} from "../../../store/actions";
 
 const styles = theme => ({
     paper: {
@@ -178,14 +179,14 @@ class PartDetails extends Component {
             this.props.onSave('parts', part)
         }
         // TODO let this wait until saving to store is done
-        this.props.history.push('/');
+        setTimeout(() =>  this.props.history.push('/'), 1000)
     };
 
     render() {
         const {classes} = this.props;
         const colors = ['#EEEEEE', '#DDDDDD', '#CCCCCC', '#BBBBBB',
             '#AAAAAA', '#999999', '#888888', '#777777', '#666666',
-            '#555555', '#444444', '#333333']
+            '#555555', '#444444', '#333333'];
 
         const textColor = (this.state.textColorBlack) ? '#000' : '#fff';
         const filterOptions = createFilterOptions({

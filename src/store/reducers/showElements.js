@@ -1,5 +1,7 @@
 import * as actionTypes from '../actions/actionTypes'
 import {updateObject, convertObjectsAndSortByKey, getCurrentUTCinMs, convertObjectstoArray} from '../../shared/utility';
+import {update} from "../actions";
+import {elementType} from "prop-types";
 
 const initialState = {
     shows: [],
@@ -35,13 +37,23 @@ const fetchedAllShowData = (state, action) => {
     return updateObject(state, newState );
 };
 
-const dataCleared = (state) => {
+const fetchedData = (state, action) => {
     const newState = {
+        [action.element]: convertObjectsAndSortByKey(action.data, 'order')
+    };
+    return updateObject(state, newState)
+};
+
+const dataCleared = (state, action) => {
+    let newState = {
         shows: [],
         blocks: [],
         parts: [],
         scenes: [],
         showStartDateTime: getCurrentUTCinMs() + 30000
+    };
+        if (action.elementType) {
+            newState = {[elementType]: []}
     };
     return updateObject(state, newState)
 };
@@ -64,7 +76,13 @@ const reducer = (state = initialState, action) => {
             return fetchedAllShowData(state, action);
 
         case actionTypes.SHOW_CLEAR_DATA:
-            return dataCleared(state);
+            return dataCleared(state, action);
+
+        case actionTypes.SHOW_FETCH_DATA_SUCCESS:
+            return fetchedData(state, action);
+
+        case actionTypes.SHOW_SUCCESS:
+            return updateObject( state, {error: null, loading: false});
         default:
             return state
     }

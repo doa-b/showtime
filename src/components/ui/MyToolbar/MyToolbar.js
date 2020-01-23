@@ -64,7 +64,7 @@ const MyToolbar = withStyles(styles)(
                         color="inherit"
                         className={classes.flex}
                     >
-                        {(isLive) ? 'LIVE ' + showName : title}
+                        {title}
                     </Typography>
                     {(title === 'Schedule') ? (
                         <IconButton

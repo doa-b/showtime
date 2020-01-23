@@ -83,6 +83,7 @@ class Layout extends Component {
                     displayRealTime={this.props.displayRealTime}
                     toggleDisplayRealTime={this.props.onToggleRealTime}
                     isEditable={this.props.isEditable}
+                    isLive={this.props.isLive}
                     toggleIsEditable={this.props.onToggleIsEditable}
                 />
                 <div className={classes.Main}>

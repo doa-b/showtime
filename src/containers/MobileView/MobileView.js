@@ -8,10 +8,11 @@ import Avatar from "@material-ui/core/Avatar";
 import Spinner from "../../components/ui/Spinner/Spinner";
 
 const styles = () => ({
-    root: {},
+    root: {
+        width: '100vw',
+    },
     block: {
         background: 'blue',
-        width: '100%',
         border: '1px solid #ccc',
         boxShadow: '2px 2px 2px #ccc',
         padding: 5,
@@ -24,14 +25,13 @@ const styles = () => ({
         marginLeft: 5
     },
     part: {
-        width: '100%',
         background: '#eee',
         border: '1px solid #ccc',
         padding: '0 5px 0',
-        margin: '4px 5px 0 5px',
     },
     scene: {
         display: 'flex',
+        boxSizing: 'border-box',
         fleDirection: 'row',
         justifyContent: 'flex-start',
         AlignItems: 'baseline',
@@ -41,12 +41,10 @@ const styles = () => ({
         border: '1px solid #ccc',
         boxShadow: '2px 2px 2px #ccc',
         padding: '0 5px 0 5px',
-        margin: '1px 5px 1px 5px',
     },
     end: {
         color: 'white',
         background: 'blue',
-        width: '100%',
         border: '1px solid #ccc',
         boxShadow: '2px 2px 2px #ccc',
         padding: 5
@@ -88,7 +86,7 @@ class mobileView extends Component {
 
         if (!loading) {
             page = (
-                <div className={classes.page}>
+                <div className={classes.root}>
                     {blocks.map((block, index) => {
                         const textColor = (block.textColorBlack) ? '#000' : '#fff';
                         const partsArray = parts.filter((part) => part.blockId === block.id);

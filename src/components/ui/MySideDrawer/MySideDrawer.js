@@ -59,7 +59,7 @@ const MySideDrawer = withStyles(styles)(
     ({
          classes, variant, open, onClose, onItemClick,
          showSeconds, toggleShowSeconds, displayRealTime, toggleDisplayRealTime,
-         isEditable, toggleIsEditable
+         isEditable, toggleIsEditable, isLive
      }) => {
 
         const SideDrawerNonAuth = () => (
@@ -159,6 +159,7 @@ const MySideDrawer = withStyles(styles)(
                 />
                 <NavItem
                     to={ROUTES.SHOWS}
+                    disabled={isLive}
                     text='Other Shows'
                     Icon={WebIcon}
                     onClick={onItemClick()}
@@ -202,8 +203,8 @@ const MySideDrawer = withStyles(styles)(
 );
 
 const NavListItem = withStyles(styles)(
-    ({classes, Icon, text, active, ...other}) => (
-        <ListItem button component={NavLink} {...other}>
+    ({classes, Icon, text, active, disabled, ...other}) => (
+        <ListItem disabled={disabled} button component={NavLink} {...other}>
             <ListItemIcon
                 classes={{
                     root: clsx({[classes.activeListItem]: active})

@@ -4,7 +4,7 @@ import {updateObject} from "../../shared/utility";
 // save isLive, isPaused, runningPartNumber, runningBlockNumber, showId
 // runningPartStartTime, showHasFinished and scheduledEndTime when show goes live.
 // And update when controls are clicked
-const initialState = {
+export const initialState = {
     isLive: false,
     isPaused: true,
     runningPartNumber: 0,
@@ -22,6 +22,8 @@ const initialState = {
     followingPartId: '',
     followingPartTitle: '',
     followingPartCue: '',
+    currentShow: '-Lrst6TmmyYrkouGmiac',
+    //currentShow: '-Lrx3-oBw6jhk6A601Yo',
 };
 
 const skipToNextPart = (state, action) => {

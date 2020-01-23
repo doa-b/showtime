@@ -58,6 +58,13 @@ const styles = () => ({
         background: '#cccccc',
         paddingBottom: '1vh',
     },
+    followingPart: {
+        width: '100%',
+        height: 'auto',
+        lineHeight: 1,
+        paddingBottom: '2vh',
+        background: '#cccccc',
+    },
     root: {
         textAlign: 'center',
     },
@@ -76,6 +83,19 @@ const styles = () => ({
     },
     alert: {
         color: 'red'
+    },
+    separator: {
+        width: '100%',
+        height: 13,
+        borderBottom: '1px solid black',
+        textAlign: 'center',
+        marginBottom: 10
+    },
+    separatorText: {
+        fontWeight: 'bold',
+        fontSize: 15,
+        background: 'white',
+        padding: '0 5px',
     }
 });
 
@@ -123,15 +143,22 @@ const Monitor = withStyles(styles)(
                     <div className={classes.fullWidthText}>
                         {time}
                     </div>
+                    <div className={classes.separator}>
+                        <span className={classes.separatorText}>Next up</span>
+                    </div>
                     <Textfit className={classes.nextCue} mode='single'>
                         {followingPartCue}
                     </Textfit>
                     {(followingPartTitle) ? (
-                    <div className={classes.followingPartSC}>
-                        <ScaleText>
+                        <Textfit className={classes.followingPart} mode='single'>
                             {followingPartTitle}
-                        </ScaleText>
-                    </div>
+                        </Textfit>
+                    //
+                    //     <div className={classes.followingPartSC}>
+                    //     <ScaleText>
+                    //         {followingPartTitle}
+                    //     </ScaleText>
+                    // </div>
                 ) : null}
 
                 </>)

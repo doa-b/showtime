@@ -146,6 +146,14 @@ class Firebase {
             }
         });
 
+    /**
+     * removes listener
+     * @param handler = handle (variable) of the listener to be removed
+     */
+    onRemoveListener = (handler) => {
+        this.db.off(handler)
+    };
+
     // *** Realtime Database API ***
 
     /**
@@ -162,6 +170,20 @@ class Firebase {
     users = () => this.db.ref(`users`);
 
     live = () => this.db.ref(`live`);
+
+    blocksOfShow = (showId) => this.db.ref(`blocks`).orderByChild('showId').equalTo(showId);
+    partsOfShow = (showId) => this.db.ref(`parts`).orderByChild('showId').equalTo(showId);
+    scenesOfShow = (showId) => this.db.ref(`scenes`).orderByChild('showId').equalTo(showId);
+    shows = () => this.db.ref('shows');
+
+    currentShow = () => this.db.ref('currentShow');
+
+    onRemoveElementListeners = (showId) => {
+        this.blocksOfShow(showId).off();
+        this.partsOfShow(showId).off();
+        this.scenesOfShow(showId).off();
+        this.shows().off();
+    };
 
     log = uid => this.db.ref(`logs/${uid}`);
 
@@ -181,10 +203,7 @@ class Firebase {
         else return null
     };
 
-
-
     // *** Storage API ***
-
     image = image => this.storage.ref(`images/${image.name}`);
 
     images = () => this.storage.ref(`images`);
@@ -202,32 +221,6 @@ class Firebase {
     };
 
     files = () => this.storage.ref('files');
-
-    // addFileRefToElement = (file) => {
-    //     const uploadTask = file(file).put(file);
-    //     uploadTask.on(
-    //         "state_changed",
-    //         snapshot => {
-    //             // progress function ...
-    //             return Math.round(
-    //                 (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-    //             );
-    //         },
-    //         error => {
-    //             // Error function ...
-    //             console.log(error);
-    //         },
-    //         () => {
-    //             // complete function ...
-    //             uploadTask.snapshot.ref.getDownloadURL()
-    //                 .then(url => {
-    //                     this.setState({url});
-    //                 });
-    //         }
-    //     );
-    // };
-
-
 
     // *** Uppload uploader *** //
 
@@ -280,9 +273,5 @@ class Firebase {
         });
 }
 
-
 export default Firebase;
 
-// export const firebaseDb = firebase.database();
-//
-//

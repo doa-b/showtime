@@ -86,6 +86,8 @@ class ImageUpload extends Component {
         });
         // open uploader
         this.uppload.open();
+        // auto navigate to service
+        this.uppload.navigate("local");
     }
 
     render() {

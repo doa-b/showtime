@@ -27,6 +27,7 @@ import moment from 'moment';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import {withFirebase} from "../../../firebase";
 
 const styles = theme => ({
     paper: {
@@ -165,10 +166,12 @@ class ShowDetails extends Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         onSave: (element, data) => dispatch(actions.save(element, data)),
-        onUpdate: (showId, data, elementName) => dispatch(actions.update(showId, data, elementName))
+        onUpdate: (showId, data, elementName) => dispatch(actions.update(showId, data, elementName)),
+        onSetCurrentShow: (firebase, showId) => dispatch(actions.setCurrentShow(firebase, showId))
     }
 };
 
 export default compose(
     withStyles(styles),
+    withFirebase,
     connect(null, mapDispatchToProps))(ShowDetails)
