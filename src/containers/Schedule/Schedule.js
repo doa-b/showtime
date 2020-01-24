@@ -87,7 +87,6 @@ class Schedule extends Component {
             if (!isLive) {
                 head = (
                     <>
-
                         <Textfit className={classes.title} mode='single'>
                             {show.title}
                         </Textfit>

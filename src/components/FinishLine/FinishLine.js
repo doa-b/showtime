@@ -10,7 +10,6 @@ const styles = () => ({
         aligItemstems: 'center',
         justifyContent: 'flex-start',
         flexWrap: 'wrap',
-        width: '100%',
         background: 'blue',
         border: '1px solid #ccc',
         boxShadow: '2px 2px 2px #ccc',

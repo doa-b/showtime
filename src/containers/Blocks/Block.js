@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Time from '../../components/Time/Time'
 import PartsList from "../Parts/PartsList/PartsList";
-import {Responsive} from 'responsive-react'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import IconButton from '@material-ui/core/IconButton';
@@ -51,7 +50,7 @@ const styles = theme => ({
         cursor: 'pointer',
         marginLeft: 'auto',
         '@media (min-width:600px)': {
-            display: 'inline'
+            display: 'block'
         },
     },
     controlsMobile: {
@@ -59,19 +58,20 @@ const styles = theme => ({
         cursor: 'pointer',
         marginLeft: 'auto',
         '@media (min-width:600px)': {
-            backgroundColor: 'yellow',
             display: 'none'
         }
     },
     title: {
         cursor: 'pointer',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        '@media (max-width:600px)': {
+            width: '100%'
+        }
     },
     add: {
         order: 3,
         display: 'block',
         '@media (min-width:600px)': {
-
             order: 1
         }
     },
@@ -165,52 +165,6 @@ class Block extends Component {
                     </div>
                 ) : null
                 }
-
-
-                <Responsive displayIn={['Mobile']}>
-                    <div className={classes.blockWrapper}
-                         style={{
-                             background: blockData.color,
-                             color: textColor,
-                         }}>
-                        <div className={classes.block}>
-                            {children}
-                            <Time startTime={beginTime}
-                                  duration={duration}
-                                  isLive={!!running}/>
-                            <Attachement elementData={blockData}/>
-                            <div className={classes.controls}>
-                                <OptionsMenu
-                                    elementType='blocks'
-                                    element={blockData}
-                                    parent={blockData.showId}/>
-                                {arrow}
-                            </div>
-                        </div>
-                        <div className={classes.title}
-                             onClick={() => clicked(blockData.id, 'block/details')}>
-                            {blockData.title}
-
-                        </div>
-                    </div>
-                    {(this.state.showChildren) ? (
-                        <div className={classes.belowMobile}>
-                            <PartsList startTime={beginTime}
-                                       parentId={blockData.id}
-                                       clicked={clicked}
-                                       running={running}/>
-                            <Tooltip title='Add Part'>
-                                <IconButton size="small" color="primary"
-                                            className={classes.button}
-                                            onClick={() => clicked(null, 'part/details', blockData.id)}
-                                            aria-label="add">
-                                    <AddIcon/>
-                                </IconButton>
-                            </Tooltip>
-                        </div>
-                    ) : null
-                    }
-                </Responsive>
             </>
         );
     };

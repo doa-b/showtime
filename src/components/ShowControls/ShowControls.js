@@ -18,6 +18,8 @@ import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PauseIcon from '@material-ui/icons/Pause';
 import Button from "@material-ui/core/Button";
 import Monitor from "../../containers/Monitor/MonitorOld";
+import clsx from "clsx";
+import ScaleText from "react-scale-text";
 
 const styles = theme => ({
     root: {
@@ -41,10 +43,14 @@ const styles = theme => ({
     buttons: {
         marginTop: 5
     },
-    monitor: {
-        height: 200,
-        width: 300
-    }
+    alert: {
+        color: 'red',
+    },
+    textMessage: {
+        margin: '5px 10px 0 10px',
+        overflowX: 'hidden',
+        border: '3px solid red'
+    },
 });
 /**
  * Created by Doa on 7-1-2020.
@@ -55,7 +61,7 @@ const ShowControls = withStyles(styles)(
          live: {
              isLive, isPaused, pause, runningPartNumber, runningBlockNumber,
              runningPartDuration, runningPartStartTime,
-             previousShowState, scheduledEndTime
+             previousShowState, scheduledEndTime, monitorMessage
          }
      }) => {
 
@@ -110,9 +116,10 @@ const ShowControls = withStyles(styles)(
                 followingPartId: '',
                 followingPartTitle: '',
                 followingPartCue: '',
-                scheduledEndTime: ''}
+                scheduledEndTime: ''
+            }
             ;
-            console.log('the new live is')
+            console.log('the new live is');
             console.log(live);
             return live
 
@@ -135,7 +142,7 @@ const ShowControls = withStyles(styles)(
                 runningPartDuration: 0,
                 runningPartStartTime: -1, // sets current server Time};
             };
-           live = updateObject(live, getNext2Up(runningBlockNumber, runningPartNumber));
+            live = updateObject(live, getNext2Up(runningBlockNumber, runningPartNumber));
             firebase.setLiveData(live);
         };
 
@@ -169,8 +176,13 @@ const ShowControls = withStyles(styles)(
             };
             // get the current 2 parts before the show starts
             live = updateObject(live, getNext2Up(0, -1));
-            getNext2Up(0,-1);
+            getNext2Up(0, -1);
             firebase.setLiveData(live)
+        };
+
+        const isOdd = () => {
+            const test = Math.round(currentTime / 1000);
+            return test % 2;
         };
 
         // *** Rendering ***
@@ -185,21 +197,21 @@ const ShowControls = withStyles(styles)(
         if (isLive) {
             let playPause = (
                 <Fab className={classes.actionButton}
-                                 color='primary' aria-label='play'
-                                 onClick={pauseHandler}>
+                     color='primary' aria-label='play'
+                     onClick={pauseHandler}>
                     <PauseIcon fontSize='large'/>
                 </Fab>
-                );
+            );
 
-                if (isPaused) {
-                    playPause = (
-                        <Fab className={classes.actionButton}
-                             color='secondary' aria-label='play'
-                             onClick={resumeHandler}>
-                           <PlayArrowIcon fontSize='large'/>
-                        </Fab>
-                    )
-                }
+            if (isPaused) {
+                playPause = (
+                    <Fab className={classes.actionButton}
+                         color='secondary' aria-label='play'
+                         onClick={resumeHandler}>
+                        <PlayArrowIcon fontSize='large'/>
+                    </Fab>
+                )
+            }
 
             let previous = null;
             if (previousShowState) {
@@ -210,6 +222,16 @@ const ShowControls = withStyles(styles)(
                         <SkipPreviousIcon fontSize={'large'}/>
                     </Fab>)
             }
+
+            const messageAlert = (monitorMessage) ? (
+                <div className={clsx({
+                    [classes.textMessage]: true, [classes.alert]: !isOdd()
+                })}>
+                    <ScaleText>
+                        {monitorMessage.message}
+                    </ScaleText>
+                </div>
+            ) : null;
             controls = (
                 <>
                     <div className={classes.liveView}>
@@ -217,20 +239,21 @@ const ShowControls = withStyles(styles)(
                         <Typography variant='h2'>
                             {msToTime(currentTime, true)}
                         </Typography>
-                       {playPause}
+                        {playPause}
                         <Fab className={classes.actionButton}
                              color='primary' aria-label='play'
                              onClick={skipToNextPartHandler}>
                             <SkipNextIcon fontSize='large'/>
                         </Fab>
                     </div>
-                    <div className = {classes.buttons}>
+                    <div className={classes.buttons}>
                         <Button className={classes.resetButton}
                                 variant="contained" color="primary"
                                 onClick={() => onResetTheShow(firebase)}>
                             Reset the Show
                         </Button>
                         <LiveMessageButton/>
+                        {messageAlert}
                     </div>
                     {/*<div className={classes.monitor}>*/}
                     {/*    <Monitor/>*/}
@@ -246,7 +269,7 @@ const mapStateToProps = (state) => {
         currentTime: state.global.currentTime,
         blocks: state.show.blocks,
         parts: state.show.parts,
-        live: state.live,
+        live: state.live
     }
 };
 

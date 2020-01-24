@@ -21,6 +21,9 @@ const styles = () => ({
         fontSize: '25.5vw',
         padding: 0,
     },
+    pauseColor: {
+        color: 'white'
+    },
     currentPartSC: {
         overflowX: 'hidden',
         maxHeight: '40vh',
@@ -105,18 +108,24 @@ const styles = () => ({
 const Monitor = withStyles(styles)(
     ({
          classes, nextPartTitle, nextPartDuration, followingPartCue, followingPartTitle,
-         isLive, showHasFinished, currentTime, message, runningPartDuration,
+         isLive, showHasFinished, currentTime, message, runningPartDuration, isPaused
      }) => {
 
-       const isOdd = () => {
-           const test = Math.round(currentTime / 1000);
-           return test % 2;
-       };
+        const isOdd = () => {
+            const test = Math.round(currentTime / 1000);
+            return test % 2;
+        };
 
-        let timeLeft = nextPartDuration - runningPartDuration;
-        let time = (timeLeft >= 0) ? msToTime(timeLeft, true) :
-            <span className={clsx({
-                [classes.alert]: isOdd()})}>TIME UP</span>;
+        const timeLeft = nextPartDuration - runningPartDuration;
+        let time = (timeLeft >= 0)
+            ? (isPaused)
+                ? <span className={clsx({
+                    [classes.pauseColor]: !isOdd()
+                })}>{msToTime(timeLeft, true)}</span>
+                : msToTime(timeLeft, true)
+            : <span className={clsx({
+                [classes.alert]: isOdd()
+            })}>TIME UP</span>;
 
         let body = (
             <div className={classes.currentPart}>
@@ -153,16 +162,17 @@ const Monitor = withStyles(styles)(
                         <Textfit className={classes.followingPart} mode='single'>
                             {followingPartTitle}
                         </Textfit>
-                    //
-                    //     <div className={classes.followingPartSC}>
-                    //     <ScaleText>
-                    //         {followingPartTitle}
-                    //     </ScaleText>
-                    // </div>
-                ) : null}
+                        //
+                        //     <div className={classes.followingPartSC}>
+                        //     <ScaleText>
+                        //         {followingPartTitle}
+                        //     </ScaleText>
+                        // </div>
+                    ) : null}
 
                 </>)
-        } if(showHasFinished) {
+        }
+        if (showHasFinished) {
             body = (
                 <ScaleText>
                     Show has finished
@@ -173,19 +183,21 @@ const Monitor = withStyles(styles)(
         if (message) {
             let name = '';
             convertObjectstoArray(message.team).map(member => (
-                name = name + ' ' + member.firstName
-            )
+                    name = name + ' ' + member.firstName
+                )
             );
             body =
                 (<>
                         <Textfit
                             mode='single'
                             className={clsx({
-                            [classes.name]:true, [classes.alert]: isOdd()})} >
+                                [classes.name]: true, [classes.alert]: isOdd()
+                            })}>
                             {name}
                         </Textfit>
                         <div className={clsx({
-                            [classes.textMessage]:true, [classes.alert]: !isOdd()})}>
+                            [classes.textMessage]: true, [classes.alert]: !isOdd()
+                        })}>
                             <ScaleText>
                                 {message.message}
                             </ScaleText>
@@ -206,6 +218,7 @@ const mapStateToProps = (state) => {
     return {
         currentTime: state.global.currentTime,
         isLive: state.live.isLive,
+        isPaused: state.live.isPaused,
         nextPartTitle: state.live.nextPartTitle,
         nextPartDuration: state.live.nextPartDuration,
         followingPartCue: state.live.followingPartCue,

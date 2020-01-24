@@ -6,7 +6,6 @@ import arrayMove from 'array-move';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import * as actions from "../../../store/actions";
 import {connect} from "react-redux";
-import classes from './BlocksList.module.css';
 import FinishLine from "../../../components/FinishLine/FinishLine";
 
 
@@ -16,7 +15,7 @@ import Button from '@material-ui/core/Button';
 const DragHandle = sortableHandle(() => <DragIndicatorIcon/>);
 
 const SortableContainer = sortableContainer(({children}) => {
-    return <div className={classes.Inner}>{children}</div>;
+    return <>{children}</>;
 });
 
 class BlocksList extends Component {
@@ -74,7 +73,7 @@ class BlocksList extends Component {
         }
         let duration = 0;
         return (
-            <div className={classes.BlocksList}>
+            <>
                 <SortableContainer onSortEnd={this.onSortEnd} useDragHandle>
                     {this.state.items.map((value, index) => {
                         if (index >= this.props.runningBlockNumber) {
@@ -99,7 +98,7 @@ class BlocksList extends Component {
                     isLive={this.props.isLive}
                     scheduledEndTime={this.props.scheduledEndTime}
                     updatescheduledEndTime={this.props.onUpdateScheduledEndTime}/>
-                <div className={classes.AddBlock}>
+                <div style={{textAlign: 'center', marginTop: 5, marginBottom: 10}}>
                     <Button
                     onClick={() => this.props.clicked(null, 'block/details', this.props.showId)}
                     variant="contained"
@@ -108,7 +107,7 @@ class BlocksList extends Component {
                     Add Block
                 </Button>
                 </div>
-            </div>
+            </>
         );
     }
 }
