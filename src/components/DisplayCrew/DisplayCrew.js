@@ -1,66 +1,87 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {compose} from "redux";
-import { ROLES } from '../../shared/roles'
 import {convertObjectstoArray} from '../../shared/utility'
 import Chip from '@material-ui/core/Chip';
 import Avatar from "@material-ui/core/Avatar";
 import withStyles from "@material-ui/core/styles/withStyles";
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
-import {withSnackbar} from 'notistack';
 
 const styles = () => ({
     root: {
         marginLeft: 5
     },
+    simpleCrewList: {
+        display: 'flex',
+        fleDirection: 'row',
+        justifyContent: 'flex-start',
+        margin: '0 5px 0 5px',
+        cursor: 'pointer',
+        color: '#444444',
+        textDecoration: 'underline',
+        fontSize: '.8em'
+    }
 });
 
-const deadlineWarning = (actorName, enqueueSnackbar) => {
-    const message = actorName + ' to Stage, 1 minute to start';
-    enqueueSnackbar(message, {
-        variant: 'info',
-        preventDuplicate: true
-    })
-};
+// const deadlineWarning = (actorName, enqueueSnackbar) => {
+//     const message = actorName + ' to Stage, 1 minute to start';
+//     enqueueSnackbar(message, {
+//         variant: 'info',
+//         preventDuplicate: true
+//     })
+// };
 /**
  * React functional component that displays the users that feature in this showElement.
  * Also dispatches Snackbar Messages when user is due to appear on stage.
  * <br />Created by Doa on 18-11-2019.
  */
-const displayCrew = ({classes, team, onSetDisplayUser, currentTime, deadLine, isPaused, enqueueSnackbar}) => {
-    let number = 0;
-    return ROLES.map((role) => {
-        const cast = convertObjectstoArray(team)
-            .filter((actor) => actor.groups === role);
+const displayCrew = ({classes, team, onSetDisplayUser, currentTime, isPaused, enqueueSnackbar, users, isSimple}) => {
+    // immediately return when no team is present
+    if (!team) return null;
+    // get id's of all teammembers and put in array
+    const teamArray = convertObjectstoArray(team);
+    // crewArray will get all the teammembers data
+    let crewArray = [];
+    teamArray.map((actor) => {
+        const id = (actor.id) ? actor.id : actor;
+        // check if user with this id is found, else do not push into array
+        return users[id] && crewArray.push(users[id])
+    });
+    // sort array by role
+    crewArray = crewArray.sort((a, b) => a.role - b.role);
+    let currentRole = '';
 
-        if (cast && cast.length > 0) {
-            number = 0;
-            const actors = cast.map((actor) => {
-                if (currentTime === deadLine && !isPaused) {
-                    deadlineWarning(actor.firstName, enqueueSnackbar)
-                }
-                number++;
-                return (
-                    <span className={classes.root} key={actor.id}>
-                <Chip key={actor.id}
-                      size='small'
-                      variant='outlined'
-                      avatar={<Avatar alt={actor.firstName} src={actor.imageUrl}/>}
-                      label={actor.firstName}
-                      onClick={() => onSetDisplayUser(actor)}/>
+    return crewArray.map((member, index) => {
+        let showRole = null;
+
+        if (member.groups !== currentRole) {
+            showRole = member.groups + 's ';
+            currentRole = member.groups;
+        }
+
+        let result = <span className={classes.simpleCrewList} key={index}
+                           onClick={() => onSetDisplayUser(member)}>
+            {member.firstName}
+        </span>;
+
+        if (!isSimple) {
+            result = (
+                <span className={classes.root} key={index}>
+                    {showRole}
+                    <Chip
+                        size='small'
+                        variant='outlined'
+                        avatar={<Avatar alt={member.firstName} src={member.imageUrl}/>}
+                        label={member.firstName}
+                        onClick={() => onSetDisplayUser(member)}/>
                      </span>
-                )
-            });
-            return (
-                <div key={role}
-                     className={classes.root}>
-                    <i>{(number >1) ? role + 's' : role}</i>
-                    {actors}
-                </div>)
-        } else return null;
-    })
-};
+            )
+        }
+
+        return result
+    });
+}
 
 displayCrew.propTypes = {
     /** object node of users that feature in this element */
@@ -69,8 +90,6 @@ displayCrew.propTypes = {
     onSetDisplayUser: PropTypes.func,
     /** current (local) time in Milliseconds*/
     currentTime: PropTypes.number,
-    /** the time in Milliseconds in which this user should recieve a push notification*/
-    deadLine: PropTypes.number,
     /** true if current show is paused */
     isPaused: PropTypes.bool
 };
@@ -78,7 +97,8 @@ displayCrew.propTypes = {
 const mapStateToProps = (state) => {
     return {
         currentTime: state.global.currentTime,
-        isPaused: state.live.isPaused
+        isPaused: state.live.isPaused,
+        users: state.users.userObject
     }
 };
 
@@ -89,6 +109,5 @@ const mapDispatchToProps = (dispatch) => {
 };
 /* @component */
 export default compose(
-    withSnackbar,
     withStyles(styles),
     connect(mapStateToProps, mapDispatchToProps))(displayCrew);

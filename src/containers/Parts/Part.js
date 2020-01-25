@@ -16,6 +16,8 @@ import {Tooltip} from "@material-ui/core";
 import {withFirebase} from "../../firebase";
 import Attachement from "../../components/ui/Attachements/Attachement";
 import withStyles from "@material-ui/core/styles/withStyles";
+import {getCurrentUTCinMs, msToTime} from "../../shared/utility";
+import * as actions from "../../store/actions";
 
 const styles = theme => ({
     partWrapper: {
@@ -111,6 +113,20 @@ class Part extends Component {
         if (prevProps.showAllScenes !== this.props.showAllScenes) {
             this.setState({showChildren: this.props.showAllScenes})
         }
+        // check if actors need to be notified. Fires when this part is set to begin within 60 seconds.
+        // TODO Only fire this if you are the director!!! Director is the one that started the show. Sets his ID in live!!!
+        const deadline =  msToTime(this.props.startTime - this.props.partData.duration - 60000, true)
+        if (msToTime(this.props.currentTime, true) === deadline
+           ) {
+            const message = {
+                timeMs: this.props.currentTime + 1000,
+                message: 'Get to stage ' + this.props.partData.title,
+                elementId: this.props.partData.id,
+                team: this.props.partData.team
+            };
+            this.props.onSetQueuedMessage(message);
+            console.log('dispatching message')
+        }
     }
 
     toggleVisibilityHandler = () => {
@@ -130,8 +146,8 @@ class Part extends Component {
     };
 
     render() {
-        const {classes, startTime, partData, runningTime, isPaused, firebase, clicked, children} = this.props
-        let beginTime = startTime - partData.duration;
+        const {classes, startTime, partData, runningTime, isPaused, firebase, clicked, children} = this.props;
+        const beginTime = startTime - partData.duration;
         let partDuration = partData.duration;
         let progressBar = null;
         if (runningTime) {
@@ -181,8 +197,8 @@ class Part extends Component {
                         </div>
                         <div className={classes.divider}></div>
                         <DisplayCrew
-                            team={partData.team}
-                            deadLine={beginTime - 58000}/>
+                            team={partData.team} />
+
                     </div>
                     <div className={classes.controls}>
                         <OptionsMenu
@@ -191,9 +207,9 @@ class Part extends Component {
                             parent={partData.blockId}/>
                         {arrow}
                     </div>
-
+                    {progressBar}
                 </div>
-                {progressBar}
+
                 {(this.state.showChildren) ? (
                     <div className={classes.below}>
                         <span className={classes.spacer}></span>
@@ -219,15 +235,22 @@ class Part extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const
+    mapStateToProps = (state) => {
+        return {
+            isPaused: state.live.isPaused,
+            showAllScenes: state.global.showAllScenes,
+            currentTime: state.global.currentTime
+        }
+    };
+
+const mapDispatchToProps = (dispatch) => {
     return {
-        isPaused: state.live.isPaused,
-        showAllScenes: state.global.showAllScenes
+        onSetQueuedMessage: (message) => dispatch(actions.setQueuedMessage(message))
     }
 };
 
 export default compose(
     withStyles(styles),
     withFirebase,
-    connect(mapStateToProps)
-)(Part);
+    connect(mapStateToProps, mapDispatchToProps))(Part);

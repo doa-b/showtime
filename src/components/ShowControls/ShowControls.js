@@ -32,7 +32,6 @@ const styles = theme => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
     },
     actionButton: {
         marginLeft: 10

@@ -15,7 +15,8 @@ export {
     toggleDisplayRealTime,
     setDisplayUser,
     toggleIsEditable,
-    setShowAllScenes
+    setShowAllScenes,
+    setQueuedMessage
 } from './global'
 
 export {

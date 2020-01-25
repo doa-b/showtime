@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes'
-import {updateObject} from "../../shared/utility";
+import {getCurrentUTCinMs, updateObject} from "../../shared/utility";
 
 export const initialState = {
     isLive: false,
@@ -18,7 +18,7 @@ export const initialState = {
     nextPartCue: '',
     followingPartId: '',
     followingPartTitle: '',
-    followingPartCue: ''
+    followingPartCue: '',
 };
 
 const incrementDuration = (state, action) => {

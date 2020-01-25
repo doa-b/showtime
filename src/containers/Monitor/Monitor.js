@@ -22,7 +22,8 @@ const styles = () => ({
         padding: 0,
     },
     pauseColor: {
-        color: 'white'
+        opacity: 0,
+        transition: 'opacity .99s ease-in-out'
     },
     currentPartSC: {
         overflowX: 'hidden',

@@ -1,5 +1,6 @@
 import * as accessLevels from '../shared/utility'
-import {ACCESS_LEVEL_ADMINISTRATOR} from "../shared/utility";
+import { convertArrayToObject } from "../shared/utility";
+
 
 export const dummyUsers = [
     {
@@ -363,3 +364,5 @@ export const dummyUsers = [
         imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
     }
 ];
+
+export const dummyUserObject = convertArrayToObject(dummyUsers, 'id');

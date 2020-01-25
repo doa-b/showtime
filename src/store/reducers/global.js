@@ -9,7 +9,13 @@ const initialState = {
     isEditable: true,
     optionsMenu: null,
     optionsMenuAnchor: null,
-    showAllScenes: false
+    showAllScenes: false,
+    queuedMessage: {
+        timeMs: getCurrentUTCinMs() + 15000,
+        message: 'Wake UPPPPPP',
+        elementId: '12345',
+        team: {}
+    }
 };
 
 const reducer = (state = initialState, action) => {
@@ -37,6 +43,8 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.SET_SHOW_ALL_SCENES:
             return updateObject(state, {showAllScenes: action.value});
+        case actionTypes.SET_QUEUED_MESSAGE:
+            return updateObject(state, {queuedMessage: action.message});
         default:
             return state
     }

@@ -1,5 +1,7 @@
 import * as actionTypes from './actionTypes';
 import {incrementRunningPartDuration} from "./live";
+import {sendMessage} from '../../shared/messages/sendMessage'
+import {msToTime} from "../../shared/utility";
 
 export const initiateClock = () => {
     return {
@@ -50,6 +52,13 @@ export const setShowAllScenes = (value) => {
     }
 };
 
+export const setQueuedMessage =(message) => {
+    return {
+        type: actionTypes.SET_QUEUED_MESSAGE,
+        message: message
+    }
+};
+
 // Asynchronous actionCreators
 
 export const startClock = () => {
@@ -58,9 +67,18 @@ export const startClock = () => {
         setInterval(() => {
             const isPaused = getState().live.isPaused;
             const isLive = getState().live.isLive;
+
             dispatch(addSecondToClock());
             if (isLive) {
+                if (!isPaused) {
+                    const cueuedMessage = getState().global.queuedMessage;
+                    const currentTime = msToTime(getState().global.currentTime, true);
+                    if (msToTime(cueuedMessage.timeMs, true) === currentTime) {
+                        sendMessage(cueuedMessage)
+                    }
+                }
                 dispatch(incrementRunningPartDuration(isPaused));
+
             }
         }, 1000)
     }

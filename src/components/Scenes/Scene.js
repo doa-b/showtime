@@ -4,7 +4,7 @@ import {withStyles} from '@material-ui/core/styles';
 import {sceneCategories} from '../../shared/utility'
 
 import Time from "../Time/Time";
-import SimpleCrewList from "../SimpleCrewList/SimpleCrewList";
+import DisplayCrew from "../../components/DisplayCrew/DisplayCrew";
 import OptionsMenu from "../ui/OptionsMenu/OptionsMenu";
 import {connect} from "react-redux";
 
@@ -120,7 +120,8 @@ const scene = withStyles(styles)(({
                             <span className={classes.icon}>{sceneCategories[sceneData.category].icon}</span>
                             {sceneData.title}
                         </div>
-                        <SimpleCrewList team={sceneData.team}/>
+
+                        <DisplayCrew isSimple team={sceneData.team}/>
                         <div className={classes.controls}>
                             <OptionsMenu
                                 elementType='scenes'
