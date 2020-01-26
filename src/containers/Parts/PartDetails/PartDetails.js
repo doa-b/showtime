@@ -9,7 +9,7 @@ import {connect} from 'react-redux'
 import {
     updateObject,
     convertArrayToObject,
-    convertObjectstoArray,
+    convertObjectstoArray, convertObjectsAndSortByKey,
 } from '../../../shared/utility'
 import {CompactPicker} from 'react-color'
 import Switch from '@material-ui/core/Switch';
@@ -112,7 +112,7 @@ class PartDetails extends Component {
             duration: moment(120000),
             color: '#eee',
             textColorBlack: true,
-            team: [this.props.users[0]],
+            team: [],
             files: []
         }
     }
@@ -183,7 +183,8 @@ class PartDetails extends Component {
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, userObject} = this.props;
+        const users = convertObjectsAndSortByKey(userObject,'groups');
         const colors = ['#EEEEEE', '#DDDDDD', '#CCCCCC', '#BBBBBB',
             '#AAAAAA', '#999999', '#888888', '#777777', '#666666',
             '#555555', '#444444', '#333333'];
@@ -275,8 +276,8 @@ class PartDetails extends Component {
                                   onChange={this.teamChangedHandler}
                                   groupBy={option => option.groups}
                                   getOptionLabel={option => option.firstName}
-                                  options={this.props.users.map(option => option)}
-                                  defaultValue={[this.props.users[1]]}
+                                  options={users.map(option => option)}
+                                  defaultValue={[users[1]]}
                                   filterOptions={filterOptions}
                                   filterSelectedOptions
                                   renderTags={(value, {className, onDelete}) =>
@@ -332,7 +333,7 @@ const mapStateToProps = (state) => {
         showId: state.show.currentShow,
         blocks: state.show.blocks,
         parts: state.show.parts,
-        users: state.users.users,
+        userObject: state.users.users,
     }
 };
 

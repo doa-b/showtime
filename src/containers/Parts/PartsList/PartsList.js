@@ -11,7 +11,7 @@ import * as actions from "../../../store/actions";
 const DragHandle = sortableHandle(() => <DragIndicatorIcon/>);
 
 const SortableContainer = sortableContainer(({children}) => {
-    return <>{children}</>;
+    return <div>{children}</div>;
 });
 
 const SortableItem = sortableElement(({value, startTime, clicked, runningTime}) => {

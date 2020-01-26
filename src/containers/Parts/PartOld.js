@@ -160,7 +160,7 @@ class Part extends Component {
                                 </IconButton>
                             </Tooltip>
                             <ScenesList
-                                isRunning={runningTime}
+                                isRunning={!!runningTime}
                                 parentId={partData.id}
                                 startTime={beginTime}
                                 clicked={clicked}/>
@@ -196,7 +196,7 @@ class Part extends Component {
                     {(this.state.showChildren) ? (
                         <div className={classes.belowMobile}>
                             <ScenesList
-                                isRunning={runningTime}
+                                isRunning={!!runningTime}
                                 parentId={partData.id}
                                 startTime={beginTime}
                                 clicked={clicked}/>

@@ -88,7 +88,7 @@ const LiveMessageButton = withStyles(styles)(
 
 const mapStateToProps = (state) => {
     return {
-        users: state.users.users,
+        users: state.users.users.users,
         monitorMessage: state.live.monitorMessage,
     }
 };

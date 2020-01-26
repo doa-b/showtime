@@ -1,8 +1,7 @@
-import {dummyUserObject, dummyUsers} from '../../bootstrap/users'
+import {dummyUserObject} from '../../bootstrap/users'
 
 const initialState = {
-    users: dummyUsers,
-    userObject: dummyUserObject
+    users: dummyUserObject
 };
 
 const reducer = (state = initialState, action) => {

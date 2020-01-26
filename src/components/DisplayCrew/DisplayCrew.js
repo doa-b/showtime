@@ -98,7 +98,7 @@ const mapStateToProps = (state) => {
     return {
         currentTime: state.global.currentTime,
         isPaused: state.live.isPaused,
-        users: state.users.userObject
+        users: state.users.users
     }
 };
 

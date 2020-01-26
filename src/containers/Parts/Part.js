@@ -97,6 +97,10 @@ const styles = theme => ({
     scene: {
         order: 2,
         width: '100%'
+    },
+    progressBar: {
+        display: 'box',
+        width: 'calc(100% - 8px)'
     }
 });
 
@@ -207,8 +211,11 @@ class Part extends Component {
                             parent={partData.blockId}/>
                         {arrow}
                     </div>
+                </div>
+                <div className={classes.progressBar}>
                     {progressBar}
                 </div>
+
 
                 {(this.state.showChildren) ? (
                     <div className={classes.below}>
@@ -223,7 +230,7 @@ class Part extends Component {
                         </div>
                         <div className={classes.scene}>
                             <ScenesList
-                                isRunning={runningTime}
+                                isRunning={!!runningTime}
                                 parentId={partData.id}
                                 startTime={beginTime}
                                 clicked={clicked}/>

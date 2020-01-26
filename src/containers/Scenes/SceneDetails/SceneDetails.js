@@ -10,7 +10,7 @@ import {
     updateObject,
     convertArrayToObject,
     convertObjectstoArray,
-    sceneCategories
+    sceneCategories, convertObjectsAndSortByKey
 } from '../../../shared/utility'
 import {HuePicker} from 'react-color'
 import Switch from '@material-ui/core/Switch';
@@ -134,7 +134,7 @@ class SceneDetails extends Component {
         startTime: moment(60000),
         color: '#ffffff',
         textColorBlack: true,
-        team: [this.props.users[0]],
+        team: [],
         category: 0,
         files: []
     };
@@ -216,7 +216,9 @@ class SceneDetails extends Component {
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, userObject} = this.props;
+        const users = convertObjectsAndSortByKey(userObject,'groups');
+        console.log(users)
 
         const textColor = (this.state.textColorBlack) ? '#000' : '#fff';
         const filterOptions = createFilterOptions({
@@ -345,8 +347,8 @@ class SceneDetails extends Component {
                                   onChange={this.teamChangedHandler}
                                   groupBy={option => option.groups}
                                   getOptionLabel={option => option.firstName}
-                                  options={this.props.users.map(option => option)}
-                                  defaultValue={[this.props.users[1]]}
+                                  options={users.map(option => option)}
+                                  defaultValue={[users[1]]}
                                   filterOptions={filterOptions}
                                   filterSelectedOptions
                                   renderTags={(value, {className, onDelete}) =>
@@ -402,7 +404,7 @@ const mapStateToProps = (state) => {
         showId: state.show.currentShow,
         parts: state.show.parts,
         scenes: state.show.scenes,
-        users: state.users.users,
+        userObject: state.users.users,
     }
 };
 
