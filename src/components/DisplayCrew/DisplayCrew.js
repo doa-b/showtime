@@ -55,9 +55,9 @@ const displayCrew = ({classes, team, onSetDisplayUser, currentTime, isPaused, en
     return crewArray.map((member, index) => {
         let showRole = null;
 
-        if (member.groups !== currentRole) {
-            showRole = member.groups + 's ';
-            currentRole = member.groups;
+        if (member.role !== currentRole) {
+            showRole = member.role + 's ';
+            currentRole = member.role;
         }
 
         let result = <span className={classes.simpleCrewList} key={index}

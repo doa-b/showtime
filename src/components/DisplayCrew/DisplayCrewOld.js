@@ -32,7 +32,7 @@ const displayCrew = ({classes, team, onSetDisplayUser, currentTime, deadLine, is
     let number = 0;
     return ROLES.map((role) => {
         const cast = convertObjectstoArray(team)
-            .filter((actor) => actor.groups === role);
+            .filter((actor) => actor.role === role);
 
         if (cast && cast.length > 0) {
             number = 0;

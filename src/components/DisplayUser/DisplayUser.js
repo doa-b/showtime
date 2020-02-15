@@ -86,7 +86,7 @@ const displayUser = withStyles(styles)(
                 <CardHeader
                     className={classes.header}
                     title={user.firstName + ' ' + user.lastName}
-                    subheader={user.groups.charAt(0).toUpperCase() + user.groups.slice(1) + ', ' + user.country}
+                    subheader={user.role.charAt(0).toUpperCase() + user.role.slice(1) + ', ' + user.country}
                     action={
                         <IconButton aria-label="close" onClick={close}>
                             <CloseIcon/>

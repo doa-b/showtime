@@ -78,7 +78,7 @@ export const convertObjectsAndSortByKey = (object, orderKey, order = 'asc') => {
     }
 
     // sort array of objects by order orderKey
-    newArray.sort(compareValues(orderKey));
+    newArray.sort(compareValues(orderKey), order);
     return newArray;
 };
 

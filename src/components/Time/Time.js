@@ -34,7 +34,12 @@ const startTime = withStyles(styles)(({classes, startTime, displaySeconds, durat
 
     let startTimeDisplay = msToTime(startTime, displaySeconds);
     if (isLive) startTimeDisplay = <PlayArrowIcon fontSize='small'/>;
-    let durationDisplay = msToTime(duration, displaySeconds);
+    let durationDisplay = (
+        <Tooltip title='Duration'>
+        <div className={classes.duration}>
+            {msToTime(duration, displaySeconds)}
+        </div>
+        </Tooltip>);
     if (duration <= 0) {
         startTimeDisplay = <span style={{color: "red"}}>Time is up!</span>;
         durationDisplay = null;
@@ -46,11 +51,7 @@ const startTime = withStyles(styles)(({classes, startTime, displaySeconds, durat
                     {startTimeDisplay}
                 </div>
             </Tooltip>
-            <Tooltip title='Duration'>
-                <div className={classes.duration}>
                     {durationDisplay}
-                </div>
-            </Tooltip>
         </div>
     );
 });

@@ -10,7 +10,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_EXECUTIVE,
-        groups: 'presenter',
+        role: 'presenter',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
     {
@@ -20,7 +20,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_EXECUTIVE,
-        groups: 'presenter',
+        role: 'presenter',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
     {
@@ -30,7 +30,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Switserland',
         type: accessLevels.ACCESS_LEVEL_EXECUTIVE,
-        groups: 'presenter',
+        role: 'presenter',
         imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
@@ -40,7 +40,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Germany',
         type: accessLevels.ACCESS_LEVEL_TRINITY,
-        groups: 'presenter',
+        role: 'presenter',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
     {
@@ -50,7 +50,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Germany',
         type: accessLevels.ACCESS_LEVEL_TRINITY,
-        groups: 'artist',
+        role: 'artist',
         imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
@@ -60,7 +60,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Germany',
         type: accessLevels.ACCESS_LEVEL_TRINITY,
-        groups: 'artist',
+        role: 'artist',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
     {
@@ -70,7 +70,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Germany',
         type: accessLevels.ACCESS_LEVEL_TRINITY,
-        groups: 'artist',
+        role: 'artist',
         imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
@@ -80,7 +80,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_TRINITY,
-        groups: 'artist',
+        role: 'artist',
         imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
@@ -90,7 +90,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_TRINITY,
-        groups: 'artist',
+        role: 'artist',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
     {
@@ -100,7 +100,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_TRINITY,
-        groups: 'artist',
+        role: 'artist',
         imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
@@ -110,7 +110,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Germany',
         type: accessLevels.ACCESS_LEVEL_TRINITY,
-        groups: 'presenter',
+        role: 'presenter',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
     {
@@ -120,7 +120,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
@@ -130,7 +130,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
@@ -140,7 +140,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_ADMINISTRATOR,
-        groups: 'dj',
+        role: 'dj',
         imageUrl: 'http://djdoa.nl/DJDoa_WebPages/__Old_Website/doa_avatar_small.jpg'
     },
     {
@@ -150,7 +150,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_ADMINISTRATOR,
-        groups: 'director',
+        role: 'director',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
     {
@@ -160,7 +160,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_SUPPORT,
-        groups: 'sound',
+        role: 'sound',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
     {
@@ -170,7 +170,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_SUPPORT,
-        groups: 'light',
+        role: 'light',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
     {
@@ -180,7 +180,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_TRINITY,
-        groups: 'photographer',
+        role: 'photographer',
         imageUrl: 'https://image.tmdb.org/t/p/original/zixTWuMZ1D8EopgOhLVZ6Js2ux3.jpg'
     },
     {
@@ -190,7 +190,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'dancer',
+        role: 'dancer',
         imageUrl: 'https://image.tmdb.org/t/p/original/5MgWM8pkUiYkj9MEaEpO0Ir1FD9.jpg'
     },
     {
@@ -200,7 +200,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'dancer',
+        role: 'dancer',
         imageUrl: 'https://image.tmdb.org/t/p/original/5MgWM8pkUiYkj9MEaEpO0Ir1FD9.jpg'
     },
     {
@@ -210,7 +210,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'dancer',
+        role: 'dancer',
         imageUrl: ''
     },
     {
@@ -220,7 +220,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
@@ -230,7 +230,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
@@ -240,7 +240,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
@@ -250,7 +250,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
@@ -260,7 +260,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
@@ -270,7 +270,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/opEemSnjnN4hbwymHz5P0VVuk4F.jpg'
     },
     {
@@ -280,7 +280,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
     },
     {
@@ -290,7 +290,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
     },
     {
@@ -300,7 +300,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
     },
     {
@@ -310,7 +310,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
     },
     {
@@ -320,7 +320,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
     },
     {
@@ -330,7 +330,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
     },
     {
@@ -340,7 +340,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
     },
     {
@@ -350,7 +350,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
     },
     {
@@ -360,7 +360,7 @@ export const dummyUsers = [
         Phone: '0612345678',
         country: 'Netherlands',
         type: accessLevels.ACCESS_LEVEL_MEMBER,
-        groups: 'model',
+        role: 'model',
         imageUrl: 'https://image.tmdb.org/t/p/original/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg'
     }
 ];

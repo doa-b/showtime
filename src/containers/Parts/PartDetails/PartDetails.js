@@ -184,7 +184,7 @@ class PartDetails extends Component {
 
     render() {
         const {classes, userObject} = this.props;
-        const users = convertObjectsAndSortByKey(userObject,'groups');
+        const users = convertObjectsAndSortByKey(userObject,'role');
         const colors = ['#EEEEEE', '#DDDDDD', '#CCCCCC', '#BBBBBB',
             '#AAAAAA', '#999999', '#888888', '#777777', '#666666',
             '#555555', '#444444', '#333333'];
@@ -274,7 +274,7 @@ class PartDetails extends Component {
                                   id='team'
                                   multiple
                                   onChange={this.teamChangedHandler}
-                                  groupBy={option => option.groups}
+                                  groupBy={option => option.role}
                                   getOptionLabel={option => option.firstName}
                                   options={users.map(option => option)}
                                   defaultValue={[users[1]]}

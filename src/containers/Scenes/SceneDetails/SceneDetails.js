@@ -217,7 +217,7 @@ class SceneDetails extends Component {
 
     render() {
         const {classes, userObject} = this.props;
-        const users = convertObjectsAndSortByKey(userObject,'groups');
+        const users = convertObjectsAndSortByKey(userObject,'role');
         console.log(users)
 
         const textColor = (this.state.textColorBlack) ? '#000' : '#fff';
@@ -345,7 +345,7 @@ class SceneDetails extends Component {
                                   id='team'
                                   multiple
                                   onChange={this.teamChangedHandler}
-                                  groupBy={option => option.groups}
+                                  groupBy={option => option.role}
                                   getOptionLabel={option => option.firstName}
                                   options={users.map(option => option)}
                                   defaultValue={[users[1]]}

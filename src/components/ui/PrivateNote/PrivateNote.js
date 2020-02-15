@@ -18,40 +18,66 @@ class PrivateNote extends Component {
     }
 
     inputChangedHandler = (event, value) => {
-        this.setState({[event.target.id]: event.target.value, button: true})
+        this.setState({note: event.target.value, button: true})
     };
 
     submit = () => {
         console.log(this.state.note);
+        this.setState({button: false})
         this.props.firebase.savePersonalNote(this.props.elementId, this.state.note)
 
     };
 
     render() {
-        return (<div style={{
-                margin: 'auto', width: '90%',
-                display: 'flex',
-                flexDirection: 'column',
-            }}>
-                <TextField
-                    autoFocus
-                    onChange={this.inputChangedHandler}
-                    value={this.state.note}
-                    id='note'
-                    label='your private note'
-                    placeholder='This note will only be visible to you'
-                    multiline
-                    rows={3}
-                    margin='normal'
-                    variant='outlined'/>
-                {(this.state.button) ? (
-                    <Button
-                        onClick={this.submit}>
-                        save your private note
-                    </Button>
-                ) : null}
-            </div>
-        );
+
+        const page = (this.props.small)
+            ? (<div >
+                    <TextField
+                        style={{backgroundColor: '#ffc'}}
+                        fullWidth
+                        onChange={this.inputChangedHandler}
+                        value={this.state.note}
+                        label='your private note'
+                        placeholder='This note will only be visible to you'
+                        multiline
+                        size='small'
+                        margin='normal'
+                        variant='outlined'/>
+                    {(this.state.button) ? (
+                        <Button
+                            variant='outlined'
+                            onClick={this.submit}>
+                            save your private note
+                        </Button>
+                    ) : null}
+                </div>
+            )
+            : (
+                <div style={{
+                    margin: 'auto', width: '90%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}>
+                    <TextField
+                        autoFocus
+                        onChange={this.inputChangedHandler}
+                        value={this.state.note}
+                        label='your private note'
+                        placeholder='This note will only be visible to you'
+                        multiline
+                        rows={3}
+                        margin='normal'
+                        variant='outlined'/>
+                    {(this.state.button) ? (
+                        <Button
+                            onClick={this.submit}>
+                            save your private note
+                        </Button>
+                    ) : null}
+                </div>
+            );
+
+        return page
     }
 
 };

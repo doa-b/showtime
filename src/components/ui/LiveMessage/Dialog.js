@@ -96,7 +96,7 @@ const Dialog = withStyles(styles)(
                                       id='team'
                                       multiple
                                       onChange={(event, value) => setTeam(value)}
-                                      groupBy={option => option.groups}
+                                      groupBy={option => option.role}
                                       getOptionLabel={option => option.firstName}
                                       options={users.map(option => option)}
                                       defaultValue={[users[1]]}
