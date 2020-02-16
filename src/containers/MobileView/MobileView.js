@@ -13,24 +13,7 @@ const styles = () => ({
     root: {
         width: '100vw',
     },
-    block: {
-        background: 'blue',
-        border: '1px solid #ccc',
-        boxShadow: '2px 2px 2px #ccc',
-        padding: 5,
-    },
-    startTime: {
-        marginRight: 5
-    },
-    sceneStartTime: {
-        marginRight: 5,
-        marginLeft: 5
-    },
-    part: {
-        background: '#eee',
-        border: '1px solid #ccc',
-        padding: '0 5px 0',
-    },
+
     scene: {
         display: 'flex',
         boxSizing: 'border-box',
@@ -49,15 +32,6 @@ const styles = () => ({
         boxShadow: '2px 2px 2px #ccc',
         padding: 5
     },
-    avatar: {
-        margin: 'auto',
-        height: 15,
-        width: 15
-    },
-    cue: {
-        marginLeft: 2,
-        color: 'grey'
-    }
 });
 
 /**
@@ -72,13 +46,13 @@ class mobileView extends Component {
 
     render() {
         const {
-            classes, blocks, parts, scenes, loading, showStartDateTime, isLive,
-            runningPartNumber, runningBlockNumber, runningTime = 0
+            classes, blocks, parts, scenes, loading, showStartDateTime, isLive, isPaused,
+            runningPartNumber, runningBlockNumber, runningTime = 0, currentTime
         } = this.props;
 
-        let startTimeCounter = showStartDateTime;
+        let startTimeCounter = (showStartDateTime > currentTime ) ? currentTime : showStartDateTime;
+        if (isLive) startTimeCounter -= runningTime
         let page = <Spinner/>
-        let sceneCounter = 0;
         // filter out parts that have already finished
         let blocksArray = blocks.slice(runningBlockNumber);
 
@@ -128,49 +102,31 @@ class mobileView extends Component {
                                                         runningTime={runningTime}/>
                                                     {scenesArray.map((scene, index) => {
                                                         const team = convertObjectstoArray(scene.team);
-                                                        const mustShow = team.filter((actor) => actor.firstName === 'Doa').length > 0;
-                                                        let style = {};
-                                                        let cue = null;
-                                                        if (mustShow) {
-                                                            sceneCounter += 1;
-                                                            if (sceneCounter === 2) {
-                                                                cue = <i className={classes.cue}>{scene.cue}</i>
-
-                                                            }
-                                                        } else style = {display: 'none'};
-                                                        style = (mustShow) ? {} : {display: 'none'};
-                                                        console.log(style);
+                                                        // filter out scenes that are not for this authUser
+                                                        // TODO replace check with real authUser.uid:  team.filter((actor) => actor.id === authUser.uid).length > 0
+                                                        const mustShow = team.filter((actor) => actor.firstName == authUser.firstName).length > 0;
+                                                        let sceneRunningTime = runningTime - scene.startTime;
+                                                        if (sceneRunningTime < 0) sceneRunningTime = 0;
+                                                        // remove from DOM when scene is passed
+                                                        const style = (mustShow && sceneRunningTime < scene.duration) ?  {}: {display: 'none'};
                                                         return (
                                                             <div key={index} className={classes.scene}
                                                                  style={style}>
                                                                 <InlinePartDetails
-                                                                    isRunning={isLive && index == 0 && partIndex == runningPartNumber}
+                                                                    isRunning={isLive && partIndex == runningPartNumber && !!sceneRunningTime}
                                                                     authUser={authUser}
                                                                     data={scene}
                                                                     startTime={startTimeCounter +scene.startTime}
-                                                                    runningTime={runningTime}
+                                                                    runningTime={sceneRunningTime}
                                                                     category={scene.category}
                                                                 />
-                                                                {/*<Avatar*/}
-                                                                {/*    className={classes.avatar}*/}
-                                                                {/*    alt='me'*/}
-                                                                {/*    src='http://djdoa.nl/DJDoa_WebPages/__Old_Website/doa_avatar_small.jpg'/>*/}
-                                                         {/*       {cue}*/}
-                                                         {/*       <span className={classes.sceneStartTime}>*/}
-                                                         {/*     {msToTime(scene.startTime, true, false)}*/}
-                                                         {/*</span>*/}
-                                                         {/*       {scene.title}*/}
                                                             </div>
                                                         )
                                                     })}
                                                 </div>
-                                            )
-                                        })
-                                        }
+                                            )})}
                                     </div>
-                                )
-
-                            })
+                                )})
                             }
                             <div className={classes.end}>
                                 {'End of Show:  ' + msToTime(startTimeCounter)}
@@ -186,6 +142,7 @@ class mobileView extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        currentTime: state.global.currentTime,
         shows: state.show.shows,
         blocks: state.show.blocks,
         parts: state.show.parts,
@@ -195,6 +152,7 @@ const mapStateToProps = (state) => {
         runningPartNumber: state.live.runningPartNumber,
         runningBlockNumber: state.live.runningBlockNumber,
         isLive: state.live.isLive,
+        isPaused: state.live.isPaused,
         runningTime: state.live.runningPartDuration,
     }
 };

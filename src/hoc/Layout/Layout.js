@@ -3,6 +3,7 @@ import { compose } from "redux";
 import { withRouter } from 'react-router-dom'
 
 import * as actions from "../../store/actions";
+import * as ROUTES from '../../shared/routes'
 import {connect} from "react-redux";
 import {SnackbarProvider} from 'notistack';
 
@@ -11,12 +12,13 @@ import { pageTitle } from "../../shared/routes";
 import classes from './Layout.module.css'
 
 import Button from "@material-ui/core/Button";
-
 import MyToolbar from "../../components/ui/MyToolbar/MyToolbar";
 import MySideDrawer from "../../components/ui/MySideDrawer/MySideDrawer";
 import Modal from '../../components/ui/Modal/Modal'
 import DisplayUser from "../../components/DisplayUser/DisplayUser";
-import {withFirebase} from "../../firebase";
+
+import {msToTime} from "../../shared/utility";
+import {isOdd} from '../../shared/utility';
 
 /**
  * Created by Doa on 23-10-2019.
@@ -40,21 +42,37 @@ class Layout extends Component {
     };
 
     render() {
+
+        const {showName, displayRealTime,  displaySeconds, isEditable,
+            displayUser, showAllScenes, isLive, isPaused, currentTime,
+            onToggle, onToggleRealTime, onSetDisplayUser, onToggleIsEditable,
+            onSetFoldAll, location, children, variant} = this.props;
+
         let modal = null;
         const notistackRef = React.createRef();
         const onClickDismiss = key => () => {
             notistackRef.current.closeSnackbar(key);
         };
-        if (this.props.displayUser) {
+        if (displayUser) {
             modal = (
                 <Modal show
-                       modalClosed={() => this.props.onSetDisplayUser(null)}>
+                       modalClosed={() => onSetDisplayUser(null)}>
                     <DisplayUser
-                        user={this.props.displayUser}
-                        close={() => this.props.onSetDisplayUser(null)}/>
+                        user={displayUser}
+                        close={() => onSetDisplayUser(null)}/>
                 </Modal>
             )
         }
+
+        let title = pageTitle(location.pathname);
+        if (location.pathname === ROUTES.MOBILE && isLive) {
+            title = msToTime(currentTime, true);
+            if (isPaused) {
+                title = (isOdd(currentTime)) ? msToTime(currentTime, true)
+                    : 'PAUSED'
+            }
+        };
+
 
         return (
             <SnackbarProvider
@@ -67,27 +85,27 @@ class Layout extends Component {
                 maxSnack={3}>
                 {modal}
                 <MyToolbar
-                    title={pageTitle(this.props.location.pathname)}
+                    title={title}
                     onMenuClick={this.toggleDrawer}
-                    isLive={this.props.isLive}
-                    showName={this.props.showName}
-                    showAllScenes={this.props.showAllScenes}
-                    setShowAllScenes={this.props.onSetFoldAll}/>
+                    isLive={isLive}
+                    showName={showName}
+                    showAllScenes={showAllScenes}
+                    setShowAllScenes={onSetFoldAll}/>
                 <MySideDrawer
-                    variant={this.props.variant}
+                    variant={variant}
                     open={this.state.drawer}
                     onClose={this.toggleDrawer}
                     onItemClick={this.onItemClick}
-                    showSeconds={this.props.displaySeconds}
-                    toggleShowSeconds={this.props.onToggle}
-                    displayRealTime={this.props.displayRealTime}
-                    toggleDisplayRealTime={this.props.onToggleRealTime}
-                    isEditable={this.props.isEditable}
-                    isLive={this.props.isLive}
-                    toggleIsEditable={this.props.onToggleIsEditable}
+                    showSeconds={displaySeconds}
+                    toggleShowSeconds={onToggle}
+                    displayRealTime={displayRealTime}
+                    toggleDisplayRealTime={onToggleRealTime}
+                    isEditable={isEditable}
+                    isLive={isLive}
+                    toggleIsEditable={onToggleIsEditable}
                 />
                 <div className={classes.Main}>
-                {this.props.children}
+                {children}
                 </div>
             </SnackbarProvider>
         )
@@ -103,7 +121,8 @@ const mapStateToProps = (state) => {
         displayUser: state.global.displayUser,
         showAllScenes: state.global.showAllScenes,
         isLive: state.live.isLive,
-
+        isPaused: state.live.isPaused,
+        currentTime: state.global.currentTime,
     }
 };
 

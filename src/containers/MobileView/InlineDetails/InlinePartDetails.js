@@ -19,8 +19,6 @@ const styles = theme => ({
         border: '1px solid #ccc',
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
         padding: '0 5px 0',
     },
     startTime: {
@@ -45,17 +43,22 @@ const styles = theme => ({
     },
     time: {
         display: 'flex',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        verticalAlign: 'middle',
+        textAlign: 'center'
     },
     title: {
         fontWeight: 'bold'
     },
     icon: {
-        verticalAlign: 'middle'
+        verticalAlign: 'middle',
+        textAlign: 'center'
     },
     arrow: {
         marginLeft: 'auto',
-        verticalAlign: 'middle'
+        verticalAlign: 'middle',
+        textAlign: 'center'
     },
     liveBorder: {
         border: '2px solid #000',
@@ -63,8 +66,11 @@ const styles = theme => ({
     avatar: {
         margin: 'auto',
         alignItems: 'center',
-        height: 20,
-        width: 20
+        height: 19,
+        width: 19
+    },
+    sceneLive: {
+        border: '4px solid yellow',
     }
 
 });
@@ -105,7 +111,9 @@ const InlinePartDetails = withStyles(styles)(
         // TODO create rainbow border for live element
 
         const page = (showDetails)
-            ? <div className={clsx(classes.partDetails, {[classes.liveBorder]: isRunning})}>
+            ? <div className={clsx(classes.partDetails,
+                {[classes.liveBorder]: isRunning && !category},
+                {[classes.sceneLive]: isRunning && category})}>
                 <div className={classes.head}
                      style={{
                          backgroundColor: data.color,
@@ -139,9 +147,12 @@ const InlinePartDetails = withStyles(styles)(
             </div>
             : (
                 <>
-                <div className={clsx(classes.part, {[classes.liveBorder]: isRunning})}
+                <div className={clsx(classes.part,
+                    {[classes.liveBorder]: isRunning &&!category},
+                    {[classes.sceneLive]: isRunning && category}
+                    )}
                      style={{
-                         background: data.color,
+                         backgroundColor: data.color,
                          color: textColor,
                      }}
                      onClick={() => setShowDetails(!showDetails)}>

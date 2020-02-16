@@ -85,6 +85,12 @@ const MySideDrawer = withStyles(styles)(
                     Icon={DesktopWindowsIcon}
                     onClick={onItemClick()}
                 />
+                <NavItem
+                    to={ROUTES.MOBILE}
+                    text='Mobile view'
+                    Icon={WebIcon}
+                    onClick={onItemClick()}
+                />
             </List>
         );
 

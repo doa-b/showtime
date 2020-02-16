@@ -18,6 +18,12 @@ export function createUUID() {
     return uuid;
 }
 
+//function that checks if time is odd
+export const isOdd = (timeMs) => {
+    const test = Math.round(timeMs / 1000);
+    return test % 2;
+};
+
 
 // function that sets an object immutably
 export const updateObject = (oldObject, updatedProperties) => {
